@@ -1,0 +1,2 @@
+# virtual-college
+This academic project is a college/ school management system. It consists of all the data management and storage facilities that are required for effectively managing a college or school teaching multiple courses and subjects. It consists of multiple teachers and faculty accounts. The system helps in effectively managing and scheduling batches of students as per their courses and exam priorities. The class management system allows the Institution to view and edit data as required. All this functionality ensures no errors and effective management of a class.
