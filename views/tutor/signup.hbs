@@ -1,0 +1,73 @@
+<section>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12">
+            <h2 class="text-center">Tutor SignUp</h2>
+            <form action="/tutor/signup" method="POST" id="tutor-signup">
+               <div class="row">
+                  <div class="form-group col-md-6">
+                     <label for="firstName">First Name</label>
+                     <input type="text" name="firstName" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="lastName">Last Name</label>
+                     <input type="text" name="lastName" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="email">Email</label>
+                     <input type="email" name="email" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label>Mobile</label>
+                     <div class="input-group">
+                        <div class="input-group-prepend">
+                           <div class="input-group-text">+91</div>
+                        </div>
+                        <input type="tel" class="form-control" name="mobile">
+                     </div>
+                     <span id="mobileErr"></span>
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="institutionId">Institution ID</label>
+                     <input type="text" name="institutionId" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="gender">Gender</label><br>
+                     <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" name="gender" value="Male" id="male" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="male">Male</label>
+                     </div>
+                     <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" name="gender" value="Female" id="female" class="custom-control-input">
+                        <label class="custom-control-label" for="female">Female</label>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="password">Password</label>
+                     <input type="password" name="password" class="form-control" id="password">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="confirmPassword">Confirm Password</label>
+                     <input type="password" name="confirmPassword" class="form-control">
+                     {{#if loginErr}}
+                     <small class="text-danger" id="loginErr">{{loginErr}}</small>
+                     {{/if}}
+                  </div>
+                  <div class="col-md-6">
+                  </div>
+                  <div class="col-md-6">
+                     <a href="/tutor/login">Already have account ?</a>
+                     <button type="submit" class="btn btn-primary float-right">SignUp</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</section>
+<script>
+   function loginErr()
+   {
+      document.getElementById('loginErr').style.visibility = 'hidden'
+   }
+</script>

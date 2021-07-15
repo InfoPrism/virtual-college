@@ -1,0 +1,66 @@
+<section>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12">
+            <h2 class="text-center">Institution SignUp</h2>
+            <form action="/institution/signup" method="POST" id="institution-signup">
+               <div class="row">
+                  <div class="form-group col-md-6">
+                     <label for="name">Name</label>
+                     <input type="text" name="name" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="university">University</label>
+                     <input type="text" name="university" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="email">Email</label>
+                     <input type="email" name="email" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label>Mobile</label>
+                     <div class="input-group">
+                        <div class="input-group-prepend">
+                           <div class="input-group-text">+91</div>
+                        </div>
+                        <input type="tel" class="form-control" name="mobile">
+                     </div>
+                     <span id="mobileErr"></span>
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="address">Address</label>
+                     <textarea rows="3" name="address" class="form-control"></textarea>
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="institutionHead">Head of Institution</label>
+                     <input type="text" name="institutionHead" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="password">Password</label>
+                     <input type="password" name="password" class="form-control" id="password">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="confirmPassword">Confirm Password</label>
+                     <input type="password" name="confirmPassword" class="form-control">
+                     {{#if loginErr}}
+                     <small class="text-danger" id="loginErr">{{loginErr}}</small>
+                     {{/if}}
+                  </div>
+                  <div class="col-md-6">
+                  </div>
+                  <div class="col-md-6">
+                     <a href="/institution/login">Already have account ?</a>
+                     <button type="submit" class="btn btn-primary float-right">SignUp</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</section>
+<script>
+   function loginErr()
+   {
+      document.getElementById('loginErr').style.visibility = 'hidden'
+   }
+</script>
