@@ -1,3 +1,19 @@
+/* regenerate institutionid */
+function regenerateInstitutionId()
+{
+   $.ajax({
+      url:'/institution/regenerate-institutionid',
+      method:'post',
+      success:((institutionId) => {
+         $('#regenerateInstitutionId').val(institutionId)
+      })
+   })
+}
+
+
+
+
+
 /* Jquery Validations */
 $(document).ready(function()
 {
@@ -26,11 +42,11 @@ $(document).ready(function()
   {
     rules:
     {
-      firstName:
+      fname:
       {
         required:true
       },
-      lastName:
+      lname:
       {
         required:true
       },
@@ -46,11 +62,11 @@ $(document).ready(function()
         minlength:10,
         maxlength:10
       },
-      institutionId:
+      institution:
       {
         required:true
       },
-      guardianName:
+      guardian:
       {
         required:true
       },
@@ -64,7 +80,7 @@ $(document).ready(function()
         minlength:8,
         maxlength:15
       },
-      confirmPassword:
+      cpassword:
       {
         required:true,
         equalTo:"#password"
@@ -72,8 +88,8 @@ $(document).ready(function()
     },
     messages:
     {
-      firstName:"<small class='text-danger'>Please enter your First Name.</small>",
-      lastName:"<small class='text-danger'>Please enter your Last Name.</small>",
+      fname:"<small class='text-danger'>Please enter your First Name.</small>",
+      lname:"<small class='text-danger'>Please enter your Last Name.</small>",
       email:
       {
         required:"<small class='text-danger'>Please enter your Email.</small>",
@@ -86,8 +102,8 @@ $(document).ready(function()
         minlength:"<small class='text-danger'>Please enter a valid Mobile.</small>",
         maxlength:"<small class='text-danger'>Please enter a valid Mobile.</small>"
       },
-      institutionId:"<small class='text-danger'>Please enter your Institution ID.</small>",
-      guardianName:"<small class='text-danger'>Please enter your Guardian's Name.</small>",
+      institution:"<small class='text-danger'>Please enter your Institution ID.</small>",
+      guardian:"<small class='text-danger'>Please enter your Guardian's Name.</small>",
       address:"<small class='text-danger'>Please enter your Address.</small>",
       password:
       {
@@ -95,7 +111,7 @@ $(document).ready(function()
         minlength:"<small class='text-danger'>Password must be 8-15 Characters.</small>",
         maxlength:"<small class='text-danger'>Password must be 8-15 Characters.</small>"
       },
-      confirmPassword:
+      cpassword:
       {
         required:"<small class='text-danger'>Please re-enter your Password.</small>",
         equalTo:"<small class='text-danger'>Password doesn't Match.</small>"
@@ -118,11 +134,11 @@ $(document).ready(function()
   {
     rules:
     {
-      firstName:
+      fname:
       {
         required:true
       },
-      lastName:
+      lname:
       {
         required:true
       },
@@ -138,7 +154,7 @@ $(document).ready(function()
         minlength:10,
         maxlength:10
       },
-      institutionId:
+      institution:
       {
         required:true
       },
@@ -148,7 +164,7 @@ $(document).ready(function()
         minlength:8,
         maxlength:15
       },
-      confirmPassword:
+      cpassword:
       {
         required:true,
         equalTo:"#password"
@@ -156,8 +172,8 @@ $(document).ready(function()
     },
     messages:
     {
-      firstName:"<small class='text-danger'>Please enter your First Name.</small>",
-      lastName:"<small class='text-danger'>Please enter your Last Name.</small>",
+      fname:"<small class='text-danger'>Please enter your First Name.</small>",
+      lname:"<small class='text-danger'>Please enter your Last Name.</small>",
       email:
       {
         required:"<small class='text-danger'>Please enter your Email.</small>",
@@ -170,14 +186,14 @@ $(document).ready(function()
         minlength:"<small class='text-danger'>Please enter a valid Mobile.</small>",
         maxlength:"<small class='text-danger'>Please enter a valid Mobile.</small>"
       },
-      institutionId:"<small class='text-danger'>Please enter your Institution ID.</small>",
+      institution:"<small class='text-danger'>Please enter your Institution ID.</small>",
       password:
       {
         required:"<small class='text-danger'>Please enter your Password.</small>",
         minlength:"<small class='text-danger'>Password must be 8-15 Characters.</small>",
         maxlength:"<small class='text-danger'>Password must be 8-15 Characters.</small>"
       },
-      confirmPassword:
+      cpassword:
       {
         required:"<small class='text-danger'>Please re-enter your Password.</small>",
         equalTo:"<small class='text-danger'>Password doesn't Match.</small>"
@@ -204,7 +220,11 @@ $(document).ready(function()
       {
         required:true
       },
-      university:
+      type:
+      {
+        required:true
+      },
+      board:
       {
         required:true
       },
@@ -224,7 +244,7 @@ $(document).ready(function()
       {
         required:true
       },
-      institutionHead:
+      head:
       {
         required:true
       },
@@ -234,7 +254,7 @@ $(document).ready(function()
         minlength:8,
         maxlength:15
       },
-      confirmPassword:
+      cpassword:
       {
         required:true,
         equalTo:"#password"
@@ -243,7 +263,8 @@ $(document).ready(function()
     messages:
     {
       name:"<small class='text-danger'>Please enter Institution Name.</small>",
-      university:"<small class='text-danger'>Please enter University Name.</small>",
+      type:"<small class='text-danger'>Please choose Type of Institution.</small>",
+      board:"<small class='text-danger'>Please enter Board of Institution.</small>",
       email:
       {
         required:"<small class='text-danger'>Please enter Institution Email.</small>",
@@ -257,14 +278,14 @@ $(document).ready(function()
         maxlength:"<small class='text-danger'>Please enter a valid Mobile.</small>"
       },
       address:"<small class='text-danger'>Please enter Institution Address.</small>",
-      institutionHead:"<small class='text-danger'>Please enter Head of Institution.</small>",
+      head:"<small class='text-danger'>Please enter Head of Institution.</small>",
       password:
       {
         required:"<small class='text-danger'>Please enter Institution Password.</small>",
         minlength:"<small class='text-danger'>Password must be 8-15 Characters.</small>",
         maxlength:"<small class='text-danger'>Password must be 8-15 Characters.</small>"
       },
-      confirmPassword:
+      cpassword:
       {
         required:"<small class='text-danger'>Please re-enter Institution Password.</small>",
         equalTo:"<small class='text-danger'>Password doesn't Match.</small>"
