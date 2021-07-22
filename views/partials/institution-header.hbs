@@ -1,3 +1,4 @@
+<!-- Old NavBar
 <header>
    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" href="/"><h5>onOrg</h5></a>
@@ -24,3 +25,314 @@
       </div>
    </nav>
 </header>
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+    <!--wrapper start-->
+    <div class="wrapper">
+        <!--header menu start-->
+        <div class="header">
+            <div class="header-menu">
+                <div class="sidebar-btn">
+                    <i class="fas fa-bars"></i>
+                     </div>
+                <div class="title"><span>College</span></div>
+                
+                      <ul>
+                        <!--  <li> <a href="#"><i class="fas fa-search"></i></a></li>   -->
+                          <li> <a href="#"><i class="fas fa-plus"></i></a></li>
+                         <!-- <li> <a href="#"><i class="fas fa-power-off"></i></a></li>  -->
+                      </ul>
+                
+            </div>
+        </div>
+         <!--header menu end-->
+         <!--sidebar start-->
+         <div class="sidebar">
+             <div class="sidebar-menu">
+                 <center class="profile">
+                     <img src="institution-logo/college logo.jpeg" alt=" image will be loaded">
+                     <p>MD College</p>
+                 </center>
+                 <ul>
+                <li class="item">
+                    <a href="#" class="menu-btn">
+                         <i class="fas fa-home"></i><span>Home</span>
+                    </a>
+
+                </li>
+                <li class="item" id="messages">
+                    <a href="#messages" class="menu-btn">
+                        <i class="fas fa-users"></i><span>Tutor & Student<i class="fas fa-chevron-down drop-down"></i></span>
+                    </a>
+                    <div class="sub-menu">
+                        
+                         <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span>Tutor</span></a>
+                         <a href="#"><i class="fas fa-user-graduate"></i> <span>Student</span></a>
+                        <!-- <a href="#"><i class="fas fa-exclamation-circle"></i> <span>Spam</span></a>-->
+                    </div>
+                </li>
+                 <li class="item" id="profile">
+                     <a href="#profile" class="menu-btn">
+                         <i class="fas fa-share-alt"></i><span>Share <i class="fas fa-chevron-down drop-down"></i></span>
+                     </a>
+                     <div class="sub-menu">
+                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span>Tutor</span></a>
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span>Student</span></a>
+                     </div>
+                 </li>
+                 
+                 <li class="item" id="settings">
+                     <a href="#settings" class="menu-btn">
+                         <i class="fas fa-cog"></i><span>settings  <i class="fas fa-chevron-down drop-down"></i></span>
+                     </a>
+                     <div class="sub-menu">
+                        <a href="#"><i class="fas fa-user-circle"></i> <span>Profile</span></a>
+                         <a href="#"><i class="fas fa-lock"></i> <span>Password</span></a>
+                          
+                     </div>
+                 </li>
+                 <li class="item">
+                    <a href="#" class="menu-btn">
+                         <i class="fas fa-info-circle"></i><span>About</span>
+                    </a>
+
+                </li>
+                </ul>
+                
+             </div>
+         </div>
+         <!--sidebar end-->
+         <!--main container start-->
+        
+
+         <!--main container end-->
+    </div>
+    <!--wrapper end-->
+
+<style>
+    
+    *{
+  margin:0;
+  padding:0;
+  list-style:none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body{
+    background: #fff;
+}
+
+.wrapper .header{
+    z-index:1;
+    background: #222424;
+    position: fixed;
+    width: calc(100% - 0%);
+    height: 70px;
+    display: flex;
+    top: 0;
+}
+/*Header*/
+.wrapper .header .header-menu{
+    width: calc(100% - 0%);
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+/*Name*/
+.wrapper .header .header-menu .title{
+    color: #fff;
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-left: 40px;
+}
+
+/*Second Name we use here span*/ 
+.wrapper .header .header-menu .title span{
+    color: #4CCEE8;
+}
+
+/*Side button*/
+.wrapper .header .header-menu .sidebar-btn{
+    color: #fff;
+    position: absolute;
+    margin-left:10px;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.3s;
+    transition-property: color;
+    
+}
+/*onclick Side button*/
+.wrapper .header .header-menu .sidebar-btn:hover{
+   color:#4CCEE8; 
+}
+
+/*Round Buttons @ right side*/ 
+.wrapper .header .header-menu ul{
+    display: flex;
+}
+/*Round Buttons @ right side*/ 
+.wrapper .header .header-menu ul li a{
+    background: #fff;
+    color: #000;
+    display: block;
+    margin: 0 10px;
+    font-size: 18px;
+    width:34px;
+    height: 34px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 50%;
+    transition: 0.3s;
+    transition-property: background, color;
+    
+}
+/*On cick Round Buttons @ right side*/ 
+.wrapper .header .header-menu ul li a:hover{
+    background: #4CCEE8;
+    color: #fff;
+}
+/*Sidebar start from here*/
+.wrapper .sidebar{
+    z-index: 1;
+    background: #2F323A;
+    position: fixed;
+    top:70px;
+    width: 250px;
+    height: calc(100% - 9%);
+    transition: 0.3s;
+    transition-property: width;
+    overflow-y:auto;
+}
+
+.wrapper .sidebar .sidebar-menu{
+    overflow: hidden;
+}
+
+.wrapper .sidebar .sidebar-menu .profile img{
+   margin: 20px 0;
+   width: 100px;
+   height: 100px;
+   border-radius: 50%;
+}
+
+.wrapper .sidebar .sidebar-menu .profile p{
+    color:#bbb;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.wrapper .sidebar .sidebar-menu .item{
+    width:250px;
+    overflow: hidden;
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn{
+    display: block;
+    color: #fff;
+    position: relative;
+    padding: 25px 20px;
+    transition: 0.3s;
+    transition-property: color;
+
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn:hover{
+    color: #4CCEE8;
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn i{
+    margin-right: 20px;
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down{
+    float: right;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu{
+    background: #3498DB;
+    overflow: hidden;
+    max-height: 0;
+    transition: 0.3s;
+    transition-property: background, max-height;
+}
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu a{
+    display: block;
+    position: relative;
+    color: #fff;
+    white-space: nowrap;
+    font-size: 15px;
+    padding: 20px;
+    border-bottom: 1px solid #8FC5E9;
+    transition: 0.3s;
+    transition-property: background;
+}
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu a:hover{
+    background: #55B1F0;
+}
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu i{
+    padding-right: 20px;
+    font-size: 10px;
+}
+
+.wrapper .sidebar .sidebar-menu .item:target .sub-menu{
+    max-height: 500px;
+}
+
+.wrapper .main-container{
+    width: (100% - 250px);
+    margin-top: 70px;
+    margin-left: 250px;
+    padding:15px;
+    background-size: cover;
+    height: 100vh;
+    transition: 0.4s;
+}
+
+.wrapper.collapse .sidebar{
+    width: 70px;
+}
+
+.wrapper.collapse .sidebar .profile img,
+.wrapper.collapse .sidebar .profile p,
+.wrapper.collapse .sidebar a span{
+    display: none;
+}
+
+.wrapper.collapse .sidebar .sidebar-menu .item .menu-btn{
+    font-size: 23px;
+}
+
+
+.wrapper.collapse .sidebar .sidebar-menu .item .sub-menu i{
+    font-size: 18px;
+    padding-left: 3px;
+}
+
+
+.wrapper.collapse .main-container{
+    width: (100% - 70px);
+    margin-left:70px;
+}
+
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".sidebar-btn").click(function(){
+        $(".wrapper").toggleClass("collapse")
+    });
+})
+</script>
