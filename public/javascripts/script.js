@@ -10,8 +10,12 @@ function regenerateInstitutionId()
    })
 }
 
-
-
+/*SideBar Script */
+$(document).ready(function(){
+  $(".sidebar-btn").click(function(){
+      $(".wrapper").toggleClass("collapses")
+  });
+})
 
 
 /* Jquery Validations */
