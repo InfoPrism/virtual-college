@@ -13,6 +13,7 @@ body{
     display: flex;
     flex-direction: column;
     font-family: "Roboto", sans-serif;
+    
 }
 
 footer{
@@ -48,6 +49,7 @@ footer{
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    
 }
 /*Name*/
 .wrapper .header .header-menu .title{
@@ -100,6 +102,19 @@ footer{
     transition-property: background, color;
     
 }
+.wrapper .header .header-menu ul p{
+  
+    color: #fff;
+    display: block;
+    margin-top: 17px;
+    font-size: 20px;
+    text-align: center;
+   transition: 0.3s;
+    transition-property: color;
+
+    
+}
+
 /*On cick Round Buttons @ right side*/ 
 .wrapper .header .header-menu ul li a:hover{
     background: #4CCEE8;

@@ -7,7 +7,7 @@
             <div class="header-menu">
                 <div class="sidebar-btn">
                     {{#if institutions}}
-                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-bars"></i>               
                      {{else}} 
                          <i class="fas fa-university"></i>
                     {{/if}}
@@ -17,7 +17,9 @@
                       <ul>
                         <!--  Here we chech institution exist or not if yes it will display plus otherwise home   -->
                            {{#if institutions}}
-                                <li> <a href="#"><i class="fas fa-plus"></i></a></li>
+                                <li> <a href=""><i class="fas fa-plus"></i></a> </li>
+                                 <!-- Text near Plus Button <b > <p style="color: antiquewhite;"></p></b>-->
+                               
                         {{else}}                      
                                 <li> <a href="/"><i class="fas fa-home"></i></a></li>
                          {{/if}}

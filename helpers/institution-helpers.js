@@ -75,5 +75,22 @@ module.exports = {
          }while(institution)
          resolve(institutionId)
       })
+   },
+   /*Here we create a new class */
+   addClass:function(classData){
+      return new Promise((resolve, reject) => {
+      db.get().collection(collections.CLASS_COLLECTION).insertOne(classData).then((data)=>{
+        
+         resolve()
+     })
+     
+   })
+   },
+   /*Here we store data of every class we created as an array*/
+   getAllClass:function(){
+      return new Promise((resolve,reject)=>{
+         let classes=db.get().collection(collections.CLASS_COLLECTION).find().toArray()
+         resolve(classes)
+      })
    }
 }

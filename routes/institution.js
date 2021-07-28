@@ -86,4 +86,17 @@ router.post('/regenerate-institutionid', function(req, res, next) {
    })
 })
 
+/*GET add a new class by institution*/
+router.get('/add-class',verifyLogin,async function(req,res,next){
+   let classes = await institutionHelpers.getAllClass()
+   console.log(classes);
+  res.render('institution/add-class',{title:'Add Class',institution:true,classes})
+})
+
+/*POST add a new class by institution*/
+router.post('/add-class',verifyLogin,function(req,res,next){
+   institutionHelpers.addClass(req.body).then(()=>{
+   res.redirect('/institution/add-class')
+   })
+})
 module.exports = router;
