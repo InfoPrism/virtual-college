@@ -10,15 +10,18 @@ function regenerateInstitutionId()
    })
 }
 
-/*SideBar Script */
+
+
+/* --SideBar Script-- */
 $(document).ready(function(){
   $(".sidebar-btn").click(function(){
-      $(".wrapper").toggleClass("collapses")
+      $(".wrapper").toggleClass("sidebar-collapse")
   });
 })
 
 
-/* Jquery Validations */
+
+/* --Jquery Validations-- */
 $(document).ready(function()
 {
   $("#login").validate(

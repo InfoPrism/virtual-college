@@ -15,7 +15,7 @@ verifyLogin = function(req, res, next) {
 
 /* GET home page. */
 router.get('/', verifyLogin, function(req, res, next) {
-  res.render('index', {title:'Home', student:true});
+  res.render('student/home', {title:'Home', student:true});
 });
 
 /* GET login page. */

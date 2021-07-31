@@ -1,254 +1,285 @@
-header {
-  position:fixed;
-  width:100%;
-  top:0;
-  z-index:100;
-}
+/* --Import Google Fonts-- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
 
-
-body{
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: "Roboto", sans-serif;
-    
-}
-
-footer{
-    margin-top: auto;
-}
-
-
-/*Side Bar Style*/
-
+/* --Base Styles-- */
 *{
   margin:0;
   padding:0;
   list-style:none;
   text-decoration: none;
   box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
-.wrapper .header{
-    z-index:1;
-    background: #222424;
+body{
+    background: #E4E9F7;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollmenu::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollmenu {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+
+/* --Header-- */
+header{
     position: fixed;
-    width: calc(100% - 0%);
+    z-index:100;
+    background: #11101d;
+    width: 100%;
     height: 70px;
-    display: flex;
     top: 0;
 }
-/*Header*/
-.wrapper .header .header-menu{
-    width: calc(100% - 0%);
+
+header .header-menu{
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    
-}
-/*Name*/
-.wrapper .header .header-menu .title{
-    color: #fff;
-    font-size: 25px;
-    font-weight: 900;
-    margin-left: 40px;
+    padding: 0 10px;
 }
 
-/*Second Name we use here span*/ 
-.wrapper .header .header-menu .title span{
-    color: #4CCEE8;
+/*Header Name*/
+header .header-menu .title{
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    margin-left: 45px;
 }
 
-/*Side button*/
-.wrapper .header .header-menu .sidebar-btn{
+/*Header Side button*/
+header .header-menu .sidebar-btn{
     color: #fff;
+    border: 2px solid #fff;
     position: absolute;
     margin-left:10px;
-    font-size: 22px;
-    font-weight: 900;
+    font-size: 18px;
+    font-weight: 600;
+    width:28px;
+    height: 28px;
+    line-height: 26.5px;
+    text-align: center;
+    border-radius: 10%;
     cursor: pointer;
     transition: 0.3s;
-    transition-property: color;
+    transition-property: background, color;
     
 }
-/*onclick Side button*/
-.wrapper .header .header-menu .sidebar-btn:hover{
-   color:#4CCEE8; 
+
+/*onclick Header Side button*/
+header .header-menu .sidebar-btn:hover{
+   background: #fff;
+   color:#000; 
 }
 
 /*Round Buttons @ right side*/ 
-.wrapper .header .header-menu ul{
+header .header-menu ul{
     display: flex;
 }
+
 /*Round Buttons @ right side*/ 
-.wrapper .header .header-menu ul li a{
-    background: #fff;
-    color: #000;
+header .header-menu ul li a{
+    border: 2px solid #fff;
+    color: #fff;
     display: block;
     margin: 0 10px;
     margin-top: 17px;
     font-size: 18px;
     width:34px;
     height: 34px;
-    line-height: 35px;
+    line-height: 32px;
     text-align: center;
     border-radius: 50%;
     transition: 0.3s;
     transition-property: background, color;
-    
-}
-.wrapper .header .header-menu ul p{
-  
-    color: #fff;
-    display: block;
-    margin-top: 17px;
-    font-size: 20px;
-    text-align: center;
-   transition: 0.3s;
-    transition-property: color;
-
-    
 }
 
 /*On cick Round Buttons @ right side*/ 
-.wrapper .header .header-menu ul li a:hover{
-    background: #4CCEE8;
-    color: #fff;
-}
-/*Sidebar start from here*/
-.wrapper .sidebar{
-    z-index: 1;
-    background: #2F323A;
-    position: fixed;
-    top:70px;
-    width: 250px;
-    height: calc(100% - 9%);
-    transition: 0.3s;
-    transition-property: width;
-    overflow-y:auto;
+header .header-menu ul li a:hover{
+    background: #fff;
+    color: #000;
 }
 
-.wrapper .sidebar .sidebar-menu{
+
+
+/* --Sidebar-- */
+.sidebar{
+    position: fixed;
+    z-index: 100;
+    background: #11101d;
+    top:70px;
+    width: 230px;
+    height: calc(100% - 125px);
+    transition: 0.3s;
+    transition-property: width;
+    overflow-y: auto;
+}
+
+.sidebar .sidebar-menu{
     overflow: hidden;
 }
 
-.wrapper .sidebar .sidebar-menu .profile img{
+.sidebar .sidebar-menu .profile img{
    margin: 20px 0;
    width: 100px;
    height: 100px;
    border-radius: 50%;
 }
 
-.wrapper .sidebar .sidebar-menu .profile p{
-    color:#bbb;
+.sidebar .sidebar-menu .profile .name{
+    color:#fff;
     font-weight: 700;
+}
+
+.sidebar .sidebar-menu .profile .email{
+    color:#fff;
+    font-size: 12px;
     margin-bottom: 10px;
 }
 
-.wrapper .sidebar .sidebar-menu .item{
+.sidebar .sidebar-menu .profile a{
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 25%;
+    margin-left: 1px;
+    transition: 0.3s;
+    transition-property: background, color;
+}
+
+.sidebar .sidebar-menu .profile .share-btn{
+    padding:1px 5px 1px 5px;
+}
+
+.sidebar .sidebar-menu .profile .regenerate-btn{
+    padding:1px 4px 1px 4px;
+}
+
+.sidebar .sidebar-menu .profile a:hover{
+    background: #fff;
+    color: #000;
+}
+
+.sidebar .sidebar-menu .profile .secret-code{
+    color: #fff;
+    font-size: 12px;
+    margin-left: 1px;
+    text-align: center;
+}
+
+.sidebar .sidebar-menu .item{
     width:250px;
     overflow: hidden;
 }
 
-.wrapper .sidebar .sidebar-menu .item .menu-btn{
+.sidebar .sidebar-menu .item .menu-btn{
     display: block;
     color: #fff;
     position: relative;
-    padding: 25px 20px;
+    padding: 15px 15px;
     transition: 0.3s;
     transition-property: color;
     text-decoration: none;
-
 }
 
-.wrapper .sidebar .sidebar-menu .item .menu-btn:hover{
-    color: #4CCEE8;
+.sidebar .sidebar-menu .item .menu-btn:hover{
+    background: #1d1b31;
 }
 
-.wrapper .sidebar .sidebar-menu .item .menu-btn i{
+.sidebar .sidebar-menu .item .menu-btn i{
     margin-right: 20px;
 }
 
-.wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down{
+.sidebar .sidebar-menu .item .menu-btn .drop-down{
     float: right;
     font-size: 12px;
     margin-top: 3px;
+    transition: 0.3s;
 }
 
-.wrapper .sidebar .sidebar-menu .item .sub-menu{
-    background: #3498DB;
+.sidebar .sidebar-menu .item .sub-menu{
+    padding-left: 15px;
+    background: #1d1b31;
     overflow: hidden;
     max-height: 0;
     transition: 0.3s;
     transition-property: background, max-height;
-    
 }
 
-.wrapper .sidebar .sidebar-menu .item .sub-menu a{
+.sidebar .sidebar-menu .item .sub-menu a{
     display: block;
     position: relative;
     color: #fff;
     white-space: nowrap;
     font-size: 15px;
-    padding: 20px;
-    border-bottom: 1px solid #8FC5E9;
+    padding: 5px 5px;
+    opacity: 0.6;
     transition: 0.3s;
     transition-property: background;
     text-decoration: none;
 }
 
-.wrapper .sidebar .sidebar-menu .item .sub-menu a:hover{
-    background: #55B1F0;
+.sidebar .sidebar-menu .item .sub-menu a:hover{
+    opacity: 1;
 }
 
-.wrapper .sidebar .sidebar-menu .item .sub-menu i{
+.sidebar .sidebar-menu .item .sub-menu i{
     padding-right: 20px;
     font-size: 10px;
 }
 
-.wrapper .sidebar .sidebar-menu .item:target .sub-menu{
+.sidebar .sidebar-menu .item:target .sub-menu{
     max-height: 500px;
 }
 
-.wrapper .main-container{
-    width: (100% - 250px);
-    margin-top: 70px;
-    margin-left: 250px;
-    padding:15px;
-    background-size: cover;
-    height: 100vh;
-    transition: 0.4s;
+.sidebar .sidebar-menu .item:target .menu-btn .drop-down{
+    transform: rotate(-180deg);
 }
 
-.wrapper.collapses .sidebar{
-    width: 70px;
+.sidebar-collapse .sidebar{
+    width: 55px;
 }
 
-.wrapper.collapses .sidebar .profile img,
-.wrapper.collapses .sidebar .profile p,
-.wrapper.collapses .sidebar a span{
+.sidebar-collapse .sidebar .profile img,
+.sidebar-collapse .sidebar .profile p,
+.sidebar-collapse .sidebar a span{
     display: none;
 }
 
-.wrapper.collapses .sidebar .sidebar-menu .item .menu-btn{
-    font-size: 23px;
+.sidebar-collapse .sidebar .sidebar-menu .item .menu-btn{
+    font-size: 20px;
+}
+
+.sidebar-collapse .sidebar .sidebar-menu .item .sub-menu i{
+    font-size: 15px;
 }
 
 
-.wrapper.collapses .sidebar .sidebar-menu .item .sub-menu i{
-    font-size: 18px;
-    padding-left: 3px;
+
+/* --Main Container-- */
+.main-container{
+    margin: 85px 0 70px 55px;
 }
 
 
-.wrapper.collapses .main-container{
-    width: (100% - 70px);
-    margin-left:70px;
-}
 
-/*Sidebar end from here*/
+/* --Footer-- */
+footer{
+    position: fixed;
+    z-index:100;
+    background: #11101d;
+    width: 100%;
+    margin-top: auto;
+    bottom:0;
+}
