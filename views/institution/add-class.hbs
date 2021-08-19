@@ -21,8 +21,18 @@
                   <textarea rows="3" type="text" class="form-control" id="class_description" name="class_description"></textarea>
                </div>
                <div class="form-group">
-                  <label for="pincode">Course Duration</label>
-                  <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter the value in year">
+                 <label for="visible">Course Duration</label>
+               
+               <select class="custom-select" name="visiblity" required>
+                <option selected value="">Choose option</option>
+               <option value="3 month">3 month</option>
+               <option value="6 month">6 month</option>
+               <option value="1 year">1 year</option>
+               <option value="2 year">2 year</option>
+               <option value="3 year">3 year</option>
+               <option value="4 year">4 year</option>
+               <option value="5 year">5 year</option>
+           </select>
                </div>
                  <button class="btn btn-dark float-right" type="submit">Submit</button>
                  </form>

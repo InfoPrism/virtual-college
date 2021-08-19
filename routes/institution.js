@@ -15,8 +15,8 @@ verifyLogin = function(req, res, next) {
 
 /* GET home page. */
 router.get('/', verifyLogin, function(req, res, next) {
-   let institutions= req.session.institution;
-  res.render('institution/home', {title:'Home', institution:true, institutions});
+   let institutionDetails= req.session.institution;
+  res.render('institution/home', {title:'Home', institution:true, institutionDetails});
 });
 
 /* GET login page. */
@@ -90,7 +90,7 @@ router.post('/regenerate-institutionid', function(req, res, next) {
 router.get('/add-class',verifyLogin,async function(req,res,next){
    let classes = await institutionHelpers.getAllClass()
    console.log(classes);
-  res.render('institution/add-class',{title:'Add Class',institution:true,classes})
+  res.render('institution/add-class',{title:'Add Class',institution:true,classes,})
 })
 
 /*POST add a new class by institution*/
