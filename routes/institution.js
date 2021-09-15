@@ -16,6 +16,8 @@ verifyLogin = function(req, res, next) {
 /* GET home page. */
 router.get('/', verifyLogin, function(req, res, next) {
    let institutionDetails= req.session.institution;
+   console.log("ppppppppppppppppppppp");
+   console.log(institutionDetails);
   res.render('institution/home', {title:'Home', institution:true, institutionDetails});
 });
 
@@ -97,6 +99,44 @@ router.get('/add-class',verifyLogin,async function(req,res,next){
 router.post('/add-class',verifyLogin,function(req,res,next){
    institutionHelpers.addClass(req.body).then(()=>{
    res.redirect('/institution/add-class')
+   })
+})
+/*GET Everyone Annoucement*/
+router.get('/everyOne-announcement',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution;
+   let announcements= await institutionHelpers.getAnnouncements('Everyone',institutionDetails._id)
+  res.render('institution/everyOne-announcement',{title:'Everyone Announcements',institution:true,announcements})
+})
+/*GET Student Annoucement*/
+router.get('/student-announcement',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution;
+   let announcements= await institutionHelpers.getAnnouncements('Student',institutionDetails._id)
+  res.render('institution/student-announcement',{title:'Student Announcements',institution:true,announcements})
+})
+/*GET Tutor Annoucement*/
+router.get('/tutor-announcement',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution;
+   let announcements= await institutionHelpers.getAnnouncements('Tutor',institutionDetails._id)
+  res.render('institution/tutor-announcement',{title:'Tutor Announcements',institution:true,announcements})
+})
+/*GET Create new Announcement*/
+router.get('/add-announcement',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution
+   console.log("ddddddd");
+   console.log(institutionDetails);
+  res.render('institution/add-announcement',{title:'Add Announcement',institution:true,institutionDetails})
+})
+
+/* POST Create new Announcement. Here we check the announcement is created to whom and it will redirect to that page*/
+router.post('/add-announcement', function(req, res, next) {
+   let announcement=req.body;
+   institutionHelpers.addAnnouncement(req.body).then((response) => {
+      if(announcement.visiblity=='Everyone')
+       res.redirect('/institution/everyOne-announcement')
+      else if(announcement.visiblity=='Student')
+       res.redirect('/institution/student-announcement')
+      else
+       res.redirect('/institution/tutor-announcement')
    })
 })
 module.exports = router;

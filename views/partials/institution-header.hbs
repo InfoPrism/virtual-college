@@ -5,8 +5,78 @@
       </div>
       <div class="title">onOrg</div>
       <ul>
-         <li> <a href="#"><i class="far fa-plus"></i></a></li>
-         <li> <a href="/"><i class="far fa-home"></i></a></li>
+          <!-- Here we use  modal -->
+         <li class="symbol"> <a data-toggle="modal" data-target="#exampleModalCenter"><i class="far fa-plus"></i></a></li>
+         <li class="symbol"> <a href="/"><i class="far fa-home"></i></a></li>
       </ul>
    </div>
 </header>
+
+
+<!-- Modal for to choose the Announcement -->
+<section>
+<div class="modal fade"  id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"> <b style="color:#2F4F4F;">Create Announcement</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+
+      <div class="row text-center">
+         <div class="different-announcement-div text-center">
+        <a href="/institution/everyOne-announcement" class="different-announcement btn btn" ><i class="different-announcement-icon far fa-users"></i><br> <span class="different-announcement-text">Everyone</span></a>
+        </div>
+        <div class="different-announcement-div text-center">
+        <a href="/institution/student-announcement" class="different-announcement btn btn"><i class="different-announcement-icon far fa-user-graduate"></i><br> <span class="different-announcement-text">Student</span></a>
+        </div>
+        <div class="different-announcement-div text-center">
+       <a href="/institution/tutor-announcement" class="different-announcement btn btn"><i class="different-announcement-icon far fa-chalkboard-teacher"></i><br> <span class="different-announcement-text">Tutor</span></a>
+       </div>    
+     </div>
+    </div>
+      <div class="modal-footer">
+        <a href="/institution/add-announcement" style="background-color: #2F4F4F;" class="new-announcement btn btn"><small style="color: #fff;">New Announcement</small></a>
+        </div>
+    </div>
+  </div>
+</div>
+</section>
+<!--Model Ends-->
+
+<style>
+/*Here we added style because we use model to the icon so the modal deffault style had come to the icom*/
+.symbol{
+ color: #fff;
+}
+.symbol a:hover{
+   color: #000 !important;
+}
+
+/*Here we desighn the model of create announcement*/
+.modal-content  {
+  border-radius: 15px !important; 
+}
+.different-announcement-div{
+  width: 33%;
+}
+.different-announcement{
+  width: 100px; 
+  height: 100px; 
+  border-radius: 10px; 
+  background-color: #212529; 
+  padding-top: 25px;  
+}
+.different-announcement-icon{
+  font-size: 20px; 
+  color: #fff;
+}
+.different-announcement-text{
+ size: 20px; 
+ font-weight: 10px; 
+ color: #fff;
+}
+</style>

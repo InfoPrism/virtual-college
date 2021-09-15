@@ -92,5 +92,50 @@ module.exports = {
          let classes=db.get().collection(collections.CLASS_COLLECTION).find().toArray()
          resolve(classes)
       })
-   }
+   },
+   addAnnouncement:function (announcementData){
+      return new Promise(async (resolve, reject) => {
+         /*Date format*/
+         let  date= new Date()
+         console.log(date.toLocaleString('en-US', {
+         weekday: 'short', // "Sat"
+         month: 'long', // "June"
+         day: '2-digit', // "01"
+         year: 'numeric' // "2019"
+         }))
+         console.log(date.toDateString())
+         console.log(date.toLocaleTimeString())
+         announcementData.date = await date.toDateString()+' Time: '+date.toLocaleTimeString()
+      db.get().collection(collections.ANNOUNCEMENT_COLLECTION).insertOne(announcementData).then((data)=>{
+        
+         resolve()
+     })
+     
+   })
+   },
+   /*Here we check which type of announcement does it vissible to whom */
+   getAnnouncements:function (type,InstitutionId){
+      return new Promise(async (resolve, reject) => {
+      let announcements=await db.get().collection(collections.ANNOUNCEMENT_COLLECTION).aggregate([
+         {
+           
+           $match:
+           {
+              $and:[
+                 {institutionId:InstitutionId},
+                 {visiblity:type},
+              ]
+           }
+         },
+         {
+           $project:{
+            _id :1,title :1,date :1,content :1,visiblity:1
+           }
+         }
+       ]).toArray()
+       resolve(announcements)
+       console.log(announcements);
+      })
+
+   } 
 }
