@@ -1,6 +1,7 @@
 var bcrypt = require('bcryptjs');
 var db = require('../config/connection');
 var collections = require('../config/collections');
+var objectId=require('mongodb').ObjectId
 
 module.exports = {
    doSignup:function(institutionData) {
@@ -137,5 +138,44 @@ module.exports = {
        console.log(announcements);
       })
 
-   } 
+   },
+   getStudentsIn_institution:(institutionId)=>{
+      console.log("hey i am here"+institutionId);
+      return new Promise(async(resolve,reject)=>{ 
+        let students=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
+          {
+            $match:{institution:objectId(institutionId)}
+          },
+          {
+             $sort:{fname:1,lname:1}
+          },
+         
+         {
+            $project:{
+              fname:1,lname:1,email:1,mobile:1,guardian:1,address:1,gender:1,date:1
+ 
+            }
+          }
+        ]).toArray()
+        console.log(students);
+        resolve(students)
+      })
+    },
+    getStudentDetails:(studentId)=>{
+      return new Promise(async(resolve,reject)=>{
+        let studentDetail=await db.get().collection(collections.STUDENT_COLLECTION).findOne({_id:objectId(studentId)})
+        console.log(studentDetail);
+        resolve(studentDetail)
+      })
+    },
+    
+     /*Here we create a new class */
+     addRemarks:function(remarks){
+      return new Promise((resolve, reject) => {
+      db.get().collection(collections.CLASS_COLLECTION).insertOne(remarks).then((data)=>{
+         resolve()
+     })
+     
+   })
+   }, 
 }

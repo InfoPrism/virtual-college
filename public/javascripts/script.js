@@ -1,7 +1,50 @@
+/*Add to cart Start*/
+function studentInfo(studentId){
+  $.ajax({
+      url:'/institution/get-student-details/'+studentId,
+      method:'get',
+      success:((studentDetail) => {
+       let fname= studentDetail.fname
+       let lname= studentDetail.lname
+       let fullName=fname+' '+lname
+       let email= studentDetail.email
+       let mobile= studentDetail.mobile
+       let address= studentDetail.address
+       let gender= studentDetail.gender
+       let guardian= studentDetail.guardian
+       console.log(email);
+        $("#student-fullName").html(fullName)
+        $("#student-fullName2").html(fullName)
+        $("#student-fname").html(fname)
+        $("#student-email").html(email)
+        $("#student-email2").html(email)
+        $("#student-mobile").html(mobile)
+        $("#student-address").html(address)
+        $("#student-gender").html(gender)
+        $("#student-guardian").html(guardian)
+     })
+
+  })  
+}
+/*Add to cart Start*/
+function studentInfoTrail(proId)
+{ console.log("feee");
+   $.ajax({
+    
+      url:'/institution/student-info/'+proId,
+      method:'post',
+      success:((institutionId) => {
+         $('#regenerateInstitutionId').val(institutionId)
+      })
+   })
+}
+
+
 /* regenerate institutionid */
 function regenerateInstitutionId()
-{
+{ console.log("feee");
    $.ajax({
+    
       url:'/institution/regenerate-institutionid',
       method:'post',
       success:((institutionId) => {

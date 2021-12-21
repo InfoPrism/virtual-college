@@ -83,6 +83,7 @@ router.post('/signup', function(req, res, next) {
 
 /* POST regenerate institutionid */
 router.post('/regenerate-institutionid', function(req, res, next) {
+   console.log("ggggggggggggggggggggggggg");
    institutionHelpers.generateInstitutionId().then((institutionId) => {
       res.json(institutionId)
    })
@@ -137,6 +138,47 @@ router.post('/add-announcement', function(req, res, next) {
        res.redirect('/institution/student-announcement')
       else
        res.redirect('/institution/tutor-announcement')
+   })
+})
+/*GET all Students*/
+router.get('/all-students',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution;
+   let StudentsIn_institution= await institutionHelpers.getStudentsIn_institution(institutionDetails._id)
+   let slno = 1
+   StudentsIn_institution.forEach(student => {
+      student.slno = slno
+      console.log(student.slno);
+      slno++
+   })
+   slno = null
+  res.render('institution/all-students',{title:'All Students',institution:true,StudentsIn_institution,institutionDetails})
+})
+/*GET Everyone Annoucement*/
+router.post('/student-info/:id',verifyLogin,async function(req,res,next){
+   console.log("api call..............................");
+   let institutionDetails=req.session.institution;
+   let announcements= await institutionHelpers.getAnnouncements('Everyone',institutionDetails._id)
+  res.render('institution/everyOne-announcement',{title:'Everyone Announcements',institution:true,announcements})
+})
+router.get('/get-student-details/:id',verifyLogin,async function(req,res,next){
+  
+   let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
+   console.log("hhhhhhhhhhhhhhhhhhhhh");
+   console.log(studentDetail.fname);
+  
+   res.json(studentDetail)
+   })
+ 
+
+   /*GET add a new remark to student by institution*/
+router.get('/add-remarks',verifyLogin,function(req,res,next){
+
+  res.render('institution/add-remarks',{title:'Add Remark',institution:true})
+})
+ /*POST add a new remark to student by institution*/
+router.post('/add-remarks',verifyLogin,function(req,res,next){
+   institutionHelpers.addRemarks(req.body).then(()=>{
+   res.redirect('/institution/add-remarks')
    })
 })
 module.exports = router;

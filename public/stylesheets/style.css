@@ -1,17 +1,15 @@
 /* --Import Google Fonts-- */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-
-
 /* --Base Styles-- */
 *{
-  margin:0;
-  padding:0;
-  list-style:none;
-  text-decoration: none;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+    margin:0;
+    padding:0;
+    list-style:none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
 
 body{
     background: #E4E9F7;
