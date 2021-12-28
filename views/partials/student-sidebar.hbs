@@ -1,19 +1,17 @@
+{{#if student._id}}
 <div class="wrapper sidebar-collapse">
    <div class="sidebar scrollmenu">
       <div class="sidebar-menu">
          <center class="profile">
             <img src="/images/student_profile.jpg" alt="Student Profile">
             <p>
-               <span class="name">Nikhil Kilivayil</span><br>
-               <span class="email" >nikhilkilivayil@gmail.com</span><br>
-               <a href="#" class="share-btn"><i class="far fa-share-alt"></i></a>
-               <span class="secret-code">12345678</span>
-               <a href="#" class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
+               <span class="name">{{student.fname}} {{student.lname}}</span><br>
+               <span class="email" >{{student.email}}</span><br>
             </p>
          </center>
          <ul>
             <li class="item">
-               <a href="#" class="menu-btn">
+               <a href="/student" class="menu-btn">
                <i class="far fa-home"></i><span>Home</span>
                </a>
             </li>
@@ -40,7 +38,7 @@
                <i class="far fa-cog"></i><span>Settings  <i class="fas fa-chevron-down drop-down"></i></span>
                </a>
                <div class="sub-menu">
-                  <a href="#"><i class="far fa-user-circle"></i> <span>Profile</span></a>
+                  <a href="/student/profile"><i class="far fa-user-circle"></i> <span>Profile</span></a>
                   <a href="#"><i class="far fa-lock"></i> <span>Password</span></a>
                </div>
             </li>
@@ -53,3 +51,4 @@
       </div>
    </div>
 </div>
+{{/if}}

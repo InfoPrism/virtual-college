@@ -66,5 +66,36 @@ module.exports = {
             resolve(response)
          }
       })
+   },
+   getStudentDetails:function(studentId) {
+      return new Promise(async(resolve, reject)=> {
+         let student = await db.get().collection(collections.STUDENT_COLLECTION).findOne({_id:objectId(studentId)})
+         resolve(student)
+      })
+   },
+   getInstitutionDetails:function(institutionId) {
+      return new Promise(async(resolve, reject)=> {
+         let institution = await db.get().collection(collections.INSTITUTION_COLLECTION).findOne({_id:objectId(institutionId)})
+         resolve(institution)
+      })
+   },
+   updateStudentDetails:function(studentData, studentId) {
+      return new Promise((resolve, reject)=> {
+         db.get().collection(collections.STUDENT_COLLECTION).updateOne({_id:objectId(studentId)},
+         {
+            $set:
+            {
+               fname:studentData.fname,
+               lname:studentData.lname,
+               email:studentData.email,
+               mobile:studentData.mobile,
+               guardian:studentData.guardian,
+               address:studentData.address,
+               gender:studentData.gender
+            }
+         }).then(()=> {
+            resolve()
+         })
+      })
    }
-}
+ }
