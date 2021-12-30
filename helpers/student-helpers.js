@@ -97,5 +97,11 @@ module.exports = {
             resolve()
          })
       })
+   },
+   getAllAnnouncements:function() {
+      return new Promise(async(resolve, reject)=> {
+         let announcements = await db.get().collection(collections.ANNOUNCEMENT_COLLECTION).find({$or:[{visiblity:'Everyone'},{visiblity:'Student'}]}).sort({_id:-1}).toArray()
+         resolve(announcements)
+      })
    }
  }

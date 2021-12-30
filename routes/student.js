@@ -47,7 +47,8 @@ router.get('/signup', function (req, res, next) {
       res.redirect('/student')
    }
    else {
-      res.render('student/signup', { title: 'SignUp', signupErr: req.session.studentSignupErr, student: true })
+      let institution = req.query.id
+      res.render('student/signup', { title: 'SignUp', institution, signupErr: req.session.studentSignupErr, student: true })
       req.session.studentSignupErr = false
    }
 })
@@ -92,6 +93,13 @@ router.post('/profile', verifyLogin, function(req, res, next) {
    studentHelpers.updateStudentDetails(req.body, req.session.student._id).then(async()=> {
       req.session.student = await studentHelpers.getStudentDetails(req.session.student._id)
       res.redirect('/student/profile')
+   })
+})
+
+/* GET announcement page. */
+router.get('/announcement', verifyLogin, function(req, res, next) {
+   studentHelpers.getAllAnnouncements().then((announcements)=> {
+      res.render('student/announcement', { title: 'Announcement', announcements, student: req.session.student })
    })
 })
 
