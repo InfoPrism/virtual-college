@@ -1,16 +1,82 @@
-<section>
-   <div class="container-fluid">
-      <div class="row">
-         <div class="col-12 align-items-center justify-content-center">
-         			<p>
-            This academic project is a School/College management system. It consists of all the data management and storage facilities that are required for effectively managing a college or school teaching multiple courses and subjects. It consists of multiple teachers and faculty accounts. The system helps in effectively managing and scheduling batches of students as per their courses and exam priorities. The class management system allows the Institution to view and edit data as required. All this functionality ensures no errors and effective management of a class.
-            </p>
-            <div class="text-center">
-            <a href="/student" class="btn btn mr-1" style="color:white; background-color: #222424;"><i class="fas fa-user-graduate"></i>&nbsp;Student</a>
-            <a href="/tutor" class="btn btn mr-1" style="color:white; background-color: #222424;"><i class="fas fa-chalkboard-teacher"></i>&nbsp;Tutor</a>
-            <a href="/institution" class="btn btn mt-1" style=" color:white; background-color: #222424;" ><i class="fas fa-university"></i>&nbsp;Institution</a>
-            </div>
+<section class="banner">
+   <div class="container">
+      <div class="banner-content">
+         <div class="banner-title"><span style="color: #bd1f5e;">on</span>line <span style="color: #bd1f5e;">org</span>anisation</div>
+         <div class="banner-quote">with student record tracker</div>
+         <div class="banner-btn">
+            <a href="/student" class="mr-2"><i class="far fa-user-graduate"></i>&nbsp;student</a>
+            <a href="/tutor" class="active mr-2"><i class="far fa-chalkboard-teacher"></i>&nbsp;tutor</a>
+            <a href="/institution"><i class="far fa-school"></i>&nbsp;institution</a>
          </div>
       </div>
    </div>
 </section>
+
+
+
+
+
+<style>
+   body {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(/images/index_banner-bg.jpg);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+   }
+
+   .banner .banner-content {
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+   }
+
+   .banner .banner-content .banner-title {
+      font-size: 50px;
+      text-transform: uppercase;
+      font-weight: bold;
+   }
+
+   .banner .banner-content .banner-quote {
+      font-size: 18px;
+      text-transform: uppercase;
+      font-style: italic;
+   }
+
+   .banner .banner-content .banner-btn a {
+      background: transparent;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      border: 1px solid #fff;
+      border-radius: 10px;
+      display: inline-block;
+      text-transform: uppercase;
+      padding: 8px 30px;
+      margin-top: 25px;
+   }
+
+   .banner .banner-content .banner-btn a.active {
+      background: #bd1f5e;
+      border-color: #bd1f5e;
+   }
+
+   .banner .banner-content .banner-btn button:focus-within {
+      outline: none;
+      border-color: none;
+   }
+
+   @media all and (max-width:1199px) {
+      .banner .banner-content .banner-title {
+         font-size: 41px;
+      }
+
+      body {
+         height: calc(100vh - 56px);
+      }
+   }
+</style>

@@ -1,12 +1,35 @@
 <header>
    <div class="header-menu">
-      <div class="sidebar-btn">
-         <i class="far fa-bars"></i>
+      <a href="/" style="text-decoration: none;">
+      <div class="sidebar-btn" style="border: none;">
+         <i class="far fa-school" style="margin-top: 6px;"></i>
       </div>
-      <div class="title">onOrg</div>
+      <div class="title" style="margin-left: 40px;">onOrg</div>
+      </a>
       <ul>
-         
-         <li> <a href="/"><i class="far fa-home"></i></a></li>
+         <li> <a href="/student"><i class="far fa-user-graduate"></i></a></li>
+         <li> <a href="/tutor"><i class="far fa-chalkboard-teacher"></i></a></li>
+         <li> <a href="/institution"><i class="far fa-school"></i></a></li>
       </ul>
    </div>
 </header>
+
+
+
+
+
+
+{{#if index}}
+<style>
+   header {
+      background: transparent;
+   }
+</style>
+{{/if}}
+
+<style>
+   header .header-menu .sidebar-btn:hover {
+      background: transparent;
+      color: #fff;
+   }
+</style>
