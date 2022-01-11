@@ -267,7 +267,24 @@ header .header-menu ul li a:hover{
 
 /* --Main Container-- */
 .main-container{
-    margin: 85px 0 70px 0;
+    margin: 85px 0 70px 55px;
+}
+
+
+/* --Modal-- */
+.modal .modal-content {
+    margin: auto;
+    padding: 0.7em;
+}
+
+.modal .modal-content .close-btn {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    color: #878787;
+    background: #f2f3fb;
+    padding: 1px 7px;
+    cursor: pointer;
 }
 
 

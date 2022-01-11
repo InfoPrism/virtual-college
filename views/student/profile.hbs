@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card align-items-center text-center p-3">
-                    <img src="/images/student_profile.jpg" alt="Profile_Picture" width="150px"
-                        class="rounded-circle mb-3">
+                    <img src="{{#if student.picture}}/images/student_profile/{{student._id}}.jpg{{else}}/images/student_profile_{{student.gender}}_def.jpg{{/if}}" alt="Profile_Picture" width="150px" height="150px" class="rounded-circle mb-3">
+                    <div class="camera-icon" data-toggle="modal" data-target="#choose-image"><i class="far fa-camera" style="margin-top: 10px;"></i></div>
                     <h5 class="card-text">{{student.fname}} {{student.lname}}</h5>
                     <div class="text-muted">{{student.email}}</div>
                     <div class="text-muted">Joined on {{student.date}}</div>
@@ -86,7 +86,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">+91</div>
                                     </div>
-                                    <input type="tel" class="form-control" name="mobile" value="{{student.mobile}}" id="mobile">
+                                    <input type="tel" class="form-control" name="mobile" value="{{student.mobile}}" id="mobile" style="background: #fff;" disabled>
                                 </div>
                                 <span id="mobileErr"></span>
                             </div>
@@ -103,15 +103,8 @@
                                 <textarea rows="3" name="address" class="form-control" id="address" style="background: #fff;" disabled>{{student.address}}</textarea>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="gender">Gender</label><br>
-                                <div class="custom-radio custom-control-inline">
-                                    <input type="radio" name="gender" value="Male" id="male" class="custom-control-input" {{student.male}}>
-                                    <label class="custom-control-label pl-4" for="male">Male</label>
-                                </div>
-                                <div class="custom-radio custom-control-inline">
-                                    <input type="radio" name="gender" value="Female" id="female" class="custom-control-input" {{student.female}}>
-                                    <label class="custom-control-label pl-4" for="female">Female</label>
-                                </div>
+                                <label for="gender">Gender</label>
+                                <input type="text" class="form-control" name="gender" value="{{student.gender}}" style="background: #fff;" disabled>
                             </div>
                             <div class="col-md-12">
                                 <button type="button" class="btn btn-primary" id="edit-btn" onclick="editToSaveBtn()">Edit</button>
@@ -125,11 +118,75 @@
     </div>
 </section>
 
+<div class="modal fade" id="choose-image" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5>Choose Image</h5>
+            <div class="delete-img-btn" id="delete-img-btn" onclick="deleteImage()" {{#unless student.picture}}hidden{{/unless}}><i class="far fa-trash-alt"></i></div>
+            <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+         </div>
+         <div class="modal-body">
+            <form action="/student/profile-picture" method="post" enctype="multipart/form-data">
+                <div class="text-center">
+                    <img src="/images/student_profile/{{student._id}}.jpg" alt="" style="width:200px; height:200px;" id="img-view" class="text-center pb-3" {{#unless student.picture}}hidden{{/unless}}>
+                </div>
+                <div class="custom-file mb-3">
+                    <input type="file" name="image" class="custom-file-input" id="customFile" onchange="uploadImage(event)">
+                    <label class="custom-file-label" for="customFile" id="img-name">No file chosen</label>
+                </div>
+               <button type="submit" class="btn btn-primary float-right" id="save-img-btn" disabled>Save</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
 
+
+
+<style>
+    .camera-icon {
+        position: absolute;
+        top: 6em;
+        right: calc(48% - 70px);
+        background: #007bff;
+        color: #fff;
+        height: 38px;
+        width: 38px;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .camera-icon:hover {
+        background: #0069d9;
+    }
+
+    .delete-img-btn {
+        position: absolute;
+        color: #878787;
+        right: 4.5em;
+        cursor: pointer;
+    }
+</style>
 
 
 
 <script>
+    function uploadImage(event) {
+        document.getElementById('img-view').hidden = false
+        document.getElementById('img-view').src = URL.createObjectURL(event.target.files[0])
+        document.getElementById('img-name').innerHTML = event.target.files[0].name
+        document.getElementById('delete-img-btn').hidden = true
+        document.getElementById('save-img-btn').disabled = false
+    }
+
+    function deleteImage() {
+        document.getElementById('img-view').hidden = true
+        document.getElementById('delete-img-btn').hidden = true
+        document.getElementById('save-img-btn').disabled = false
+    }
+
    function editToSaveBtn()
    {
       document.getElementById('edit-btn').style.display = 'none'

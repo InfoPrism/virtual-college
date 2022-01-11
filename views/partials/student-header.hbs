@@ -5,8 +5,50 @@
       </div>
       <div class="title">onOrg</div>
       <ul>
-         <li> <a href="#"><i class="far fa-plus"></i></a></li>
+         {{#if student._id}}
+         <li> <a href="#" data-toggle="modal" data-target="#join-class"><i class="far fa-plus"></i></a></li>
+         {{/if}}
          <li> <a href="/"><i class="far fa-home"></i></a></li>
       </ul>
    </div>
 </header>
+
+<div class="modal fade" id="join-class" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5>Join Class</h5>
+            <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+         </div>
+         <div class="modal-body">
+            <form action="" method="post">
+               <div class="form-group">
+                  <label for="class">Class Code</label>
+                  <input type="text" name="class" value="{{classId}}" class="form-control">
+               </div>
+               <button type="submit" class="btn btn-primary float-right">Join</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<style>
+   @media all and (min-width:576px) {
+      .modal .modal-content {
+         width: 25em;
+      }
+   }
+</style>
+
+
+
+{{#if classId}}
+<script>
+   window.onload = () => {
+      $("#join-class").modal('show')
+   }
+</script>
+{{/if}}

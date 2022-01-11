@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var studentHelpers = require('../helpers/student-helpers');
+var fs = require('fs');
 
-verifyLogin = function (req, res, next) {
+verifyLogin = (req, res, next) => {
    if (req.session.student) {
       next();
    }
@@ -13,7 +14,8 @@ verifyLogin = function (req, res, next) {
 
 /* GET home page. */
 router.get('/', verifyLogin, function (req, res, next) {
-   res.render('student/home', { title: 'Home', student: req.session.student });
+   let classId = req.query.class
+   res.render('student/home', { title: 'Home', classId, student: req.session.student });
 });
 
 /* GET login page. */
@@ -29,15 +31,12 @@ router.get('/login', function (req, res, next) {
 
 /* POST login page. */
 router.post('/login', function (req, res, next) {
-   studentHelpers.doLogin(req.body).then((response) => {
-      if (response.status) {
-         req.session.student = response.student
-         res.redirect('/student')
-      }
-      else {
-         req.session.studentLoginErr = response.loginErr
-         res.redirect('/student/login')
-      }
+   studentHelpers.doLogin(req.body).then((student) => {
+      req.session.student = student
+      res.redirect('/student')
+   }).catch((loginErr) => {
+      req.session.studentLoginErr = loginErr
+      res.redirect('/student/login')
    })
 })
 
@@ -47,23 +46,20 @@ router.get('/signup', function (req, res, next) {
       res.redirect('/student')
    }
    else {
-      let institution = req.query.id
-      res.render('student/signup', { title: 'SignUp', institution, signupErr: req.session.studentSignupErr, student: true })
+      let institutionId = req.query.institution
+      res.render('student/signup', { title: 'SignUp', institutionId, signupErr: req.session.studentSignupErr, student: true })
       req.session.studentSignupErr = false
    }
 })
 
 /* POST signup page. */
 router.post('/signup', function (req, res, next) {
-   studentHelpers.doSignup(req.body).then((response) => {
-      if (response.status) {
-         req.session.student = response.student
-         res.redirect('/student')
-      }
-      else {
-         req.session.studentSignupErr = response.signupErr
-         res.redirect('/student/signup')
-      }
+   studentHelpers.doSignup(req.body).then((student) => {
+      req.session.student = student
+      res.redirect('/student')
+   }).catch((signupErr) => {
+      req.session.studentSignupErr = signupErr
+      res.redirect('/student/signup')
    })
 })
 
@@ -89,16 +85,33 @@ router.get('/profile', verifyLogin, function (req, res, next) {
 })
 
 /* POST profile page. */
-router.post('/profile', verifyLogin, function(req, res, next) {
-   studentHelpers.updateStudentDetails(req.body, req.session.student._id).then(async()=> {
+router.post('/profile', verifyLogin, function (req, res, next) {
+   studentHelpers.updateStudentDetails(req.body, req.session.student._id).then(async () => {
       req.session.student = await studentHelpers.getStudentDetails(req.session.student._id)
       res.redirect('/student/profile')
    })
 })
 
+/* POST profile picture page. */
+router.post('/profile-picture', verifyLogin, function(req, res, next) {
+   studentHelpers.updateStudentProfilePicture(req.session.student._id, req.files).then(()=> {
+      if(req.files)
+         req.files.image.mv('./public/images/student_profile/'+req.session.student._id+'.jpg', function(err) {
+            if(err)
+               console.log(err);
+         })
+      else
+         fs.unlink('./public/images/student_profile/'+req.session.student._id+'.jpg', function(err) {
+            if(err)
+               console.log(err);
+         })
+      res.redirect('/student/profile')
+   })
+})
+
 /* GET announcement page. */
-router.get('/announcement', verifyLogin, function(req, res, next) {
-   studentHelpers.getAllAnnouncements().then((announcements)=> {
+router.get('/announcement', verifyLogin, function (req, res, next) {
+   studentHelpers.getAllAnnouncements().then((announcements) => {
       res.render('student/announcement', { title: 'Announcement', announcements, student: req.session.student })
    })
 })

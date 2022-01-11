@@ -3,7 +3,7 @@
    <div class="sidebar scrollmenu">
       <div class="sidebar-menu">
          <center class="profile">
-            <img src="/images/student_profile.jpg" alt="Student Profile">
+            <img src="{{#if student.picture}}/images/student_profile/{{student._id}}.jpg{{else}}/images/student_profile_{{student.gender}}_def.jpg{{/if}}" alt="Student Profile">
             <p>
                <span class="name">{{student.fname}} {{student.lname}}</span><br>
                <span class="email" >{{student.email}}</span><br>

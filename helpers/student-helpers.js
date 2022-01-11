@@ -7,14 +7,14 @@ module.exports = {
    doSignup:function(studentData) {
       return new Promise(async(resolve, reject) => {
          delete studentData.cpassword
+         studentData.remarks = []
          studentData.date = new Date()
          response = {}
          let student = await db.get().collection(collections.STUDENT_COLLECTION).findOne({$or:[{email:studentData.email}, {mobile:studentData.mobile}]})
          if(student)
          {
-            response.signupErr = "Account already exists. Please login"
-            response.status = false
-            resolve(response)
+            signupErr = "Account already exists. Please login"
+            reject(signupErr)
          }
          else
          {
@@ -24,16 +24,14 @@ module.exports = {
                studentData.institution = objectId(institution._id)
                studentData.password = await bcrypt.hash(studentData.password, 10)
                db.get().collection(collections.STUDENT_COLLECTION).insertOne(studentData).then((data) => {
-                  response.student = data.ops[0]
-                  response.status = true
-                  resolve(response)
+                  student = data.ops[0]
+                  resolve(student)
                })
             }
             else
             {
-               response.signupErr = "Institution does not exists. Please check and try again"
-               response.status = false
-               resolve(response)
+               signupErr = "Institution does not exists. Please check and try again"
+               reject(signupErr)
             }
          }
       })
@@ -47,23 +45,19 @@ module.exports = {
             bcrypt.compare(studentData.password, student.password).then((status) => {
                if(status)
                {
-                  response.student = student
-                  response.status = true
-                  resolve(response)
+                  resolve(student)
                }
                else
                {
-                  response.loginErr = "Invalid Email or Password"
-                  response.status = false
-                  resolve(response)
+                  loginErr = "Invalid Email or Password"
+                  reject(loginErr)
                }
             })
          }
          else
          {
-            response.loginErr = "Invalid Email or Password"
-            response.status = false
-            resolve(response)
+            loginErr = "Invalid Email or Password"
+            reject(loginErr)
          }
       })
    },
@@ -96,6 +90,15 @@ module.exports = {
          }).then(()=> {
             resolve()
          })
+      })
+   },
+   updateStudentProfilePicture:function(studentId, image) {
+      return new Promise((resolve, reject)=> {
+         if(image)
+            db.get().collection(collections.STUDENT_COLLECTION).updateOne({_id:objectId(studentId)}, {$set:{picture:true}})
+         else
+            db.get().collection(collections.STUDENT_COLLECTION).updateOne({_id:objectId(studentId)}, {$unset:{picture:1}})
+         resolve()
       })
    },
    getAllAnnouncements:function() {
