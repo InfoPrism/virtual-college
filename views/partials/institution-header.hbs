@@ -1,3 +1,4 @@
+
 <header>
    <div class="header-menu">
       <div class="sidebar-btn">
@@ -15,14 +16,14 @@
 
 <!-- Modal for to choose the Announcement -->
 <section>
-<div class="modal fade"  id="InstitutionAnnouncement" tabindex="-1" role="dialog" aria-labelledby="InstitutionAnnouncement" aria-hidden="true">
+<div class="modal fade"  id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle"> <b style="color:#2F4F4F;">Create Announcement</b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+       <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+          <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+          
       </div>
       <div class="modal-body" >
 
@@ -48,6 +49,9 @@
 <!--Model Ends-->
 
 <style>
+.btn {
+    text-transform: none;
+}
 /*Here we added style because we use model to the icon so the modal deffault style had come to the icom*/
 .symbol{
  color: #fff;
@@ -79,4 +83,17 @@
  font-weight: 10px; 
  color: #fff;
 }
+   .close-btn, .icons button{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+   }
+   .close-btn{
+      height: 33px;
+      width: 33px;
+      color: #878787;
+      background: #f2f3fb;
+      cursor: pointer;
+   }
 </style>

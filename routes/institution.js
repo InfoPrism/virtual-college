@@ -85,15 +85,18 @@ router.post('/signup', function(req, res, next) {
 router.post('/regenerate-institutionid', function(req, res, next) {
    console.log("ggggggggggggggggggggggggg");
    institutionHelpers.generateInstitutionId().then((institutionId) => {
+      console.log("mmmmmmmmmm");
+      console.log(institutionId);
       res.json(institutionId)
    })
 })
 
 /*GET add a new class by institution*/
 router.get('/add-class',verifyLogin,async function(req,res,next){
-   let classes = await institutionHelpers.getAllClass()
+   let institutionDetails=req.session.institution
+   let classes = await institutionHelpers.getAllClass(institutionDetails._id)
    console.log(classes);
-  res.render('institution/add-class',{title:'Add Class',institution:true,classes,})
+  res.render('institution/add-class',{title:'Add Class',institution:true,classes,institutionDetails})
 })
 
 /*POST add a new class by institution*/
@@ -160,25 +163,32 @@ router.post('/student-info/:id',verifyLogin,async function(req,res,next){
    let announcements= await institutionHelpers.getAnnouncements('Everyone',institutionDetails._id)
   res.render('institution/everyOne-announcement',{title:'Everyone Announcements',institution:true,announcements})
 })
+/*GET student details to display student details in a model*/
 router.get('/get-student-details/:id',verifyLogin,async function(req,res,next){
-  
    let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
-   console.log("hhhhhhhhhhhhhhhhhhhhh");
-   console.log(studentDetail.fname);
-  
    res.json(studentDetail)
-   })
+   console.log("ddddddddddddd");
+   console.log(studentDetail);
+})
  
 
    /*GET add a new remark to student by institution*/
-router.get('/add-remarks',verifyLogin,function(req,res,next){
-
-  res.render('institution/add-remarks',{title:'Add Remark',institution:true})
+   router.get('/add-remarks/:id',verifyLogin,async function(req,res,next){
+   let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
+   let institutionDetails=req.session.institution;
+   let head_of_Institution=institutionDetails.head;
+  res.render('institution/add-remark',{title:'Add Remark',institution:true,studentDetail,head_of_Institution})
 })
  /*POST add a new remark to student by institution*/
 router.post('/add-remarks',verifyLogin,function(req,res,next){
    institutionHelpers.addRemarks(req.body).then(()=>{
-   res.redirect('/institution/add-remarks')
+      res.redirect('/institution/tutor-announcement')
    })
+})
+ /*Get student remarks details to the model*/
+router.get('/view-student-remarks/:id',verifyLogin,async function(req,res,next){
+   let studentRemarks= await institutionHelpers.getStudentRemarks(req.params.id)
+   let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
+   res.render('institution/student-remarks',{studentRemarks,studentDetail,institution:true,title:studentDetail.fname+'remarks'})
 })
 module.exports = router;

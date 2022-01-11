@@ -1,3 +1,4 @@
+{{#if StudentsIn_institution}}
 <section style="padding-left: 12px; padding-right: 8px;">
     
     <div class="container-fluid">
@@ -20,7 +21,7 @@
                     <th scope="col">Mobile</th>
                      <th class="email-large-student" scope="col">Gender</th>  
                    <!-- <th scope="col">Quantity</th>-->
-				   <th class="email-large-student" scope="col">Remaks</th>
+				   <th class="email-large-student" scope="col">Remarks</th>
                     <th scope="col">Details</th>
                     <th scope="col"></th>
                     
@@ -41,10 +42,10 @@
                           <button class="cart-item-count" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button>
                     </td>-->
 				    <td class="email-large-student" style="width: 5%;">
-                       <a onclick="studentInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"  >View Remarks</class=> 
+                       <a href="/institution/add-remarks/{{this._id}}" class="btn btn mt-1"  style="background-color: #696969; color: #fff;">Add Remarks</a>
                     </td>
                     <td  style="width: 5%;">
-                       <a onclick="studentInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"  ><i class="fas fa-info-circle"></i></class=> 
+                       <a onclick="studentInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"  ><i class="fas fa-info-circle"></i></a>
                     </td>
                    
                 </tr>
@@ -58,6 +59,21 @@
     </div>
     
 </section>
+    {{else}}         
+    <section>
+         <div class="container-fluid">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12 text-center">
+            <p class="mt-5">There is not any students joined under your Institution</p>
+            <a data-toggle="modal" data-target="#shareProduct" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Share link to students</a>
+         </div>
+      </div>
+   </div>
+         </div>
+    </section>             
+        
+    {{/if}}
 
  <style>
 @media screen and (max-width: 600px) {
@@ -72,11 +88,10 @@
  
  
  
- <!--Share Model Ends-->
 
  
 
-<!-- Modal for to choose the Announcement -->
+<!-- Modal for details of student-->
 <section>
 	<div class="modal fade"   id="studentprofile" tabindex="-1" role="dialog" aria-labelledby="InstitutionAnnouncement" aria-hidden="true" >
 	  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -102,7 +117,7 @@
 						<ul>
 							<li>*Java</li>
 							<li>*Phython</li>
-							<li>*DBMS</li>
+							<li>*DBMSS</li>
 						  </ul> 
 					   </div>
 					   
@@ -133,12 +148,12 @@
 							  <h6 class=" text-muted" id="student-gender">{{gender}}</h6>
 					   </div>
 					   <div class="col-sm-6">
-						<p class="font-weight-bold">Gardian:</p>
+						<p class="font-weight-bold">Guardian:</p>
 						   <h6 class=" text-muted" id="student-guardian">{{guardian}}</h6>
 					</div>
 					<div class="col-sm-6">
 						<p class="font-weight-bold">Joined Date</p>
-						   <h6 class="text-muted">22 April 2020</h6>
+						   <h6 id="student-joinedDate" class="text-muted">{{joinedDate}}</h6>
 					</div>
 					<div class="col-sm-6">
 						<p class="font-weight-bold">Address:</p>
@@ -167,23 +182,24 @@
 					   </div>
 					 </div>
 				 </div>
+				 
 					   <h5 class="mt-3 font-weight-bold"> Recent remarks:</h5>
-					   
+					   <h6 id="noRemark" style="color: #6c757d;" class="mt-3"></h6>
 					  <div class="row">
 					   <div class="col-sm-6">
-							  <p class="font-weight-bold">Principle:</p>
-							  <h6 class="text-muted">Excelent boy with punctual in all activities</h6>
+							  <p id="remarkedPerson1" class="font-weight-bold">{{remarkedPerson1}}</p>
+							  <h6 id="remark1" class="text-muted">{{remark1}}</h6>
 					   </div>
 					   
 					   <div class="col-sm-6">
 					
-						   <p class="font-weight-bold">Maya miss:</p>
-						   <h6 class="text-muted">Not doing homeworks on time</h6>
+						   <p id="remarkedPerson2" class="font-weight-bold">{{remarkedPerson2}}</p>
+						   <h6 id="remark2" class="text-muted">{{remark2}}</h6>
 					   </div>
 					   <div class="remarks" style="padding-left: 10px;">
-					   <a href="/student" class="btn btn " style="color:white; background-color: #222424; ">All Remarks</a>
+					   <a id="view-remark"  class="btn btn " style="color:white; background-color: #222424; ">All Remarks</a>
 </div>
-					   <a href="/institution/add-remarks" class="btn btn " style="color:white; background-color: #222424;">Add Remark</a>
+					   <a id="add-remark" class="btn btn " style="color:white; background-color: #222424;">Add Remark</a>
 					   
 				   </div>
 				  
@@ -204,7 +220,7 @@
 		
 		</div>
 		
-		   
+		
 		<!--model footer start
 		  <div class="modal-footer">
 			<a href="/institution/add-announcement" style="background-color: #2F4F4F;" class="new-announcement btn btn"><small style="color: #fff;">New Announcement</small></a>
@@ -247,5 +263,4 @@
 	display: none;
 }
 }
-
 </style>

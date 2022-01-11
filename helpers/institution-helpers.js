@@ -79,7 +79,18 @@ module.exports = {
    },
    /*Here we create a new class */
    addClass:function(classData){
-      return new Promise((resolve, reject) => {
+      return new Promise(async(resolve, reject) => {
+                  /*Date format*/
+                  let  date= new Date()
+                  console.log(date.toLocaleString('en-US', {
+                  weekday: 'short', // "Sat"
+                  month: 'long', // "June"
+                  day: '2-digit', // "01"
+                  year: 'numeric' // "2019"
+                  }))
+                  console.log(date.toDateString())
+                  console.log(date.toLocaleTimeString())
+                  classData.date = await date.toDateString()+' Time: '+date.toLocaleTimeString()
       db.get().collection(collections.CLASS_COLLECTION).insertOne(classData).then((data)=>{
         
          resolve()
@@ -88,10 +99,26 @@ module.exports = {
    })
    },
    /*Here we store data of every class we created as an array*/
-   getAllClass:function(){
-      return new Promise((resolve,reject)=>{
-         let classes=db.get().collection(collections.CLASS_COLLECTION).find().toArray()
-         resolve(classes)
+   getAllClass:function(InstitutionId){
+      return new Promise(async(resolve,reject)=>{
+         
+
+
+         let classes=await db.get().collection(collections.CLASS_COLLECTION).aggregate([
+            {
+              
+              $match:
+              {
+                  institutionId:InstitutionId
+               }
+            },
+            {
+              $project:{
+               class_name:1,class_description:1,Duration:1,date :1
+              }
+            }
+          ]).toArray()
+          resolve(classes)
       })
    },
    addAnnouncement:function (announcementData){
@@ -163,7 +190,20 @@ module.exports = {
     },
     getStudentDetails:(studentId)=>{
       return new Promise(async(resolve,reject)=>{
-        let studentDetail=await db.get().collection(collections.STUDENT_COLLECTION).findOne({_id:objectId(studentId)})
+      let studentDetail=await db.get().collection(collections.STUDENT_COLLECTION).findOne({_id:objectId(studentId)})
+      date = studentDetail.date;
+      year = date.getFullYear();
+       month = date.getMonth()+1;
+       dt = date.getDate();
+
+        if (dt < 10) {
+        dt = '0' + dt;
+        }
+        if (month < 10) {
+        month = '0' + month;
+        }
+        studentDetail.date=dt+'-' + month+'-'+year;
+        console.log(",,,,,,,,,,,,,,,,,,,,,");
         console.log(studentDetail);
         resolve(studentDetail)
       })
@@ -171,11 +211,37 @@ module.exports = {
     
      /*Here we create a new class */
      addRemarks:function(remarks){
-      return new Promise((resolve, reject) => {
-      db.get().collection(collections.CLASS_COLLECTION).insertOne(remarks).then((data)=>{
-         resolve()
-     })
+        let studentId=remarks.StudentId;
+        console.log("................");
+        console.log(studentId);
+        console.log(remarks);
+      return new Promise(async(resolve, reject) => {
+             /*Date format*/
+             let  date= new Date()
+             console.log(date.toLocaleString('en-US', {
+             weekday: 'short', // "Sat"
+             month: 'long', // "June"
+             day: '2-digit', // "01"
+             year: 'numeric' // "2019"
+             }))
+             remarks.date = await date.toDateString()+' Time: '+date.toLocaleTimeString()
+     db.get().collection(collections.STUDENT_COLLECTION).updateOne({_id:objectId(studentId)},
+     {
      
+    $push:{remarks:remarks}
+    
+     }
+ 
+   ).then((response)=>{
+   resolve()
+    })
    })
    }, 
+   getStudentRemarks:(studentId)=>{
+      return new Promise(async(resolve,reject)=>{
+        let studentDetail=await db.get().collection(collections.STUDENT_COLLECTION).findOne({_id:objectId(studentId)})
+        let remarks=studentDetail.remarks;
+        resolve(remarks)
+      })
+    },
 }

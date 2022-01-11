@@ -11,7 +11,7 @@
                <span class="email" >{{institutionDetails.email}}</span><br>
                <a href="#" class="share-btn"><i class="far fa-share-alt"></i></a>
                <span class="secret-code">{{institutionDetails.id}}</span>
-               <a onclick="regenerateInstitutionId() class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
+               <a onclick="regenerateInstitutionId()" class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
             </p>
            
          </center>
@@ -32,8 +32,8 @@
             </li>
             
              <li class="item" id="profile">
-               <a data-toggle="modal" data-target="#shareProduct" class="menu-btn">
-               <i class="far fa-share-alt" data-toggle="modal" data-target="#shareProduct"></i><span>Share</span>
+               <a data-toggle="modal" data-target="#shareLink" class="menu-btn">
+               <i class="far fa-share-alt" data-toggle="modal" data-target="#shareLink"></i><span>Share</span>
                </a>
             </li>
             
@@ -61,35 +61,35 @@
 
 <!--Share Model Starts-->
 <section>
-   <div class="modal fade" id="shareProduct" tabindex="-1" role="dialog" aria-labelledby="shareProductLabel" aria-hidden="true">
+   <div class="modal fade" id="shareLink" tabindex="-1" role="dialog" aria-labelledby="shareLinkLabel" aria-hidden="true">
    <div class="modal-dialog" role="document">
    <div class="modal-content">
    <div class="share-modal-header">
-   <span>Share Product</span>
+   <span>Share Link</span>
    <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
    </div>
    <div class="share-modal-body">
    <p>Share link to student</p>
    <div class="icons">
-      <input type="text" value="https://onorg.tk/student/signup/{{institutionDetails.id}}" id="InputStudent" hidden>
-<button onclick="student()"><i class="far fa-copy"></i></button>
-   <button onclick="shareProduct('whatsapp','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-whatsapp"></i></button>
-   <button onclick="shareProduct('telegram','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-telegram-plane"></i></button>
-   <button onclick="shareProduct('linkedin','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-linkedin-in"></i></button>
+   <input type="text" value="https://onorg.tk/student/signup?institution={{institutionDetails.id}}" id="InputStudent" hidden>
+   <button onclick="student()"><i class="far fa-copy"></i></button>
+   <button onclick="shareLink('whatsapp','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-whatsapp"></i></button>
+   <button onclick="shareLink('telegram','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-telegram-plane"></i></button>
+   <button onclick="shareLink('linkedin','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-linkedin-in"></i></button>
    </div>
    </div>
     <div class="share-modal-body">
    <p>Share link to Tutor</p>
    <div class="icons">
-      <input type="text" value="https://onorg.tk/tutor/signup/{{institutionDetails.id}}" id="InputTutor" hidden>
-<button onclick="tutor()"><i class="far fa-copy"></i></button>
+   <input type="text" value="https://onorg.tk/tutor/signup?institution={{institutionDetails.id}}" id="InputTutor" hidden>
+  <button onclick="tutor()"><i class="far fa-copy"></i></button>
 
    
    
    
-   <button onclick="shareProduct('whatsapp','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-whatsapp"></i></button>
-   <button onclick="shareProduct('telegram','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-telegram-plane"></i></button>
-   <button onclick="shareProduct('linkedin','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-linkedin-in"></i></button>
+   <button onclick="shareLink('whatsapp','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-whatsapp"></i></button>
+   <button onclick="shareLink('telegram','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-telegram-plane"></i></button>
+   <button onclick="shareLink('linkedin','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-linkedin-in"></i></button>
    </div>
    
 
@@ -203,7 +203,7 @@
 
 
 <script>
-   function shareProduct(method,to, institutionId, InstitutionName)
+   function shareLink(method,to, institutionId, InstitutionName)
    {
       InstitutionName = InstitutionName.replace(/ /g, "%20")
      if(to==='student')
