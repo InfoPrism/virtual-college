@@ -3,5 +3,6 @@ module.exports = {
    TUTOR_COLLECTION:'tutor',
    INSTITUTION_COLLECTION:'institution',
    CLASS_COLLECTION:'class',
-   ANNOUNCEMENT_COLLECTION:'announcement'
+   ANNOUNCEMENT_COLLECTION:'announcement',
+   SUBJECT_COLLECTION:'subject'
 }
