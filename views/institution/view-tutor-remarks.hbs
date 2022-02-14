@@ -1,11 +1,11 @@
-{{#if studentRemarks}}
+{{#if tutorRemarks}}
 <section>
    <div class="container">
      
          <div class="row">
             <div class="col-md-7">
-               <h3 class="mb-2 text-center" style="padding-top: 18px;">Remark of {{studentDetail.fname}} {{studentDetail.lname}}</h3>
-                {{#each studentRemarks}}
+               <h3 class="mb-2 text-center" style="padding-top: 18px;">Remark of {{tutorDetail.fname}} {{tutorDetail.lname}}</h3>
+                {{#each tutorRemarks}}
                  <div class="card">
           <h6>{{this.remarkedPerson}}</h6>
            <div class="row">
@@ -17,6 +17,7 @@
      </div>
      {{/each}}
             </div>
+            <!--
                  <div class="student-information col-md-5 my-auto">
                   
               
@@ -26,8 +27,10 @@
 				   <div class="card-block text-center text-white">
 					   <i class="fas fa-user-tie fa-7x mt-5"></i>
 					   <h2 class="small-device-name font-weight-bold mt-4">{{studentDetail.fname}} {{studentDetail.lname}}</h2>
-					   <!--<h2 class="large-device-name font-weight-bold mt-4">{{studentDetail.fname}}</h2>-->
-					   <p class="small-device-name">Student</p>
+					
+                  <!--<h2 class="large-device-name font-weight-bold mt-4">{{studentDetail.fname}}</h2>-->
+					
+               <!--   <p class="small-device-name">Student</p>
 					   <div class="subjects">
 						   <hr class="bg-primary">
 					   <h5>Subjects</h5>
@@ -110,7 +113,7 @@
 					   <li>  <a href="/student" class="btn btn " style="color:white; background-color: #222424;">Add Remark</a></li>
 					   <li><a href="#!"><i class="fab fa-youtube px-3 h4 text-info"></i></a></li>
 					   <li><a href="#!"><i class="fab fa-twitter px-3 h4 text-info"></i></a></li>
-					   -->
+					   --><!--
 					  </ul>  
 					  
 				 </div>
@@ -118,7 +121,7 @@
 			</div>  
              
             </div>            
-   
+   -->
            
          </div>
       
@@ -208,9 +211,7 @@ Contrary to popular belief, Lorem Ipsum is</p>
 
 
 <style>
-   .modal-content{
-      padding: 20px;
-   }
+
    .share-modal-header, .icons, .field{
       display: flex;
       align-items: center;
@@ -310,8 +311,7 @@ Contrary to popular belief, Lorem Ipsum is</p>
 .main-container{
    
    
-    /*margin-left: 250px;*/
-    padding: 0px 0px 0px 0px;
+
     background-size: cover;
    
     transition: 0.4s;
@@ -322,7 +322,7 @@ Contrary to popular belief, Lorem Ipsum is</p>
 .main-container .card{
     
     color: #000;
-    padding: 15px 0px 0px 15px;
+
     font-size: 14px;
     margin-bottom: 10px;
 
@@ -384,7 +384,7 @@ Contrary to popular belief, Lorem Ipsum is</p>
     color: #000;
     padding: 15px 0px 0px 15px;
     font-size: 14px;
-    margin-bottom: 10px;
+
 
 }
 </style>

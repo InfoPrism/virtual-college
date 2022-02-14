@@ -1,32 +1,41 @@
-{{#if studentRemarks}}
 <section>
    <div class="container">
      
          <div class="row">
             <div class="col-md-7">
-               <h3 class="mb-2 text-center" style="padding-top: 18px;">Remark of {{studentDetail.fname}} {{studentDetail.lname}}</h3>
-                {{#each studentRemarks}}
-                 <div class="card">
-          <h6>{{this.remarkedPerson}}</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">Remarked on: {{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>{{this.remark}}</p> 
-        
-     </div>
-     {{/each}}
+                <form action="/institution/add-tutor-remarks" method="POST" id="">
+               <h3 class="mb-2 text-center" style="padding-top: 18px;">Add Remark to {{tutorDetail.fname}} {{studentDetail.lname}}</h3>
+			    <a href="/institution/view-tutor-remarks/{{tutorDetail._id}}" class="btn btn ml-auto mr-0 mb-3" style="background-color: #212529; color: #fff;">View Remarks</a>
+                <div class="form-group">
+                   <input type="text" name="tutorId" id="" value="{{tutorDetail._id}}" hidden>
+                   <input type="text" name="remarkedPerson" id="" value="{{head_of_Institution}}" hidden>
+                  <label for="address">Add Remark</label>
+                  <textarea rows="3" type="text" class="form-control" id="remark" name="remark" required></textarea> 
+               </div>
+               <div class="form-group">
+                 <label for="visible">Type of remarks</label>
+               
+               <select class="custom-select" name="Type of remark" required>
+                <option selected value="">Choose option</option>
+                <option value="Normal">Normal remark about {{tutorDetail.fname}}</option>
+               <option value="Good">Good remark about {{tutorDetail.fname}}</option>
+               <option value="Bad">Bad remark about {{tutorDetail.fname}}</option>
+           </select>
+               </div>
+                 <button class="btn btn-dark float-right" type="submit">Submit</button>
+                 </form>
             </div>
-                 <div class="student-information col-md-5 my-auto">
-                  
-              
+            
+            <!--
+                 <div class="col-md-5 my-auto">
+                 
 	<div class="row z-depth-3">
-       
 				<div class="col-sm-4 rounded-left" style="background-color: #000;">
 				   <div class="card-block text-center text-white">
 					   <i class="fas fa-user-tie fa-7x mt-5"></i>
 					   <h2 class="small-device-name font-weight-bold mt-4">{{studentDetail.fname}} {{studentDetail.lname}}</h2>
 					   <!--<h2 class="large-device-name font-weight-bold mt-4">{{studentDetail.fname}}</h2>-->
+                  <!--
 					   <p class="small-device-name">Student</p>
 					   <div class="subjects">
 						   <hr class="bg-primary">
@@ -102,6 +111,7 @@
 					 </div>
 				 </div>
 					   
+				  
 				
 					  
 				
@@ -119,26 +129,12 @@
              
             </div>            
    
-           
+       <!--    -->
          </div>
       
    </div>
 </section>
- {{else}}         
-    <section>
-         <div class="container-fluid">
-   <div class="container">
-      <div class="row">
-         <div class="col-md-12 text-center">
-            <p class="mt-5">{{studentDetail.fname}} has not had any remark</p>
-            <a href="/institution/add-announcement" class="btn btn-sm" style="background-color:#222424; color: #fff;">Add new remark</a>
-         </div>
-      </div>
-   </div>
-         </div>
-    </section>             
-        
-    {{/if}}
+
 <!--view Remarks-->
 <section>
    <div class="modal fade" id="studentremarks" tabindex="-1" role="dialog" aria-labelledby="shareProductLabel" aria-hidden="true">
@@ -306,6 +302,62 @@ Contrary to popular belief, Lorem Ipsum is</p>
 
 
 
+
+<script>
+   function shareProduct(method,to, institutionId, InstitutionName)
+   {
+      InstitutionName = InstitutionName.replace(/ /g, "%20")
+     if(to==='student')
+      InstitutionLink = "https://onorg.tk/student/signup/"+institutionId
+      else
+      InstitutionLink = "https://onorg.tk/tutor/signup/"+institutionId
+      if(method === 'facebook')
+         location.href = "https://facebook.com/sharer/sharer.php?u="+productLink+"&quote="+productName+"%20at%20"+productPrice+"%20Only%0ACheck%20it%20now&hashtag=%23ShoppingCart"
+      else if(method === 'twitter')
+         location.href = "https://twitter.com/intent/tweet?url="+productLink+"&text="+productName+"%20at%20"+productPrice+"%20Only%0ACheck%20it%20now%0A"
+      else if(method === 'linkedin')
+         location.href = "http://linkedin.com/shareArticle?mini=true&url="+productLink+"&title="+productName+"%20at%20"+productPrice+"%20Only%0ACheck%20it%20now&summary=Only%20limited%20products%20available&source="+productLink
+      else if(method === 'whatsapp')
+         location.href = "https://api.whatsapp.com/send?text="+InstitutionName+"%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now%0A"+InstitutionLink
+      else
+         location.href = "https://telegram.me/share/url?url="+InstitutionLink+"&text="+InstitutionName+"%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now"
+   }
+   
+
+function student() {
+  /* Get the text field */
+  var copyText = document.getElementById("InputStudent");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  navigator.clipboard.writeText(copyText.value);
+  
+  /* Alert the copied text */
+  alert("Copied the text: " + copyText.value);
+}
+function tutor() {
+  /* Get the text field */
+  var copyText = document.getElementById("InputTutor");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  navigator.clipboard.writeText(copyText.value);
+  
+  /* Alert the copied text */
+  alert("Copied the text: " + copyText.value);
+}
+</script>
+
+
+
+<!--Share Model Ends-->
+
 <style>
 .main-container{
    
@@ -313,7 +365,7 @@ Contrary to popular belief, Lorem Ipsum is</p>
     /*margin-left: 250px;*/
     padding: 0px 0px 0px 0px;
     background-size: cover;
-   
+   margin-left: 0;
     transition: 0.4s;
 }
 
@@ -331,9 +383,6 @@ Contrary to popular belief, Lorem Ipsum is</p>
 <style>
 @media screen and (max-width: 600px) {
 /*Hide in small Devices*/
-.student-information{
-    display: none;
-}
 .subjects{
     display: none;
   }
@@ -363,28 +412,4 @@ Contrary to popular belief, Lorem Ipsum is</p>
 }
 }
 
-</style>
-
-
-<style>
-.main-container{
-   
-    /*margin-left: 250px;*/
-    
-    background-size: cover;
-    height: 100vh;
-    transition: 0.4s;
-    margin-left: 0;
-}
-
-
-
-.main-container .card{
-    background:#D3D3D3;
-    color: #000;
-    padding: 15px 0px 0px 15px;
-    font-size: 14px;
-    margin-bottom: 10px;
-
-}
 </style>

@@ -494,3 +494,96 @@ function getclasses() {
   })
 }
 
+
+
+/*To get tutor details in model*/
+function tutorInfo(tutorId){
+  console.log(tutorId);
+$.ajax({
+    url:'/institution/get-tutor-details/'+tutorId,
+    method:'get',
+    success:((tutorDetail) => {
+      console.log("samsmmmmmmmmmmmmmmmm");
+      console.log(tutorDetail);
+     let remarks= tutorDetail.remarks;
+     let lengthofRemark=remarks.length;
+     if(lengthofRemark>=2)
+     {
+       console.log("if");
+     let LastRemark= remarks[remarks.length-1];
+     let SecondLastRemark= remarks[remarks.length-2];
+     let remarkedPerson1= LastRemark.remarkedPerson+':';
+     let date1=LastRemark.date
+     let remark1=LastRemark.remark
+     let remarkedPerson2=SecondLastRemark.remarkedPerson+':';
+     let date2=SecondLastRemark.date;
+     let remark2=SecondLastRemark.remark;
+     let dummy1=' '
+     $("#noRemark").html(dummy1)
+     $("#date1").html(date1)
+     $("#date2").html(date2)
+     $("#remark1").html(remark1)
+     $("#remark2").html(remark2)
+     $("#remarkedPerson1").html(remarkedPerson1)
+     $("#remarkedPerson2").html(remarkedPerson2)
+     }
+     else if(lengthofRemark==1)
+     {
+      console.log("else if");
+      let LastRemark= remarks[remarks.length-1];
+      let remarkedPerson1= LastRemark.remarkedPerson+':';
+      let date1=LastRemark.date
+      let remark1=LastRemark.remark
+      let dummy2=' '
+      $("#noRemark").html(dummy2)
+      $("#date1").html(date1)
+      $("#remark1").html(remark1)
+      $("#remarkedPerson1").html(remarkedPerson1)
+      $("#date2").html(dummy2)
+      $("#remark2").html(dummy2)
+      $("#remarkedPerson2").html(dummy2)
+    }
+    else if(lengthofRemark==0)
+    {
+      console.log("hhhhhhh");
+      let fname= tutorDetail.fname
+      let dummy3=' '
+      let noRemark='There is not any remark about '+fname
+      $("#noRemark").html(noRemark)
+      $("#date1").html(dummy3)
+      $("#date2").html(dummy3)
+      $("#remark1").html(dummy3)
+      $("#remark2").html(dummy3)
+      $("#remarkedPerson1").html(dummy3)
+      $("#remarkedPerson2").html(dummy3)
+    }
+     let id= tutorDetail._id
+     let fname= tutorDetail.fname
+     let lname= tutorDetail.lname
+     let fullName=fname+' '+lname
+     let email= tutorDetail.email
+     let mobile= tutorDetail.mobile
+     let gender= tutorDetail.gender
+     let joinedDate= tutorDetail.date
+
+     
+      $("#student-id").val(id)
+      $("#student-fullName").html(fullName)
+      $("#student-fullName2").html(fullName)
+      $("#student-fname").html(fname)
+      $("#student-email").html(email)
+      $("#student-email2").html(email)
+      $("#student-mobile").html(mobile)
+      $("#student-gender").html(gender)
+      $("#student-joinedDate").html(joinedDate)
+      
+     
+
+      $("#view-remark").attr("href","/institution/view-tutor-remarks/"+id)
+      
+      $("#add-remark").attr("href","/institution/add-tutor-remarks/"+id)
+
+   })
+
+})  
+}

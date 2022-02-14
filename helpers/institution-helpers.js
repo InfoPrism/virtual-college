@@ -166,6 +166,7 @@ module.exports = {
       })
 
    },
+   /*Here we get all students under corresponding Institution*/
    getStudentsIn_institution:(institutionId)=>{
       console.log("hey i am here"+institutionId);
       return new Promise(async(resolve,reject)=>{ 
@@ -209,7 +210,7 @@ module.exports = {
       })
     },
     
-     /*Here we create a new class */
+     /*Here we add a new remark to student*/
      addRemarks:function(remarks){
         let studentId=remarks.StudentId;
         console.log("................");
@@ -244,4 +245,83 @@ module.exports = {
         resolve(remarks)
       })
     },
+  /*Here we get all students under corresponding Institution*/
+  getTutorsIn_institution:(institutionId)=>{
+   console.log("hey i am here"+institutionId);
+   return new Promise(async(resolve,reject)=>{ 
+     let tutors=await db.get().collection(collections.TUTOR_COLLECTION).aggregate([
+       {
+         $match:{institution:objectId(institutionId)}
+       },
+       {
+          $sort:{fname:1,lname:1}
+       },
+      
+      {
+         $project:{
+           fname:1,lname:1,email:1,mobile:1,gender:1,date:1
+
+         }
+       }
+     ]).toArray()
+     console.log(tutors);
+     resolve(tutors)
+   })
+ },
+ getTutorDetails:(tutorId)=>{
+   return new Promise(async(resolve,reject)=>{
+   let tutorDetail=await db.get().collection(collections.TUTOR_COLLECTION).findOne({_id:objectId(tutorId)})
+   console.log("eeeeeeeeeeeee");
+   console.log(tutorId);
+   date = tutorDetail.date;
+   year = date.getFullYear();
+    month = date.getMonth()+1;
+    dt = date.getDate();
+
+     if (dt < 10) {
+     dt = '0' + dt;
+     }
+     if (month < 10) {
+     month = '0' + month;
+     }
+     tutorDetail.date=dt+'/' + month+'/'+year;
+     console.log(tutorDetail);
+     resolve(tutorDetail)
+   })
+ },
+     /*Here we add a new remark to student*/
+      addTutorRemarks:function(remarks){
+      let tutorId=remarks.tutorId;
+      console.log(remarks);
+      return new Promise(async(resolve, reject) => {
+           /*Date format*/
+           let  date= new Date()
+           console.log(date.toLocaleString('en-US', {
+           weekday: 'short', // "Sat"
+           month: 'long', // "June"
+           day: '2-digit', // "01"
+           year: 'numeric' // "2019"
+           }))
+           remarks.date = await date.toDateString()+' Time: '+date.toLocaleTimeString()
+   db.get().collection(collections.TUTOR_COLLECTION).updateOne({_id:objectId(tutorId)},
+   {
+   
+  $push:{remarks:remarks}
+  
+   }
+
+ ).then((response)=>{
+ resolve()
+  })
+ })
+ },
+
+ getTutorRemarks:(tutorId)=>{
+   return new Promise(async(resolve,reject)=>{
+     let tutorDetail=await db.get().collection(collections.TUTOR_COLLECTION).findOne({_id:objectId(tutorId)})
+     let remarks=tutorDetail.remarks;
+     resolve(remarks)
+   })
+ },
+
 }

@@ -13,11 +13,14 @@ verifyLogin = function(req, res, next) {
   }
 };
 
+/* GET logout page. */
+router.get('/logout', function (req, res, next) {
+   req.session.institution = null
+   res.redirect('/institution/login')
+})
 /* GET home page. */
 router.get('/', verifyLogin, function(req, res, next) {
    let institutionDetails= req.session.institution;
-   console.log("ppppppppppppppppppppp");
-   console.log(institutionDetails);
   res.render('institution/home', {title:'Home', institution:true, institutionDetails});
 });
 
@@ -143,7 +146,7 @@ router.post('/add-announcement', function(req, res, next) {
        res.redirect('/institution/tutor-announcement')
    })
 })
-/*GET all Students*/
+/*GET all Students under corresponding Institution*/
 router.get('/all-students',verifyLogin,async function(req,res,next){
    let institutionDetails=req.session.institution;
    let StudentsIn_institution= await institutionHelpers.getStudentsIn_institution(institutionDetails._id)
@@ -172,23 +175,69 @@ router.get('/get-student-details/:id',verifyLogin,async function(req,res,next){
 })
  
 
-   /*GET add a new remark to student by institution*/
-   router.get('/add-remarks/:id',verifyLogin,async function(req,res,next){
+/*GET to display page to create ne remark to student*/
+router.get('/add-remarks/:id',verifyLogin,async function(req,res,next){
    let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
    let institutionDetails=req.session.institution;
    let head_of_Institution=institutionDetails.head;
   res.render('institution/add-remark',{title:'Add Remark',institution:true,studentDetail,head_of_Institution})
 })
  /*POST add a new remark to student by institution*/
-router.post('/add-remarks',verifyLogin,function(req,res,next){
-   institutionHelpers.addRemarks(req.body).then(()=>{
-      res.redirect('/institution/tutor-announcement')
+ router.post('/add-remarks',verifyLogin,function(req,res,next){
+   institutionHelpers.addRemarks(req.body).then(async()=>{
+      let studentDetail= await institutionHelpers.getStudentDetails(req.body.StudentId)
+      
+      /*res.redirect('/institution/view-student-remarks?id=' + studentDetail._id)*/
+      res.redirect('/institution/all-students')
    })
 })
- /*Get student remarks details to the model*/
+ /*Get student remarks*/
 router.get('/view-student-remarks/:id',verifyLogin,async function(req,res,next){
    let studentRemarks= await institutionHelpers.getStudentRemarks(req.params.id)
    let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
-   res.render('institution/student-remarks',{studentRemarks,studentDetail,institution:true,title:studentDetail.fname+'remarks'})
+   res.render('institution/student-remarks',{studentRemarks,studentDetail,institution:true,title:studentDetail.fname+' remarks'})
 })
+/*GET all Tutors under corresponding Institution*/
+router.get('/all-tutors',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution;
+   let tutorsIn_institution= await institutionHelpers.getTutorsIn_institution(institutionDetails._id)
+   let slno = 1
+   tutorsIn_institution.forEach(student => {
+      student.slno = slno
+      console.log(student.slno);
+      slno++
+   })
+   slno = null
+  res.render('institution/all-tutors',{title:'All Tutors',institution:true,tutorsIn_institution,institutionDetails})
+})
+/*GET tutor details to display tutor details in a model*/
+router.get('/get-tutor-details/:id',verifyLogin,async function(req,res,next){
+   let tutorDetail= await institutionHelpers.getTutorDetails(req.params.id)
+   res.json(tutorDetail)
+   console.log("ddddddddddddd........");
+   console.log(tutorDetail);
+})
+ 
+/*GET add a new remark to student by institution*/
+router.get('/add-tutor-remarks/:id',verifyLogin,async function(req,res,next){
+   let tutorDetail= await institutionHelpers.getTutorDetails(req.params.id)
+   let institutionDetails=req.session.institution;
+   let head_of_Institution=institutionDetails.head;
+  res.render('institution/add-tutor-remark',{title:'Add Remark',institution:true,tutorDetail,head_of_Institution})
+})
+ /*POST add a new remark to tutor by institution*/
+ router.post('/add-tutor-remarks',verifyLogin,function(req,res,next){
+   institutionHelpers.addTutorRemarks(req.body).then(async()=>{
+      let tutorDetail= await institutionHelpers.getTutorDetails(req.body.tutorId)
+      res.redirect('/institution/all-tutors')
+   })
+})
+ /*Get student remarks*/
+router.get('/view-tutor-remarks/:id',verifyLogin,async function(req,res,next){
+   let tutorDetail= await institutionHelpers.getTutorDetails(req.params.id)
+   let tutorRemarks= await institutionHelpers.getTutorRemarks(req.params.id)
+   let institutionDetails=req.session.institution;
+   res.render('institution/view-tutor-remarks',{tutorRemarks,tutorDetail,institution:true,title:tutorDetail.fname+' remarks'})
+})
+
 module.exports = router;
