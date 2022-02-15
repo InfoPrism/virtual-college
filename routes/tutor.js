@@ -14,6 +14,7 @@ verifyLogin = function (req, res, next) {
 /* GET home page. */
 router.get('/', verifyLogin, function (req, res, next) {
    let tutorDetails = req.session.tutor;
+   console.log(tutorDetails);
    res.render('tutor/home', { title: 'Home', tutor: true,tutorDetails });
 });
 
@@ -67,6 +68,13 @@ router.post('/signup', function (req, res, next) {
    })
 })
 
+/* Logout */
+
+router.get('/logout',function(req,res,next){
+   req.session.tutor = null;
+   res.redirect('/tutor')
+})
+
 /*Get classs details to modal*/
 
 router.get('/get-class', verifyLogin, async function (req, res, next) {
@@ -80,6 +88,14 @@ router.post('/add-subject', verifyLogin, async function (req, res, next) {
    req.body.tutor_id = req.session.tutor._id;
    tutorHelpers.addSubject(req.body).then(() => {
       res.redirect('/tutor');
+   })
+})
+
+/* GET announcement page. */
+
+router.get('/announcement', verifyLogin, function (req, res, next) {
+   tutorHelpers.getAllAnnouncements().then((announcements) => {
+      res.render('tutor/announcement', { title: 'Announcement', announcements, tutor: true,tutorDetails : req.session.tutor})
    })
 })
 

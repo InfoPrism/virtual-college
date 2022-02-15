@@ -8,6 +8,7 @@ module.exports = {
       return new Promise(async (resolve, reject) => {
          delete tutorData.cpassword
          tutorData.date = new Date()
+         tutorData.remarks = []
          response = {}
          let tutor = await db.get().collection(collections.TUTOR_COLLECTION).findOne({ $or: [{ email: tutorData.email }, { mobile: tutorData.mobile }] })
          if (tutor) {
@@ -85,7 +86,9 @@ module.exports = {
    addSubject: function (subjectDetails) {
       return new Promise(async (resolve, reject) => {
          let class_details = await db.get().collection(collections.CLASS_COLLECTION).findOne({ class_name: subjectDetails.class })
-         subjectDetails.class_id = ' ' + class_details._id;
+         subjectDetails.class_id = class_details._id;
+         delete subjectDetails.class;
+         subjectDetails.tutor_id = objectId(subjectDetails.tutor_id);
          let date = new Date()
          subjectDetails.date = await date.toDateString() + ' Time: ' + date.toLocaleTimeString()
          console.log(subjectDetails);
@@ -94,6 +97,15 @@ module.exports = {
          })
       })
 
+   },
+
+   /* Get all announcements */
+
+   getAllAnnouncements:function() {
+      return new Promise(async(resolve, reject)=> {
+         let announcements = await db.get().collection(collections.ANNOUNCEMENT_COLLECTION).find({$or:[{visiblity:'Everyone'},{visiblity:'Tutor'}]}).sort({_id:-1}).toArray()
+         resolve(announcements)
+      })
    }
 }
 

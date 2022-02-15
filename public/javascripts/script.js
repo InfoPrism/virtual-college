@@ -445,39 +445,6 @@ $('#createsubject').on('show.bs.modal', function (event) {
   modal.find('.modal-body #subjectId').val(id)
 })
 
-/*--Tooltip--*/
-// $('button').tooltip({
-//   trigger: 'click',
-//   placement: 'top'
-// });
-
-// function setTooltip(message) {
-//   $('button').tooltip('hide')
-//     .attr('data-original-title', message)
-//     .tooltip('show');
-// }
-
-// function hideTooltip() {
-//   setTimeout(function() {
-//     $('button').tooltip('hide');
-//   }, 1000);
-// }
-
-// Clipboard
-
-// var clipboard = new Clipboard('button');
-
-// clipboard.on('success', function(e) {
-//   setTooltip('Copied!');
-//   hideTooltip();
-// });
-
-// clipboard.on('error', function(e) {
-//   setTooltip('Failed!');
-//   hideTooltip();
-// });
-
-
 /* Get classes to modal*/
 
 function getclasses() {

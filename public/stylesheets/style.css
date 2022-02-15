@@ -113,7 +113,7 @@ header .header-menu ul li a:hover{
 /* --Sidebar-- */
 .sidebar{
     position: fixed;
-    z-index: 100;
+    z-index: 15;
     background: #11101d;
     top:70px;
     width: 230px;
