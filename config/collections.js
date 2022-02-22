@@ -4,5 +4,6 @@ module.exports = {
    INSTITUTION_COLLECTION:'institution',
    CLASS_COLLECTION:'class',
    ANNOUNCEMENT_COLLECTION:'announcement',
-   SUBJECT_COLLECTION:'subject'
+   SUBJECT_COLLECTION:'subject',
+   TUTOR_ANNOUNCEMENT_COLLECTION:'TutorAnnouncement'
 }

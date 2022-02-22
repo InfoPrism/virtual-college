@@ -85,10 +85,10 @@ module.exports = {
 
    addSubject: function (subjectDetails) {
       return new Promise(async (resolve, reject) => {
-         let class_details = await db.get().collection(collections.CLASS_COLLECTION).findOne({ class_name: subjectDetails.class })
-         subjectDetails.class_id = class_details._id;
-         delete subjectDetails.class;
-         subjectDetails.tutor_id = objectId(subjectDetails.tutor_id);
+         let class_details = await db.get().collection(collections.CLASS_COLLECTION).findOne({ class_name: subjectDetails.class_name })
+         subjectDetails.class = class_details._id;
+         delete subjectDetails.class_name;
+         subjectDetails.tutor = objectId(subjectDetails.tutor);
          let date = new Date()
          subjectDetails.date = await date.toDateString() + ' Time: ' + date.toLocaleTimeString()
          console.log(subjectDetails);
@@ -105,6 +105,65 @@ module.exports = {
       return new Promise(async(resolve, reject)=> {
          let announcements = await db.get().collection(collections.ANNOUNCEMENT_COLLECTION).find({$or:[{visiblity:'Everyone'},{visiblity:'Tutor'}]}).sort({_id:-1}).toArray()
          resolve(announcements)
+      })
+   },
+
+   /* Get my subjects */
+   getSubjects : function(tutor){
+      return new Promise(async(resolve,reject)=>{
+         let subjects = await db.get().collection(collections.SUBJECT_COLLECTION).aggregate([
+            {
+
+               $match:
+               {
+                  tutor: objectId(tutor)
+               }
+            },
+            {
+               $project: {
+                  name: 1
+               }
+            }  
+         ]).toArray()
+         resolve(subjects)
+      })
+   },
+
+   /* Get my announcements */
+
+   getMyannouncements:function(tutor){
+      return new Promise(async(resolve,reject)=>{
+         let announcements = await db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).find({tutor : objectId(tutor)}).sort({_id :-1}).toArray()
+         resolve(announcements)
+      })
+   },
+
+   /* Post my announcements */
+   
+   postMyAnnouncements:function(announcement){
+      return new Promise(async(resolve,reject)=>{
+         let date = new Date()
+         if(typeof(announcement.visibility) != "object"){
+            console.log("True");
+            announcement.visibility = [announcement.visibility]
+         }
+         console.log(announcement.visibility);
+         for(let i=0; i<announcement.visibility.length;i++){
+            announcement.visibility[i] = objectId(announcement.visibility[i])
+         }
+         announcement.tutor= objectId(announcement.tutor)
+         announcement.date = await date.toDateString() + ' Time: ' + date.toLocaleTimeString()
+         db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).insertOne(announcement).then((data)=>{
+            resolve()
+         })
+      })
+   },
+   /* Delete my announcement */
+   deleteMyAnnouncement:function(id){
+      return new Promise((resolve,reject)=>{
+         db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).deleteOne({_id: objectId(id)}).then((data)=>{
+            resolve()
+         })
       })
    }
 }

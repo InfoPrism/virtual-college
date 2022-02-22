@@ -55,6 +55,10 @@ header .header-menu .title{
     margin-left: 45px;
 }
 
+header .header-menu a{
+    text-decoration: none;
+}
+
 /*Header Side button*/
 header .header-menu .sidebar-btn{
     color: #fff;
@@ -287,7 +291,12 @@ header .header-menu ul li a:hover{
     cursor: pointer;
 }
 
-
+/* --Custom colour for choices in selectBox--*/
+.choices__list--multiple .choices__item {
+    background-color: #212529;
+    border: 1px solid #212529;
+    color: #fff;
+}
 
 /* --Footer-- */
 footer{

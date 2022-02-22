@@ -1,0 +1,32 @@
+<section>
+    <div class="container p-3">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="text-center">New Announcement</h5>
+                <form action="/tutor/add-announcement" method="POST">
+                    <div class=" form-group mt-1">
+                        <label>Title</label>
+                        <input type="text" name="tutor" value="{{tutorDetails._id}}" hidden>
+                        <input type="text" class="form-control" name="title" placeholder="Enter Title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea rows="3" type="text" placeholder="Enter Content" class="form-control" id="content"
+                            name="content" required></textarea>
+                    </div>
+                    <label for="visible">Visible to</label>
+
+                    <select id="choices-multiple-remove-button" name="visibility" placeholder="Select classes" multiple>
+                        {{#each subjects}}
+                        <option value="{{this._id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+
+                    <button type="submit" style="background-color: #222424; color: #fff;"
+                        class="btn btn float-right mt-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
