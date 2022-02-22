@@ -172,7 +172,12 @@ module.exports = {
       return new Promise(async(resolve,reject)=>{ 
         let students=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
           {
-            $match:{institution:objectId(institutionId)}
+            $match:{ 
+              $and:[
+                {institution:objectId(institutionId)},
+                {status:'Signup verified'}
+                   ]
+                   }
           },
           {
              $sort:{fname:1,lname:1}
@@ -251,7 +256,12 @@ module.exports = {
    return new Promise(async(resolve,reject)=>{ 
      let tutors=await db.get().collection(collections.TUTOR_COLLECTION).aggregate([
        {
-         $match:{institution:objectId(institutionId)}
+         $match:{ 
+            $and:[
+              {institution:objectId(institutionId)},
+              {status:'Signup verified'}
+                 ]
+                 }
        },
        {
           $sort:{fname:1,lname:1}
@@ -323,5 +333,126 @@ module.exports = {
      resolve(remarks)
    })
  },
+/*Here we get all not verified students under corresponding Institution*/
+getNotVerifiedStudentsIn_institution:(institutionId)=>{
+   console.log("hey i am here"+institutionId);
+   return new Promise(async(resolve,reject)=>{ 
+     let notVerifiedStudents=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
+       {
+$match:
+{   $and:[
+      {institution:objectId(institutionId)},
+      {status:'Signup pending'}
+   ]
+}
+       },
+       {
+          $sort:{fname:1,lname:1}
+       },
+      
+      {
+         $project:{
+           fname:1,lname:1,email:1,mobile:1,guardian:1,address:1,gender:1,date:1
+
+         }
+       }
+     ]).toArray()
+     console.log(notVerifiedStudents);
+     resolve(notVerifiedStudents)
+   })
+ },
+     /*Here we change status of student*/
+     changeStudentStatus:function(studentId,status){
+      console.log("................");
+      console.log(studentId);
+    return new Promise(async(resolve, reject) => {
+      changeStatusTime=new Date()
+   db.get().collection(collections.STUDENT_COLLECTION).updateOne({_id:objectId(studentId)},
+   {
+   
+  $set:{status:status,changeStatusTime:changeStatusTime}
+   }
+ ).then((response)=>{
+ resolve(response)
+  })
+ })
+ }, 
+ /*Here we get all not verified tutors under corresponding Institution*/
+getNotVerifiedStudentsIn_institution:(institutionId)=>{
+   console.log("hey i am here"+institutionId);
+   return new Promise(async(resolve,reject)=>{ 
+     let notVerifiedStudents=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
+       {
+$match:
+{   $and:[
+      {institution:objectId(institutionId)},
+      {status:'Signup pending'}
+   ]
+}
+       },
+       {
+          $sort:{fname:1,lname:1}
+       },
+      
+      {
+         $project:{
+           fname:1,lname:1,email:1,mobile:1,guardian:1,address:1,gender:1,date:1
+
+         }
+       }
+     ]).toArray()
+     console.log(notVerifiedStudents);
+     resolve(notVerifiedStudents)
+   })
+ },    
+ /*Here we change status of tutor*/
+      changeTutorStatus:function(tutorId,status){
+         console.log("................");
+         console.log(tutorId);
+       return new Promise(async(resolve, reject) => {
+      changeStatusTime=new Date()
+      db.get().collection(collections.TUTOR_COLLECTION).updateOne({_id:objectId(tutorId)},
+      {
+      
+     $set:{status:status,changeStatusTime:changeStatusTime}
+      }
+    ).then((response)=>{
+    resolve(response)
+     })
+    })
+    },
+
+/*Here we get all not verified tutors under corresponding Institution*/
+getNotVerifiedTutorsIn_institution:(institutionId)=>{
+   console.log("hey i am here"+institutionId);
+   return new Promise(async(resolve,reject)=>{ 
+     let notVerifiedTutors=await db.get().collection(collections.TUTOR_COLLECTION).aggregate([
+       {
+$match:
+{   $and:[
+      {institution:objectId(institutionId)},
+      {status:'Signup pending'}
+   ]
+}
+       },
+       {
+          $sort:{fname:1,lname:1}
+       },
+      
+      {
+         $project:{
+           fname:1,lname:1,email:1,mobile:1,gender:1,date:1
+
+         }
+       }
+     ]).toArray()
+     console.log(notVerifiedTutors);
+     resolve(notVerifiedTutors)
+   })
+ }, 
+
+
+
 
 }
+

@@ -566,3 +566,24 @@ $.ajax({
   //renderChoiceLimit:5
   })
   });
+
+  /*Change status of student Eg block,Signup allowed, dened
+function changeStudentStatus(studentId,status,studentFname) {
+   console.log(studentId);
+    $.ajax({
+    url: '/institution/change-student-status',
+    method: 'post',
+    data:{
+      studentId,
+      status
+    },
+    beforeSend:function(){
+      return confirm("Are you sure to change status of "+studentFname);
+    },
+    success: ((classes) => {
+    updateStudentList()
+
+    })
+  })
+}
+*/

@@ -1,15 +1,15 @@
-{{#if StudentsIn_institution}}
+{{#if NotVerifiedTutors}}
 <section style="padding-left: 12px; padding-right: 8px;">
     
     <div class="container-fluid">
       <Center>
-        <h3><b>Student List</b></h3>
+        <h3><b>Not verified Tutors List</b></h3>
          
       </Center>
         <div class="row">
           
       
-        <table class="table mt-1 ml-5" style="background-color:#D3D3D3;">
+        <table class="table  ml-5" style="background-color:#D3D3D3;">
           
             <thead>
             
@@ -17,38 +17,45 @@
                 <tr style="background-color: #2F4F4F; color: #fff;">
                     <th scope="col">No.</th>
                     <th scope="col">Name</th>
-					<th class="email-large-student" scope="col">Email</th>
-                    <th class="email-large-student" scope="col">Mobile</th>
-                     <th class="email-large-student" scope="col">Gender</th>  
+					<th class="large-screen" scope="col">Email</th>
+                    <th scope="col">Mobile</th>
+                     <th class="large-screen" scope="col">Gender</th>  
                    <!-- <th scope="col">Quantity</th>-->
-				   <th  scope="col">Block</th>
-                    <th scope="col">Details</th>
+				   <th  scope="col">Status</th>
+                    <th class="large-screen" scope="col">Details</th>
                     <th scope="col"></th>
                     
                 </tr>
             </thead>
             <tbody>
-               {{#each StudentsIn_institution}}
+               {{#each NotVerifiedTutors}}
                 <tr>
                     <td style="width: 20%;">{{this.slno}}</td>
                           
                     <td style="width: 20%;">{{this.fname}} {{this.lname}}</td>
-					<td class="email-large-student" style="width: 20%;">{{this.email}}</td>
-                    <td class="email-large-student"  style="width: 20%;">{{this.mobile}}</td>
-					<td class="email-large-student" style="width: 20%;">{{this.gender}}</td>
+					<td class="large-screen" style="width: 20%;">{{this.email}}</td>
+                    <td style="width: 20%;">{{this.mobile}}</td>
+					<td class="large-screen" style="width: 20%;">{{this.gender}}</td>
                   <!--  <td style="width: 20%;">
                         <button class="cart-item-count "  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1)">-</button>
                          <span id="{{this.product._id}}">{{this.quantity}}</span>
                           <button class="cart-item-count" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button>
                     </td>-->
-				    <td class="email-large-student" style="width: 5%;">
-                       <a href="/institution/change-student-status/Blocked/{{this._id}}" onclick="return confirm('Are you sure want to block {{this.fname}}?')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;">Block</a>
+				    <td style="width: 5%;">
+						<!--
+                       <a onclick="verifySignup('{{this._id}}','{{this.fname}}')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;">Valdiate</a>
+					   -->
+	<div class="dropdown">
+  <button class="large-screen btn btn dropdown-toggle" style="background-color: #696969; color: #fff;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Signup pending</button>
+  <button class="small-screen btn btn dropdown-toggle" style="background-color: #696969; color: #fff;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pending</button>
+  <div class="dropdown-menu"  style="background-color: #696969; "aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" style="color: #fff;"  href="/institution/change-tutor-status/Signup verified/{{this._id}}" onclick="return confirm('Are you sure want to validate {{this.fname}} signup?')">Allow Signup</a> 
+	  <a class="dropdown-item" style="color: #fff;"  href="/institution/change-tutor-status/Signup denyed/{{this._id}}" onclick="return confirm('Are you sure want to deny {{this.fname}} signup?')">Deny Signup</a> 
+  </div>
+</div>
                     </td>
-					<td class="hide-medium" style="width: 5%;">
-                       <a href="/institution/change-student-status/Blocked/{{this._id}}" onclick="return confirm('Are you sure want to block {{this.fname}}?')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"><i class="fas fa-ban"></i></a>
-                    </td>
-                    <td  style="width: 5%;">
-                       <a onclick="studentInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"  ><i class="fas fa-info-circle"></i></a>
+                    <td class="large-screen"  style="width: 5%;">
+                       <a onclick="tutorInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"  ><i class="fas fa-info-circle"></i></a>
                     </td>
                    
                 </tr>
@@ -68,8 +75,8 @@
    <div class="container">
       <div class="row">
          <div class="col-md-12 text-center">
-            <p class="mt-5">There is not any students joined under your Institution</p>
-            <a data-toggle="modal" data-target="#shareProduct" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Share link to students</a>
+            <p class="mt-5">There is not any verification request</p>
+            <a data-toggle="modal" data-target="#shareProduct" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Share link to Tutors</a>
          </div>
       </div>
    </div>
@@ -81,16 +88,16 @@
  <style>
 @media screen and (max-width: 600px) {
 /*Hide in small Devices*/
-.email-large-student{
+.large-screen{
 	display: none;
 }
 }
 @media screen and (min-width: 600px) {
 /*Hide in medium Devices*/
-.hide-medium{
+.small-screen{
 	display: none;
   }
-}
+
  </style>
  
  
@@ -155,18 +162,12 @@
 						   <p class="font-weight-bold">Gender:</p>
 							  <h6 class=" text-muted" id="student-gender">{{gender}}</h6>
 					   </div>
-					   <div class="col-sm-6">
-						<p class="font-weight-bold">Guardian:</p>
-						   <h6 class=" text-muted" id="student-guardian">{{guardian}}</h6>
-					</div>
+					  
 					<div class="col-sm-6">
 						<p class="font-weight-bold">Joined Date</p>
 						   <h6 id="student-joinedDate" class="text-muted">{{joinedDate}}</h6>
 					</div>
-					<div class="col-sm-6">
-						<p class="font-weight-bold">Address:</p>
-						   <h6 class=" text-muted" id="student-address">{{address}}</h6>
-					</div>
+					
 					<div class="large-device-name col-sm-6">
 						<p class="font-weight-bold">Type:</p>
 						   <h6 class="text-muted">Student</h6>
@@ -207,7 +208,7 @@
 					   <div class="remarks" style="padding-left: 10px;">
 					   <a id="view-remark"  class="btn btn " style="color:white; background-color: #222424; ">All Remarks</a>
 </div>
-					   <a id="add-remark" class="btn btn" style="color:white; background-color: #222424;">Add Remark</a>
+					   <a id="add-remark" class="btn btn " style="color:white; background-color: #222424;">Add Remark</a>
 					   
 				   </div>
 				  
@@ -277,4 +278,7 @@
    .main-container {
       margin-left: 0;
    }
+   .dropdown-item:hover{
+	background-color:#696969;
+}
 </style>

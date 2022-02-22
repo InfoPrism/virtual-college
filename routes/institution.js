@@ -148,6 +148,9 @@ router.post('/add-announcement', function(req, res, next) {
 })
 /*GET all Students under corresponding Institution*/
 router.get('/all-students',verifyLogin,async function(req,res,next){
+   let type=req.params.type
+   console.log("ppppppppppp");
+   console.log(type);
    let institutionDetails=req.session.institution;
    let StudentsIn_institution= await institutionHelpers.getStudentsIn_institution(institutionDetails._id)
    let slno = 1
@@ -232,12 +235,58 @@ router.get('/add-tutor-remarks/:id',verifyLogin,async function(req,res,next){
       res.redirect('/institution/all-tutors')
    })
 })
- /*Get student remarks*/
+ /*Get tutor remarks*/
 router.get('/view-tutor-remarks/:id',verifyLogin,async function(req,res,next){
    let tutorDetail= await institutionHelpers.getTutorDetails(req.params.id)
    let tutorRemarks= await institutionHelpers.getTutorRemarks(req.params.id)
    let institutionDetails=req.session.institution;
    res.render('institution/view-tutor-remarks',{tutorRemarks,tutorDetail,institution:true,title:tutorDetail.fname+' remarks'})
 })
-
+/*GET not verified  Students under corresponding Institution */
+router.get('/notverified-students',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution;
+   let NotVerifiedStudents= await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id)
+   let slno = 1
+   NotVerifiedStudents.forEach(student => {
+      student.slno = slno
+      console.log(student.slno);
+      slno++
+   })
+   slno = null
+  res.render('institution/notVerified-students',{title:'All Students',institution:true,NotVerifiedStudents,institutionDetails})
+})
+/*POST change student status*/
+router.get('/change-student-status/:status/:id',verifyLogin,async function(req,res,next){
+   let status=req.params.status
+   let studentId=req.params.id
+   let data= await institutionHelpers.changeStudentStatus(studentId,status)
+   if(status=="Blocked")
+   res.redirect('/institution/all-students')
+   else
+   res.redirect('/institution/notverified-students')
+})
+/*POST cange tutor status*/
+router.get('/change-tutor-status/:status/:id',verifyLogin,async function(req,res,next){
+   let status=req.params.status
+   let tutorId=req.params.id
+   let data= await institutionHelpers.changeTutorStatus(tutorId,status)
+   console.log(data);
+   if(status=="Blocked")
+   res.redirect('/institution/all-tutors')
+   else
+   res.redirect('/institution/notverified-tutors')
+})
+/*GET not verified  Students under corresponding Institution */
+router.get('/notverified-tutors',verifyLogin,async function(req,res,next){
+   let institutionDetails=req.session.institution;
+   let NotVerifiedTutors= await institutionHelpers.getNotVerifiedTutorsIn_institution(institutionDetails._id)
+   let slno = 1
+   NotVerifiedTutors.forEach(tutor => {
+      tutor.slno = slno
+      console.log(tutor.slno);
+      slno++
+   })
+   slno = null
+  res.render('institution/notVerified-tutors',{title:'All Students',institution:true,NotVerifiedTutors,institutionDetails})
+})
 module.exports = router;

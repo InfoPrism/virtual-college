@@ -18,10 +18,10 @@
                     <th scope="col">No.</th>
                     <th scope="col">Name</th>
 					<th class="email-large-student" scope="col">Email</th>
-                    <th scope="col">Mobile</th>
+                    <th class="email-large-student" scope="col">Mobile</th>
                      <th class="email-large-student" scope="col">Gender</th>  
                    <!-- <th scope="col">Quantity</th>-->
-				   <th class="email-large-student" scope="col">Remarks</th>
+				   <th  scope="col">Block</th>
                     <th scope="col">Details</th>
                     <th scope="col"></th>
                     
@@ -42,7 +42,10 @@
                           <button class="cart-item-count" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button>
                     </td>-->
 				    <td class="email-large-student" style="width: 5%;">
-                       <a href="/institution/add-tutor-remarks/{{this._id}}" class="btn btn mt-1"  style="background-color: #696969; color: #fff;">Add Remarks</a>
+                       <a href="/institution/change-tutor-status/Blocked/{{this._id}}" onclick="return confirm('Are you sure want to block {{this.fname}}?')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;">Block</a>
+                    </td>
+						<td class="hide-medium" style="width: 5%;">
+                       <a href="/institution/change-tutor-status/Blocked/{{this._id}}" onclick="return confirm('Are you sure want to block {{this.fname}}?')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"><i class="fas fa-ban"></i></a>
                     </td>
                     <td  style="width: 5%;">
                        <a onclick="tutorInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"  ><i class="fas fa-info-circle"></i></a>
@@ -79,6 +82,11 @@
 @media screen and (max-width: 600px) {
 /*Hide in small Devices*/
 .email-large-student{
+	display: none;
+}
+}
+@media screen and (min-width: 600px) {
+.hide-medium{
 	display: none;
 }
 }
