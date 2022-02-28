@@ -1,14 +1,24 @@
 <section>
     <div class="container-fluid">
-        <div class="row mb-3">
-            <div class="col-12">
-                <div class="card p-3">
-                    <div style="font-size: 18px; font-weight: 500;">Microprocessor Architecture and Programming</div>
-                    <div style="font-size: 15px; padding-top: 2px;">BCA IVth Semester</div>
-                    <small class="mt-3">Akhilesh Chandran</small>
-                    <i class="far fa-trash-alt text-muted un-enroll-btn" data-toggle="modal" data-target="#unenroll-class"></i>
+        <div class="row mb-3 pl-3">
+            {{#each subjects}}
+            <div class="col-md-6 pl-0 pb-3">
+                <div class="card" style="height: 120px;">
+                    <div class="row" style="height: 120px;">
+                        <div class="col-4">
+                            <div class="class-title limit-line-length-vertical">{{this.class.class_name}}</div>
+                        </div>
+                        <div class="col-8">
+                            <i class="far fa-trash-alt text-muted un-enroll-btn" data-toggle="modal"
+                                data-target="#unenroll-class" onclick="openUnenrollModal('{{this._id}}')"></i>
+                            <div class="subject-title limit-line-length-vertical">{{this.name}}</div>
+                            <small class="tutor-name limit-line-length-horizontal">{{this.tutor.fname}} {{this.tutor.lname}}</small>
+                        </div>
+                        <a href="/student/view-class/{{this._id}}" class="continue-btn">Continue</a>
+                    </div>
                 </div>
             </div>
+            {{/each}}
         </div>
     </div>
 </section>
@@ -22,7 +32,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">Do you want to Unenroll from the class?</div>
-                    <button type="submit" class="btn btn-danger float-right">Unenroll</button>
+                <a href="" class="btn btn-danger float-right" id="unenroll-btn">Unenroll</a>
             </div>
         </div>
     </div>
@@ -31,10 +41,71 @@
 
 
 <style>
-   .card .un-enroll-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      cursor: pointer;
-   }
+    .card {
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .card .col-4 {
+        position: relative;
+        background: #2A265F;
+        color: #fff;
+        padding: 5px 28px;
+    }
+
+    .card .col-8 {
+        position: relative;
+        color: #2A265F;
+        padding: 8px 15px;
+    }
+
+    .card .class-title {
+        font-size: 20px;
+        font-weight: 500;
+        -webkit-line-clamp: 3;
+        padding-top: 2px;
+    }
+
+    .card .subject-title {
+        font-size: 18px;
+        font-weight: 500;
+        -webkit-line-clamp: 2;
+        margin-right: 38px;
+    }
+
+    .card .tutor-name {
+        position: absolute;
+        bottom: 12px;
+        width: calc(100% - 140px);
+    }
+
+    .card .un-enroll-btn {
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .card .continue-btn {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        background: #2A265F;
+        color: #fff;
+        font-size: small;
+        padding: 8px 10px;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        text-decoration: none;
+    }
 </style>
+
+
+
+<script>
+    function openUnenrollModal(subjectId) {
+        document.getElementById('unenroll-btn').setAttribute("href", "/student/unenroll-class/" + subjectId)
+    }
+</script>

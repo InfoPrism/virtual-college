@@ -291,12 +291,29 @@ header .header-menu ul li a:hover{
     cursor: pointer;
 }
 
+
 /* --Custom colour for choices in selectBox--*/
 .choices__list--multiple .choices__item {
     background-color: #212529;
     border: 1px solid #212529;
     color: #fff;
 }
+
+
+/* --Limit line length-- */
+.limit-line-length-horizontal {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.limit-line-length-vertical {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+}
+
 
 /* --Footer-- */
 footer{

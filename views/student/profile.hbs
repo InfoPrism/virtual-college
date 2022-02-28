@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card align-items-center text-center p-3">
-                    <img src="{{#if student.picture}}/images/student_profile/{{student._id}}.jpg{{else}}/images/student_profile_{{student.gender}}_def.jpg{{/if}}" alt="Profile_Picture" width="150px" height="150px" class="rounded-circle mb-3">
+                    <img src="{{#if student.picture}}/images/student_profile/{{student._id}}.jpg{{else}}/images/student_profile_{{student.gender}}_def.jpg{{/if}}" alt="{{student.fname}} {{student.lname}}" width="150px" height="150px" class="rounded-circle mb-3">
                     <div class="camera-icon" data-toggle="modal" data-target="#choose-image"><i class="far fa-camera" style="margin-top: 10px;"></i></div>
                     <h5 class="card-text">{{student.fname}} {{student.lname}}</h5>
                     <div class="text-muted">{{student.email}}</div>
@@ -43,22 +43,9 @@
                 <div class="card p-3" style="height: 20.7em;">
                     <h4>Subjects</h4>
                     <div class="scrollmenu" style="overflow-y: scroll;">
-                    <a href="#" class="btn btn-primary m-1">English</a>
-                    <a href="#" class="btn btn-primary m-1">Malayalam</a>
-                    <a href="#" class="btn btn-primary m-1">Hindi</a>
-                    <a href="#" class="btn btn-primary m-1">Chemistry</a>
-                    <a href="#" class="btn btn-primary m-1">Physics</a>
-                    <a href="#" class="btn btn-primary m-1">Biology</a>
-                    <a href="#" class="btn btn-primary m-1">History</a>
-                    <a href="#" class="btn btn-primary m-1">Geography</a>
-                    <a href="#" class="btn btn-primary m-1">Maths</a>
-                    <a href="#" class="btn btn-primary m-1">Java</a>
-                    <a href="#" class="btn btn-primary m-1">HTML</a>
-                    <a href="#" class="btn btn-primary m-1">Python</a>
-                    <a href="#" class="btn btn-primary m-1">COA</a>
-                    <a href="#" class="btn btn-primary m-1">Graphics</a>
-                    <a href="#" class="btn btn-primary m-1">PHP</a>
-                    <a href="#" class="btn btn-primary m-1">Computer Fundamentals</a>
+                        {{#each subjects}}
+                        <a href="#" class="btn btn-primary m-1">{{this.name}}</a>
+                        {{/each}}
                     </div>
                 </div>
             </div>
@@ -148,7 +135,7 @@
     .camera-icon {
         position: absolute;
         top: 6em;
-        right: calc(48% - 70px);
+        right: calc(47% - 70px);
         background: #007bff;
         color: #fff;
         height: 38px;

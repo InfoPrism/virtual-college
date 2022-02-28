@@ -3,7 +3,7 @@
    <div class="sidebar scrollmenu">
       <div class="sidebar-menu">
          <center class="profile">
-            <img src="{{#if student.picture}}/images/student_profile/{{student._id}}.jpg{{else}}/images/student_profile_{{student.gender}}_def.jpg{{/if}}" alt="Student Profile">
+            <img src="{{#if student.picture}}/images/student_profile/{{student._id}}.jpg{{else}}/images/student_profile_{{student.gender}}_def.jpg{{/if}}" alt="{{student.fname}} {{student.lname}}">
             <p>
                <span class="name">{{student.fname}} {{student.lname}}</span><br>
                <span class="email" >{{student.email}}</span><br>
@@ -15,10 +15,14 @@
                <i class="far fa-home"></i><span>Home</span>
                </a>
             </li>
-            <li class="item">
-               <a href="/student/announcement" class="menu-btn">
-               <i class="far fa-megaphone"></i><span>Announcement</span>
+            <li class="item" id="announcement">
+               <a href="#announcement" class="menu-btn">
+               <i class="far fa-megaphone"></i><span>Announcement<i class="fas fa-chevron-down drop-down"></i></span>
                </a>
+               <div class="sub-menu">
+                  <a href="/student/institution-announcement"><i class="far fa-school"></i> <span>Institution</span></a>
+                  <a href="/student/tutor-announcement"><i class="far fa-chalkboard-teacher"></i> <span>Tutor</span></a>
+               </div>
             </li>
             <li class="item" id="messages">
                <a href="#messages" class="menu-btn">
@@ -44,7 +48,7 @@
                </a>
                <div class="sub-menu">
                   <a href="/student/profile"><i class="far fa-user-circle"></i> <span>Profile</span></a>
-                  <a href="#"><i class="far fa-lock"></i> <span>Password</span></a>
+                  <a href="/student/logout"><i class="far fa-sign-out-alt"></i> <span>Logout</span></a>
                </div>
             </li>
             <li class="item">

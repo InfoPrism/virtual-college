@@ -3,7 +3,7 @@
         {{#each announcements}}
         <div class="row mb-3">
             <div class="col-12">
-                <div class="card p-3" style="cursor: context-menu;" id={{this._id}} onclick="activeAnnouncement('{{this._id}}')">
+                <div class="card p-3" style="cursor: context-menu;">
                     <div style="font-size: 19px; font-weight: 600;">{{this.title}}</div>
                     <small class="mt-1">{{this.date}}</small>
                     <hr class="mt-2 mb-2">
@@ -18,23 +18,7 @@
 
 
 <style>
-    .active-announcement {
-        background: #007bff;
-        color: #fff;
-    }
     hr {
         background: #fff;
     }
 </style>
-
-
-
-
-
-<script>
-    function activeAnnouncement(announcementId) {
-        console.log(announcementId)
-        $('.card').removeClass('active-announcement')
-        $('#'+announcementId).addClass('active-announcement')
-    }
-</script>

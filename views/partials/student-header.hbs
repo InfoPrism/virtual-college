@@ -3,7 +3,7 @@
       <div class="sidebar-btn">
          <i class="far fa-bars"></i>
       </div>
-      <div class="title">onOrg</div>
+      <a href="/student" class="title">onOrg</a>
       <ul>
          {{#if student._id}}
          <li> <a href="#" data-toggle="modal" data-target="#join-class"><i class="far fa-plus"></i></a></li>
@@ -21,10 +21,13 @@
             <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
          </div>
          <div class="modal-body">
-            <form action="" method="post">
+            <form action="/student/join-class" method="post" onchange="joinClassErr()">
                <div class="form-group">
                   <label for="class">Class Code</label>
                   <input type="text" name="class" value="{{classId}}" class="form-control">
+                  {{#if joinClassErr}}
+                  <small class="text-danger" id="joinClassErr">{{joinClassErr}}</small>
+                  {{/if}}
                </div>
                <button type="submit" class="btn btn-primary float-right">Join</button>
             </form>
@@ -44,6 +47,21 @@
 </style>
 
 
+
+<script>
+   function joinClassErr()
+   {
+      document.getElementById('joinClassErr').style.display = 'none'
+   }
+</script>
+
+{{#if joinClassErr}}
+<script>
+   window.onload = () => {
+      $("#join-class").modal('show')
+   }
+</script>
+{{/if}}
 
 {{#if classId}}
 <script>
