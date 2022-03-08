@@ -1,7 +1,8 @@
 var bcrypt = require('bcryptjs');
 var db = require('../config/connection');
 var collections = require('../config/collections');
-var objectId=require('mongodb').ObjectId
+var objectId=require('mongodb').ObjectId;
+const { Logger } = require('mongodb');
 
 module.exports = {
    doSignup:function(institutionData) {
@@ -377,8 +378,8 @@ $match:
   })
  })
  }, 
- /*Here we get all not verified tutors under corresponding Institution*/
-getNotVerifiedStudentsIn_institution:(institutionId)=>{
+ /*Here we get all not verified students under corresponding Institution*/
+getNotVerifiedStudentsIn_institution:(institutionId,resolveType)=>{
    console.log("hey i am here"+institutionId);
    return new Promise(async(resolve,reject)=>{ 
      let notVerifiedStudents=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
@@ -401,7 +402,9 @@ $match:
          }
        }
      ]).toArray()
-     console.log(notVerifiedStudents);
+     if(resolveType=='length')
+     resolve(notVerifiedStudents.length)
+     else(resolveType=='values')
      resolve(notVerifiedStudents)
    })
  },    
@@ -423,7 +426,7 @@ $match:
     },
 
 /*Here we get all not verified tutors under corresponding Institution*/
-getNotVerifiedTutorsIn_institution:(institutionId)=>{
+getTutorsOfDifferentStatus:(institutionId,status,resolveType)=>{
    console.log("hey i am here"+institutionId);
    return new Promise(async(resolve,reject)=>{ 
      let notVerifiedTutors=await db.get().collection(collections.TUTOR_COLLECTION).aggregate([
@@ -431,7 +434,7 @@ getNotVerifiedTutorsIn_institution:(institutionId)=>{
 $match:
 {   $and:[
       {institution:objectId(institutionId)},
-      {status:'Signup pending'}
+      {status:status}
    ]
 }
        },
@@ -446,13 +449,66 @@ $match:
          }
        }
      ]).toArray()
-     console.log(notVerifiedTutors);
+     if(resolveType=='length' && status=='Signup pending')
+     resolve(notVerifiedTutors.length)
+     else(resolveType=='values')
      resolve(notVerifiedTutors)
    })
  }, 
+  /*Here we change InstitutionID*/
+  changeInstitutionId:function(institutionId,institutionCode){
+   console.log("................");
+   console.log(institutionId);
+ return new Promise(async(resolve, reject) => {
+   db.get().collection(collections.INSTITUTION_COLLECTION).updateOne({_id:objectId(institutionId)},
+{
+
+$set:{id:institutionCode}
+}
+).then((response)=>{
+resolve(response)
+})
+})
+},
+/*Here we get details of institution*/
+getInstitutionDetails:function(institutionId) {
+   return new Promise(async(resolve, reject)=> {
+      let institution = await db.get().collection(collections.INSTITUTION_COLLECTION).findOne({_id:objectId(institutionId)})
+      resolve(institution)
+   })
+},
 
 
 
+/*Here we get all not verified students under corresponding Institution*/
+getStudentsOfDifferentStatus:(institutionId,status,resolveType)=>{
+   return new Promise(async(resolve,reject)=>{ 
+     let notVerifiedStudents=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
+       {
+$match:
+{   $and:[
+      {institution:objectId(institutionId)},
+      {status:status}
+   ]
+}
+       },
+       {
+          $sort:{fname:1,lname:1}
+       },
+      
+      {
+         $project:{
+           fname:1,lname:1,email:1,mobile:1,gender:1,date:1
 
+         }
+       }
+     ]).toArray()
+     if(resolveType=='length' && status=='Signup pending')
+     resolve(notVerifiedStudents.length)
+     else(resolveType=='values')
+     resolve(notVerifiedStudents)
+   })
+ }, 
+ 
 }
 

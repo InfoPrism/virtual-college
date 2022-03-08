@@ -9,9 +9,9 @@
             <p>
                <span class="name">{{institutionDetails.name}}</span><br>
                <span class="email" >{{institutionDetails.email}}</span><br>
-               <a href="#" class="share-btn"><i class="far fa-share-alt"></i></a>
+               <a data-toggle="modal" data-target="#shareLink" class="share-btn"><i class="far fa-share-alt"></i></a>
                <span class="secret-code">{{institutionDetails.id}}</span>
-               <a onclick="regenerateInstitutionId()" class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
+               <a href="/institution/regenerate-institutionid-update" onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')" class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
             </p>
            
          </center>

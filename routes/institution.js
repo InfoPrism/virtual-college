@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var institutionHelpers = require('../helpers/institution-helpers');
+const url = require('url');
 
 verifyLogin = function(req, res, next) {
   if(req.session.institution)
@@ -19,9 +20,15 @@ router.get('/logout', function (req, res, next) {
    res.redirect('/institution/login')
 })
 /* GET home page. */
-router.get('/', verifyLogin, function(req, res, next) {
+router.get('/', verifyLogin,async function(req, res, next) {
    let institutionDetails= req.session.institution;
-  res.render('institution/home', {title:'Home', institution:true, institutionDetails});
+   let resolveType='length'
+   let status='Signup pending'
+   let NoSignupPendingStudents= await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id,resolveType)
+   let NoSignupPendingTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
+   console.log("+++++++++++++++++++++++++++++");
+   console.log(NoSignupPendingStudents);
+   res.render('institution/home', {title:'Home', institution:true, institutionDetails,NoSignupPendingStudents,NoSignupPendingTutors});
 });
 
 /* GET login page. */
@@ -84,6 +91,19 @@ router.post('/signup', function(req, res, next) {
    })
 })
 
+/* POST regenerate institutionid */
+router.get('/regenerate-institutionid-update', function(req, res, next) {
+   console.log("ggggggggggggggggggggggggg");
+   let institutionDetails=req.session.institution;
+   institutionHelpers.generateInstitutionId().then(async(institutionCode) => {
+   institutionHelpers.changeInstitutionId(institutionDetails._id,institutionCode).then(async () => {
+      req.session.institution = await institutionHelpers.getInstitutionDetails(req.session.institution._id)
+      console.log("mmmmmmmmmm");
+      console.log(institutionCode);
+      res.redirect('/institution')
+   })
+   })
+})
 /* POST regenerate institutionid */
 router.post('/regenerate-institutionid', function(req, res, next) {
    console.log("ggggggggggggggggggggggggg");
@@ -245,7 +265,7 @@ router.get('/view-tutor-remarks/:id',verifyLogin,async function(req,res,next){
 /*GET not verified  Students under corresponding Institution */
 router.get('/notverified-students',verifyLogin,async function(req,res,next){
    let institutionDetails=req.session.institution;
-   let NotVerifiedStudents= await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id)
+   let NotVerifiedStudents= await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id,resolveType='values')
    let slno = 1
    NotVerifiedStudents.forEach(student => {
       student.slno = slno
@@ -256,37 +276,127 @@ router.get('/notverified-students',verifyLogin,async function(req,res,next){
   res.render('institution/notVerified-students',{title:'All Students',institution:true,NotVerifiedStudents,institutionDetails})
 })
 /*POST change student status*/
-router.get('/change-student-status/:status/:id',verifyLogin,async function(req,res,next){
+router.get('/change-student-status/:status/:id/:page',verifyLogin,async function(req,res,next){
    let status=req.params.status
    let studentId=req.params.id
+   let page=req.params.page
    let data= await institutionHelpers.changeStudentStatus(studentId,status)
-   if(status=="Blocked")
+   if(page=='all-students')
    res.redirect('/institution/all-students')
-   else
-   res.redirect('/institution/notverified-students')
+  else{
+  status=page;
+  res.redirect(url.format({
+     pathname:"/institution/all-students-different-status",
+     query: {
+        "status": status
+      }
+   }));
+  }
 })
 /*POST cange tutor status*/
-router.get('/change-tutor-status/:status/:id',verifyLogin,async function(req,res,next){
+router.get('/change-tutor-status/:status/:id/:page',verifyLogin,async function(req,res,next){
    let status=req.params.status
    let tutorId=req.params.id
+   let page=req.params.page
    let data= await institutionHelpers.changeTutorStatus(tutorId,status)
    console.log(data);
-   if(status=="Blocked")
-   res.redirect('/institution/all-tutors')
-   else
-   res.redirect('/institution/notverified-tutors')
+   if(page=='all-tutors')
+    res.redirect('/institution/all-tutors')
+   else{
+   status=page;
+   res.redirect(url.format({
+      pathname:"/institution/all-tutors-different-status",
+      query: {
+         "status": status
+       }
+    }));
+   }
+  
 })
 /*GET not verified  Students under corresponding Institution */
-router.get('/notverified-tutors',verifyLogin,async function(req,res,next){
+router.get('/all-tutors-different-status',verifyLogin,async function(req,res,next){
+   let status= req.query.status;
    let institutionDetails=req.session.institution;
-   let NotVerifiedTutors= await institutionHelpers.getNotVerifiedTutorsIn_institution(institutionDetails._id)
+   let resolveType='values'
    let slno = 1
-   NotVerifiedTutors.forEach(tutor => {
+   let signupPendingTutors=[],signupDenyedTutors=[],blockedTutors=[],noTutors=[];
+   if(status=="Signup pending"){
+   signupPendingTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
+   signupPendingTutors.forEach(tutor => {
       tutor.slno = slno
       console.log(tutor.slno);
       slno++
    })
    slno = null
-  res.render('institution/notVerified-tutors',{title:'All Students',institution:true,NotVerifiedTutors,institutionDetails})
+   }
+   else if(status=="Signup denyed"){
+     signupDenyedTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
+      signupDenyedTutors.forEach(tutor => {
+         tutor.slno = slno
+         console.log(tutor.slno);
+         slno++
+      })
+      slno = null
+   }
+   else if(status=="Blocked"){
+      blockedTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
+      blockedTutors.forEach(tutor => {
+         tutor.slno = slno
+         console.log(tutor.slno);
+         slno++
+      })
+      slno = null
+   }
+   console.log(blockedTutors);
+   console.log(signupPendingTutors);
+   if(signupPendingTutors.length==0 &&signupDenyedTutors.length==0&&blockedTutors.length==0)
+   {
+     noTutors=[1];
+    }
+  res.render('institution/tutors-different-status',{title:'Tutor Different Status',institution:true,signupPendingTutors,signupDenyedTutors,blockedTutors,noTutors,status,institutionDetails})
+})
+
+/*GET not verified  Students under corresponding Institution */
+router.get('/all-students-different-status',verifyLogin,async function(req,res,next){
+   let status= req.query.status;
+   let institutionDetails=req.session.institution;
+   let resolveType='values'
+   let slno = 1
+   let signupPendingStudents=[],signupDenyedStudents=[],blockedStudents=[],noStudents=[];
+   if(status=="Signup pending"){
+   signupPendingStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id,status,resolveType)
+   signupPendingStudents.forEach(student => {
+      student.slno = slno
+      console.log(student.slno);
+      slno++
+   })
+   slno = null
+   }
+   else if(status=="Signup denyed"){
+     signupDenyedStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id,status,resolveType)
+      signupDenyedStudents.forEach(student => {
+         student.slno = slno
+         console.log(student.slno);
+         slno++
+      })
+      slno = null
+   }
+   else if(status=="Blocked"){
+      blockedStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id,status,resolveType)
+      blockedStudents.forEach(student => {
+         student.slno = slno
+         console.log(student.slno);
+         slno++
+      })
+      slno = null
+   }
+   console.log(blockedStudents);
+   console.log(signupPendingStudents);
+   if(signupPendingStudents.length==0 &&signupDenyedStudents.length==0&&blockedStudents.length==0)
+   {
+     noStudents=[1];
+    }
+  res.render('institution/students-different-status',{title:'Student Different Status',institution:true,signupPendingStudents,signupDenyedStudents,blockedStudents,noStudents,status,institutionDetails})
 })
 module.exports = router;
+

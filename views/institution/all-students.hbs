@@ -17,9 +17,9 @@
                 <tr style="background-color: #2F4F4F; color: #fff;">
                     <th scope="col">No.</th>
                     <th scope="col">Name</th>
-					<th class="email-large-student" scope="col">Email</th>
-                    <th class="email-large-student" scope="col">Mobile</th>
-                     <th class="email-large-student" scope="col">Gender</th>  
+					<th class="hide-small" scope="col">Email</th>
+                    <th class="hide-small" scope="col">Mobile</th>
+                     <th class="hide-small" scope="col">Gender</th>  
                    <!-- <th scope="col">Quantity</th>-->
 				   <th  scope="col">Block</th>
                     <th scope="col">Details</th>
@@ -33,19 +33,11 @@
                     <td style="width: 20%;">{{this.slno}}</td>
                           
                     <td style="width: 20%;">{{this.fname}} {{this.lname}}</td>
-					<td class="email-large-student" style="width: 20%;">{{this.email}}</td>
-                    <td class="email-large-student"  style="width: 20%;">{{this.mobile}}</td>
-					<td class="email-large-student" style="width: 20%;">{{this.gender}}</td>
-                  <!--  <td style="width: 20%;">
-                        <button class="cart-item-count "  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1)">-</button>
-                         <span id="{{this.product._id}}">{{this.quantity}}</span>
-                          <button class="cart-item-count" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button>
-                    </td>-->
-				    <td class="email-large-student" style="width: 5%;">
-                       <a href="/institution/change-student-status/Blocked/{{this._id}}" onclick="return confirm('Are you sure want to block {{this.fname}}?')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;">Block</a>
-                    </td>
-					<td class="hide-medium" style="width: 5%;">
-                       <a href="/institution/change-student-status/Blocked/{{this._id}}" onclick="return confirm('Are you sure want to block {{this.fname}}?')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"><i class="fas fa-ban"></i></a>
+					<td class="hide-small" style="width: 20%;">{{this.email}}</td>
+                    <td class="hide-small"  style="width: 20%;">{{this.mobile}}</td>
+					<td class="hide-small" style="width: 20%;">{{this.gender}}</td>
+				    <td style="width: 5%;">
+                       <a href="/institution/change-student-status/Blocked/{{this._id}}/all-students" onclick="return confirm('Are you sure want to block {{this.fname}}?')" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"><span class="hide-small">Block</span> <span class="hide-medium"><i class="fas fa-ban"></i></span></a>
                     </td>
                     <td  style="width: 5%;">
                        <a onclick="studentInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile" class="btn btn mt-1"  style="background-color: #696969; color: #fff;"  ><i class="fas fa-info-circle"></i></a>
@@ -81,7 +73,7 @@
  <style>
 @media screen and (max-width: 600px) {
 /*Hide in small Devices*/
-.email-large-student{
+.hide-small{
 	display: none;
 }
 }
