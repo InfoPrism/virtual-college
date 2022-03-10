@@ -11,6 +11,11 @@
                 <div class="row">
                     <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
                 </div>
+                  <div class="row">
+                    <small style="padding-left: 15px; padding-top: 0;">Visible to :</small> 
+                    <small class="w-50" style="padding-top: 0; padding-left: 5px;">{{#each this.visibility}}{{this.name}}, {{/each}}</small>
+                    
+                </div>
                 <hr class="p-0">
                 <p>{{this.content}}</p>
             </div>

@@ -1,32 +1,111 @@
 <section>
-   <div class="main-container  mt-5 ml-5">
-            <div class="card">
-         <h6>My Subjects</h6>
-         <p>Here you can see the subjects that you created</p>
-     </div>
-   </div>
+   <div class="container-fluid">
+        <div class="row mb-3 pl-3">
+            {{#each subjects}}
+            <div class="col-md-6 pl-0 pb-3">
+                <div class="card" style="height: 120px;">
+                    <div class="row" style="height: 120px;">
+                        <div class="col-4">
+                            {{#each class}}
+                            <div class="class-title limit-line-length-vertical">{{this.class_name}}</div>
+                            {{/each}}
+                        </div>
+                        <div class="col-8">
+                            <i class="far fa-trash-alt text-muted delete-btn" data-toggle="modal"
+                                data-target="#delete-subject" onclick="openDeleteSubjectModal('{{this._id}}')"></i>
+                            <div class="subject-title limit-line-length-vertical">{{this.name}}</div>
+                            <small class="tutor-name limit-line-length-horizontal">{{this.tutor.fname}} {{this.tutor.lname}}</small>
+                        </div>
+                        <a href="/tutor/view-subject/{{this._id}}" class="continue-btn">Continue</a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
 </section>
+
+<div class="modal fade" id="delete-subject" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Delete Subject</h5>
+                <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">Do you really want to delete this subject?</div>
+                <a href="" class="btn btn-danger float-right" id="delete-btn">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
 
-.main-container{
-   
-    /*margin-left: 250px;*/
-    background-size: cover;
-    height: 100vh;
-    transition: 0.4s;
-    margin-left: 25px;
-}
+.card {
+        overflow: hidden;
+        border-radius: 10px;
+    }
 
-.main-container .card{
-    background:#D3D3D3;
-    color: #000;
-    padding: 15px 0px 0px 15px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    .card .col-4 {
+        position: relative;
+        background: #2A265F;
+        color: #fff;
+        padding: 5px 28px;
+    }
 
-}
+    .card .col-8 {
+        position: relative;
+        color: #2A265F;
+        padding: 8px 15px;
+    }
 
+    .card .class-title {
+        font-size: 20px;
+        font-weight: 500;
+        -webkit-line-clamp: 3;
+        padding-top: 2px;
+    }
+
+    .card .subject-title {
+        font-size: 18px;
+        font-weight: 500;
+        -webkit-line-clamp: 2;
+        margin-right: 38px;
+    }
+
+    .card .tutor-name {
+        position: absolute;
+        bottom: 12px;
+        width: calc(100% - 140px);
+    }
+
+    .card .delete-btn {
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .card .continue-btn {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        background: #2A265F;
+        color: #fff;
+        font-size: small;
+        padding: 8px 10px;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        text-decoration: none;
+    }
 
 </style>
+
+<script>
+    function openDeleteSubjectModal(subjectId) {
+        document.getElementById('delete-btn').setAttribute("href", "/tutor/delete-subject/" + subjectId)
+    }
+</script>

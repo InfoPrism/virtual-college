@@ -12,9 +12,10 @@ verifyLogin = function (req, res, next) {
 };
 
 /* GET home page. */
-router.get('/', verifyLogin, function (req, res, next) {
+router.get('/', verifyLogin, async function (req, res, next) {
    let tutorDetails = req.session.tutor;
-   res.render('tutor/home', { title: 'Home', tutor: true,tutorDetails });
+   let subjects =await tutorHelpers.getAllSubjectDetails(tutorDetails._id);
+   res.render('tutor/home', { title: 'Home', tutor: true,tutorDetails,subjects });
 });
 
 /* GET login page. */
@@ -115,7 +116,7 @@ router.get('/add-announcement',verifyLogin,function(req,res,next){
    })
 })
 
-/* post my announcement page. */
+/* POST my announcement page. */
 
 router.post('/add-announcement',verifyLogin, function(req,res,next){
    tutorHelpers.postMyAnnouncements(req.body).then(()=>{
@@ -123,10 +124,18 @@ router.post('/add-announcement',verifyLogin, function(req,res,next){
    })
 })
 
+/* Delete my announcement */
+
 router.get('/delete-announcement',verifyLogin,function(req,res,next){
    tutorHelpers.deleteMyAnnouncement(req.query.id).then(()=>{
       res.redirect('/tutor/my-announcements')
    })
+})
+
+/* Delete Subject */
+
+router.get('/delete-subject/:id',verifyLogin,function(req,res,next){
+   res.redirect('/tutor')
 })
 
 module.exports = router;

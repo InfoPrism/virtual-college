@@ -8,6 +8,7 @@ module.exports = {
       return new Promise(async (resolve, reject) => {
          delete tutorData.cpassword
          tutorData.date = new Date()
+         tutorData.status = 'Signup pending'
          tutorData.remarks = []
          response = {}
          let tutor = await db.get().collection(collections.TUTOR_COLLECTION).findOne({ $or: [{ email: tutorData.email }, { mobile: tutorData.mobile }] })
@@ -101,16 +102,16 @@ module.exports = {
 
    /* Get all announcements */
 
-   getAllAnnouncements:function() {
-      return new Promise(async(resolve, reject)=> {
-         let announcements = await db.get().collection(collections.ANNOUNCEMENT_COLLECTION).find({$or:[{visiblity:'Everyone'},{visiblity:'Tutor'}]}).sort({_id:-1}).toArray()
+   getAllAnnouncements: function () {
+      return new Promise(async (resolve, reject) => {
+         let announcements = await db.get().collection(collections.ANNOUNCEMENT_COLLECTION).find({ $or: [{ visiblity: 'Everyone' }, { visiblity: 'Tutor' }] }).sort({ _id: -1 }).toArray()
          resolve(announcements)
       })
    },
 
    /* Get my subjects */
-   getSubjects : function(tutor){
-      return new Promise(async(resolve,reject)=>{
+   getSubjects: function (tutor) {
+      return new Promise(async (resolve, reject) => {
          let subjects = await db.get().collection(collections.SUBJECT_COLLECTION).aggregate([
             {
 
@@ -123,7 +124,7 @@ module.exports = {
                $project: {
                   name: 1
                }
-            }  
+            }
          ]).toArray()
          resolve(subjects)
       })
@@ -131,40 +132,90 @@ module.exports = {
 
    /* Get my announcements */
 
-   getMyannouncements:function(tutor){
-      return new Promise(async(resolve,reject)=>{
-         let announcements = await db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).find({tutor : objectId(tutor)}).sort({_id :-1}).toArray()
+   getMyannouncements: function (tutor) {
+      return new Promise(async (resolve, reject) => {
+
+         let announcements = await db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).aggregate([
+            {
+               $match: { tutor: objectId(tutor) }
+            },
+            {
+               $lookup :{
+                  from : collections.SUBJECT_COLLECTION,
+                  let : {visibility : '$visibility'},
+                  pipeline: [
+                     {
+                        $match: {
+                           $expr: {
+                              $in: ['$_id', '$$visibility']
+                           }
+                        }
+                     }
+                  ],
+                  as : 'visibility'
+               }
+            },
+            {
+               $project: {
+                  title: 1, content: 1, date: 1,visibility : 1
+               }
+            }
+         ]).sort({ _id: -1 }).toArray()
          resolve(announcements)
       })
    },
 
-   /* Post my announcements */
-   
-   postMyAnnouncements:function(announcement){
-      return new Promise(async(resolve,reject)=>{
+/* Post my announcements */
+
+   postMyAnnouncements: function(announcement) {
+      return new Promise(async (resolve, reject) => {
          let date = new Date()
-         if(typeof(announcement.visibility) != "object"){
-            console.log("True");
+         if (typeof (announcement.visibility) != "object") {
             announcement.visibility = [announcement.visibility]
          }
          console.log(announcement.visibility);
-         for(let i=0; i<announcement.visibility.length;i++){
+         for (let i = 0; i < announcement.visibility.length; i++) {
             announcement.visibility[i] = objectId(announcement.visibility[i])
          }
-         announcement.tutor= objectId(announcement.tutor)
+         announcement.tutor = objectId(announcement.tutor)
          announcement.date = await date.toDateString() + ' Time: ' + date.toLocaleTimeString()
-         db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).insertOne(announcement).then((data)=>{
+         db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).insertOne(announcement).then((data) => {
             resolve()
          })
       })
    },
-   /* Delete my announcement */
-   deleteMyAnnouncement:function(id){
-      return new Promise((resolve,reject)=>{
-         db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).deleteOne({_id: objectId(id)}).then((data)=>{
+
+/* Delete my announcement */
+
+   deleteMyAnnouncement: function(id) {
+      return new Promise((resolve, reject) => {
+         db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).deleteOne({ _id: objectId(id) }).then((data) => {
             resolve()
          })
       })
+   },
+
+   /* Get full details of subject */
+
+   getAllSubjectDetails: function(tutor){
+      return new Promise(async (resolve,reject)=>{
+         let subjects = await db.get().collection(collections.SUBJECT_COLLECTION).aggregate([
+            {
+               $match : {tutor : objectId(tutor)}
+            },
+            {
+              $lookup : {
+               from: collections.CLASS_COLLECTION,
+               localField: 'class',
+               foreignField: '_id',
+               as: 'class'
+              }
+            }
+         ]).toArray()
+         resolve(subjects)
+      })
    }
+
 }
+
 
