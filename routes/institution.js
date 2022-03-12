@@ -398,5 +398,37 @@ router.get('/all-students-different-status',verifyLogin,async function(req,res,n
     }
   res.render('institution/students-different-status',{title:'Student Different Status',institution:true,signupPendingStudents,signupDenyedStudents,blockedStudents,noStudents,status,institutionDetails})
 })
+
+/* GET profile page. */
+router.get('/profile', verifyLogin, function (req, res, next) {
+   institutionHelpers.getInstitutionDetails(req.session.institution._id).then(async(institutionDetails) => {
+      console.log(institutionDetails);
+         institutionDetails.date = institutionDetails.date.toDateString()
+         let classes = await institutionHelpers.getAllClass(req.session.institution._id)
+         let noData;
+         noData = await institutionHelpers.getNoData(req.session.institution._id)
+         maxNoData=Math.max(...noData);
+         console.log(maxNoData);
+         console.log(noData);
+         res.render('institution/profile',{title:'Profile',classes,institutionDetails,maxNoData,noData,institution:true})
+      })
+})
+
+/* POST profile page. */
+router.post('/profile', verifyLogin, function (req, res, next) {
+   institutionHelpers.updateInstitutionDetails(req.body, req.session.institution._id).then(async () => {
+      req.session.institution = await institutionHelpers.getInstitutionDetails(req.session.institution._id)
+      res.redirect('/institution/profile')
+   })
+})
+
+/* POST profile picture. */
+router.post('/profile-picture', verifyLogin, function(req, res, next) {
+   institutionHelpers.updateInstitutionProfilePicture(req.session.institution._id, req.files).then(async()=> {
+      req.session.institution = await institutionHelpers.getInstitutionDetails(req.session.institution._id)
+      res.redirect('/institution/profile')
+   })
+})
+
 module.exports = router;
 

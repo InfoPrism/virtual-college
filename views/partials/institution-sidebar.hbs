@@ -5,13 +5,13 @@
       <div class="sidebar-menu">
          <center class="profile">
              
-            <img src="/images/college logo.jpeg" alt="Student Profile">
+       <img src="{{#if institutionDetails.picture}}/images/institution_profile/{{institutionDetails._id}}.jpg{{else}}/images/school.jpg{{/if}}" alt="{{institutionDetails.name}}" width="150px" height="150px" class="rounded-circle mb-3">
             <p>
                <span class="name">{{institutionDetails.name}}</span><br>
                <span class="email" >{{institutionDetails.email}}</span><br>
                <a data-toggle="modal" data-target="#shareLink" class="share-btn"><i class="far fa-share-alt"></i></a>
                <span class="secret-code">{{institutionDetails.id}}</span>
-               <a href="/institution/regenerate-institutionid-update" onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')" class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
+               <a href="/institution/regenerate-institutionid-update/sidebar" onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')" class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
             </p>
            
          </center>
@@ -40,10 +40,10 @@
          
             <li class="item" id="settings">
                <a href="#settings" class="menu-btn">
-               <i class="far fa-cog"></i><span>Settings  <i class="fas fa-chevron-down drop-down"></i></span>
+               <i class="far fa-cog"></i><span>Settings<i class="fas fa-chevron-down drop-down"></i></span>
                </a>
                <div class="sub-menu">
-                  <a href="#"><i class="far fa-user-circle"></i> <span>Profile</span></a>
+                  <a href="/institution/profile"><i class="far fa-user-circle"></i> <span>Profile</span></a>
                   <a href="/institution/logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
                </div>
             </li>

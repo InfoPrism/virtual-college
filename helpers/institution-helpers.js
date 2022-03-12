@@ -3,6 +3,7 @@ var db = require('../config/connection');
 var collections = require('../config/collections');
 var objectId=require('mongodb').ObjectId;
 const { Logger } = require('mongodb');
+var fs = require('fs');
 
 module.exports = {
    doSignup:function(institutionData) {
@@ -479,7 +480,6 @@ getInstitutionDetails:function(institutionId) {
 },
 
 
-
 /*Here we get all not verified students under corresponding Institution*/
 getStudentsOfDifferentStatus:(institutionId,status,resolveType)=>{
    return new Promise(async(resolve,reject)=>{ 
@@ -510,5 +510,128 @@ $match:
    })
  }, 
  
+ /*Here we store data of every class we created as an array*/
+ getNoData:function(InstitutionId){
+   return new Promise(async(resolve,reject)=>{
+      
+
+
+      let classes=await db.get().collection(collections.CLASS_COLLECTION).aggregate([
+         {
+           
+           $match:
+           {
+               institutionId:InstitutionId
+            }
+         },
+       ]).toArray()
+       let students=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
+         {
+           $match:{ 
+             $and:[
+               {institution:objectId(InstitutionId)},
+               {status:'Signup verified'}
+                  ]
+                  }
+         },
+         ]).toArray()
+         let tutors=await db.get().collection(collections.TUTOR_COLLECTION).aggregate([
+            {
+              $match:{ 
+                 $and:[
+                   {institution:objectId(InstitutionId)},
+                   {status:'Signup verified'}
+                      ]
+                      }
+            },
+          ]).toArray()
+          let blockedStudents=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
+            {
+              $match:{ 
+                $and:[
+                  {institution:objectId(InstitutionId)},
+                  {status:'Blocked'}
+                     ]
+                     }
+            },
+         ]).toArray()
+         let blockedTutors=await db.get().collection(collections.TUTOR_COLLECTION).aggregate([
+            {
+              $match:{ 
+                $and:[
+                  {institution:objectId(InstitutionId)},
+                  {status:'Blocked'}
+                     ]
+                     }
+            },
+         ]).toArray()
+       noData=[students.length,tutors.length,blockedStudents.length,blockedTutors.length,classes.length]
+       resolve(noData)
+   })
+},
+updateStudentDetails: function (studentData, studentId) {
+   return new Promise((resolve, reject) => {
+      db.get().collection(collections.STUDENT_COLLECTION).updateOne({ _id: objectId(studentId) },
+         {
+            $set:
+            {
+               fname: studentData.fname,
+               lname: studentData.lname,
+               email: studentData.email,
+               mobile: studentData.mobile,
+               guardian: studentData.guardian,
+               address: studentData.address
+            }
+         }).then(() => {
+            resolve()
+         })
+   })
+},
+ /*Here we change InstitutionID*/
+ updateInstitutionDetails:function(institutionData,institutionId){
+ return new Promise(async(resolve, reject) => {
+   db.get().collection(collections.INSTITUTION_COLLECTION).updateOne({_id:objectId(institutionId)},
+{
+
+   $set:
+   {
+      name: institutionData.name,
+      email: institutionData.email,
+      mobile: institutionData.mobile,
+      type: institutionData.type,
+      board: institutionData.board,
+      head: institutionData.head,
+      address: institutionData.address
+   }
+}
+).then((response)=>{
+resolve(response)
+})
+})
+},
+
+
+updateInstitutionProfilePicture: function (institutionId, files) {
+   return new Promise((resolve, reject) => {
+      if (files) {
+         files.image.mv('./public/images/institution_profile/' + institutionId + '.jpg', function (err) {
+            if (!err) {
+               db.get().collection(collections.INSTITUTION_COLLECTION).updateOne({ _id: objectId(institutionId) }, { $set: { picture: true } }).then(() => {
+                  resolve()
+               })
+            }
+         })
+      }
+      else {
+         fs.unlink('./public/images/institution_profile/' + institutionId + '.jpg', function (err) {
+            if (!err) {
+               db.get().collection(collections.INSTITUTION_COLLECTION).updateOne({ _id: objectId(institutionId) }, { $unset: { picture: 1 } }).then(() => {
+                  resolve()
+               })
+            }
+         })
+      }
+   })
+},
 }
 
