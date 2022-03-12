@@ -124,7 +124,8 @@ router.get('/add-class',verifyLogin,async function(req,res,next){
 
 /*POST add a new class by institution*/
 router.post('/add-class',verifyLogin,function(req,res,next){
-   institutionHelpers.addClass(req.body).then(()=>{
+   let institutionDetails=req.session.institution;
+   institutionHelpers.addClass(req.body,institutionDetails._id).then(()=>{
    res.redirect('/institution/add-class')
    })
 })
@@ -157,7 +158,8 @@ router.get('/add-announcement',verifyLogin,async function(req,res,next){
 /* POST Create new Announcement. Here we check the announcement is created to whom and it will redirect to that page*/
 router.post('/add-announcement', function(req, res, next) {
    let announcement=req.body;
-   institutionHelpers.addAnnouncement(req.body).then((response) => {
+   let institutionDetails=req.session.institution
+   institutionHelpers.addAnnouncement(req.body,institutionDetails._id).then((response) => {
       if(announcement.visiblity=='Everyone')
        res.redirect('/institution/everyOne-announcement')
       else if(announcement.visiblity=='Student')
@@ -329,7 +331,7 @@ router.get('/all-tutors-different-status',verifyLogin,async function(req,res,nex
    })
    slno = null
    }
-   else if(status=="Signup denyed"){
+   else if(status=="Signup denied"){
      signupDenyedTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
       signupDenyedTutors.forEach(tutor => {
          tutor.slno = slno
@@ -372,7 +374,7 @@ router.get('/all-students-different-status',verifyLogin,async function(req,res,n
    })
    slno = null
    }
-   else if(status=="Signup denyed"){
+   else if(status=="Signup denied"){
      signupDenyedStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id,status,resolveType)
       signupDenyedStudents.forEach(student => {
          student.slno = slno

@@ -80,9 +80,10 @@ module.exports = {
       })
    },
    /*Here we create a new class */
-   addClass:function(classData){
+   addClass:function(classData,institutionId){
       return new Promise(async(resolve, reject) => {
                   /*Date format*/
+                  classData.institution = objectId(institutionId)
                   let  date= new Date()
                   console.log(date.toLocaleString('en-US', {
                   weekday: 'short', // "Sat"
@@ -111,20 +112,21 @@ module.exports = {
               
               $match:
               {
-                  institutionId:InstitutionId
+                  institutionId:objectId(InstitutionId)
                }
             },
             {
               $project:{
-               class_name:1,class_description:1,Duration:1,date :1
+               name:1,description:1,duration:1,date :1
               }
             }
           ]).toArray()
           resolve(classes)
       })
    },
-   addAnnouncement:function (announcementData){
+   addAnnouncement:function (announcementData,institutionId){
       return new Promise(async (resolve, reject) => {
+         announcementData.institutionId = objectId(institutionId)
          /*Date format*/
          let  date= new Date()
          console.log(date.toLocaleString('en-US', {
@@ -152,7 +154,7 @@ module.exports = {
            $match:
            {
               $and:[
-                 {institutionId:InstitutionId},
+                 {institutionId:objectId(InstitutionId)},
                  {visiblity:type},
               ]
            }
@@ -517,12 +519,8 @@ $match:
 
 
       let classes=await db.get().collection(collections.CLASS_COLLECTION).aggregate([
-         {
-           
-           $match:
-           {
-               institutionId:InstitutionId
-            }
+         { 
+           $match:{institutionId:objectId(InstitutionId)}
          },
        ]).toArray()
        let students=await db.get().collection(collections.STUDENT_COLLECTION).aggregate([
@@ -559,7 +557,7 @@ $match:
             {
               $match:{ 
                 $and:[
-                  {institution:objectId(InstitutionId)},
+                  {institutionId:objectId(InstitutionId)},
                   {status:'Blocked'}
                      ]
                      }

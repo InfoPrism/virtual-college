@@ -10,7 +10,7 @@
                <div class="form-group">
                   <input type="text" name="institutionId" id="" value="{{institutionDetails._id}}" hidden>
                   <label for="name">Class Name</label>
-                  <input type="text" class="form-control" id="class_name" name="class_name" required>
+                  <input type="text" class="form-control" id="name" name="name" required>
                </div>
                <!-- SHORT NAME we can enable if we want
                  <div class="form-group">
@@ -20,12 +20,12 @@
                -->
                 <div class="form-group">
                   <label for="address">Class Description</label>
-                  <textarea rows="3" type="text" class="form-control" id="class_description" name="class_description"></textarea>
+                  <textarea rows="3" type="text" class="form-control" id="description" name="description"></textarea>
                </div>
                <div class="form-group">
-                 <label for="visible">Course Duration</label>
+                 <label for="visible">Course duration</label>
                
-               <select class="custom-select" name="Duration" required>
+               <select class="custom-select" name="duration" required>
                 <option selected value="">Choose option</option>
                <option value="3 month">3 month</option>
                <option value="6 month">6 month</option>
@@ -47,7 +47,7 @@
  <!--Here we check there is any class created or not -->
 <div id="list-example" class="list-group">
    {{#each classes}}
-  <a class="list-group-item list-group-item-action" >{{this.class_name}}</a>
+  <a class="list-group-item list-group-item-action" >{{this.name}}</a>
    {{/each}}        
     
   </div>

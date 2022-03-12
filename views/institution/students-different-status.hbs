@@ -9,7 +9,7 @@
          
       </Center>
         <div class="row">
-           <a href="/institution/all-students-different-status/?status=Signup denyed" class="btn btn ml-auto mr-0 mb-3" style="background-color: #212529; color: #fff;">All signup denyed students</a>
+           <a href="/institution/all-students-different-status/?status=Signup denied" class="btn btn ml-auto mr-0 mb-3" style="background-color: #212529; color: #fff;">All signup denyed students</a>
           
       
         <table class="table  ml-5" style="background-color:#D3D3D3;">
@@ -44,7 +44,7 @@
    <button class="btn btn dropdown-toggle" style="background-color: #696969; color: #fff;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="large-screen">Signup</span> Pending</button>
   <div class="dropdown-menu"  style="background-color: #696969; "aria-labelledby="dropdownMenuButton">
       <a class="dropdown-item" style="color: #fff;"  href="/institution/change-student-status/Signup verified/{{this._id}}/Signup pending" onclick="return confirm('Are you sure want to validate {{this.fname}} signup?')">Allow Signup</a> 
-	  <a class="dropdown-item" style="color: #fff;"  href="/institution/change-student-status/Signup denyed/{{this._id}}/Signup pending" onclick="return confirm('Are you sure want to deny {{this.fname}} signup?')">Deny Signup</a> 
+	  <a class="dropdown-item" style="color: #fff;"  href="/institution/change-student-status/Signup denied/{{this._id}}/Signup pending" onclick="return confirm('Are you sure want to deny {{this.fname}} signup?')">Deny Signup</a> 
   </div>
 </div>
                     </td>
@@ -106,7 +106,7 @@
 	<div class="dropdown">
   <button class="btn btn dropdown-toggle" style="background-color: #696969; color: #fff;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="large-screen">Signup</span> Denyed</button>
   <div class="dropdown-menu"  style="background-color: #696969; "aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" style="color: #fff;"  href="/institution/change-student-status/Signup verified/{{this._id}}/Signup denyed" onclick="return confirm('Are you sure want to validate {{this.fname}} signup?')">Allow Signup</a> 
+      <a class="dropdown-item" style="color: #fff;"  href="/institution/change-student-status/Signup verified/{{this._id}}/Signup denied" onclick="return confirm('Are you sure want to validate {{this.fname}} signup?')">Allow Signup</a> 
 	  
   </div>
 </div>
@@ -198,7 +198,7 @@
             <p class="mt-5">There is no Students with {{status}}</p>
             <a href="/institution/all-students-different-status/?status=Signup pending" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Signup pending Students</a>
             <a href="/institution/all-students-different-status/?status=Blocked" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Blocked Students</a>
-            <a href="/institution/all-students-different-status/?status=Signup denyed" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Signup denyed Students</a>
+            <a href="/institution/all-students-different-status/?status=Signup denied" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Signup denied Students</a>
          </div>
       </div>
    </div>

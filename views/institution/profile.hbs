@@ -9,8 +9,8 @@
                     <div class="text-muted">{{institutionDetails.email}}</div>
                     <div class="text-muted">Joined on {{institutionDetails.date}}</div>
                     <div style="margin-top: 0.85em;">
-                        <button class="btn btn-outline-primary" onclick="editToSaveBtn()">Edit</button>
-                        <a href="/institution/logout" class="btn btn-primary">Logout</a>
+                        <button class="edit btn" onclick="editToSaveBtn()">Edit</button>
+                        <a href="/institution/logout" class="btn btn" >Logout</a>
                     </div>
                 </div>
             </div>
@@ -20,39 +20,39 @@
                     <small>Number of Students</small>
                     <a href="/institution/all-students">
                     <div class="progress mb-3 mt-1">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[0]}} Students</div>
+                        <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[0]}} Students</div>
                     </div>
                     </a>
                     <small>Number of Tutors</small>
                     <a href="/institution/all-tutors">
                     <div class="progress mb-3 mt-1">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[1]}} Tuors</div>
+                        <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[1]}} Tuors</div>
                     </div>
                     </a>
                     <small>Blocked Students</small>
                     <a href="/institution/all-students-different-status/?status=Blocked">
                     <div class="progress mb-3 mt-1">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">{{noData.[2]}} Students</div>
+                        <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">{{noData.[2]}} Students</div>
                     </div>
                     </a>
                     <small>Blocked Tutors</small>
                     <a href="/institution/all-tutors-different-status/?status=Blocked">
                     <div class="progress mb-3 mt-1">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[3]}} Tutors</div>
+                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[3]}} Tutors</div>
                     </div>
                     </a>
                     <small>Classes</small>
                     <div class="progress mt-1">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[4]}} Classes</div>
+                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{noData.[4]}} Classes</div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card p-3" style="height: 20.7em;">
-                    <h4>Subjects</h4>
+                    <h4>Classes</h4>
                     <div class="scrollmenu" style="overflow-y: scroll;">
                         {{#each classes}}
-                        <a href="#" class="btn btn-primary m-1">{{this.class_name}}</a>
+                        <a href="#" class="classes btn btn m-1">{{this.name}}</a>
                         {{/each}}
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                                 <textarea rows="3" name="address" class="form-control" id="address" style="background: #fff;" disabled>{{institutionDetails.address}}</textarea>
                             </div>
                             <div class="col-md-12">
-                                <button type="button" class="btn btn-primary" id="edit-btn" onclick="editToSaveBtn()">Edit</button>
+                                <button type="button" class="btn btn" id="edit-btn" onclick="editToSaveBtn()">Edit</button>
                                 <button type="submit" class="btn btn-primary" id="save-btn" style="display: none;">Save</button>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                     <input type="file" name="image" class="custom-file-input" id="customFile" onchange="uploadImage(event)">
                     <label class="custom-file-label" for="customFile" id="img-name">No file chosen</label>
                 </div>
-               <button type="submit" class="btn btn-primary float-right" id="save-img-btn" disabled>Save</button>
+               <button type="submit" class="btn btn float-right" id="save-img-btn" disabled>Save</button>
             </form>
          </div>
       </div>
@@ -200,3 +200,22 @@
       document.getElementById('name').focus()
    }
 </script>
+
+<style>
+    .btn{
+         background-color: #222424;
+        color: #fff;
+    }
+    .progress-bar{
+        background-color: rgb(105,105,105);
+        color: #fff;
+    }
+    .classes{
+        background-color: rgb(105,105,105);
+        color: #fff;
+    }
+    .edit{
+        background-color: rgb(105,105,105);
+        outline-color: blue;
+    }
+</style>
