@@ -83,7 +83,7 @@ module.exports = {
    addClass:function(classData,institutionId){
       return new Promise(async(resolve, reject) => {
                   /*Date format*/
-                  classData.institution = objectId(institutionId)
+                  classData.institutionId = objectId(institutionId)
                   let  date= new Date()
                   console.log(date.toLocaleString('en-US', {
                   weekday: 'short', // "Sat"
