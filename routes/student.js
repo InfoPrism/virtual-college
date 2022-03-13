@@ -13,9 +13,9 @@ verifyLogin = (req, res, next) => {
 
 /* GET home page. */
 router.get('/', verifyLogin, function (req, res, next) {
-   studentHelpers.getAllClasses(req.session.student._id).then((subjects)=> {
+   studentHelpers.getAllClasses(req.session.student._id).then((subjects) => {
       let classId = req.query.class
-      res.render('student/home', { title: 'Home', joinClassErr:req.session.studentJoinClassErr, subjects, classId, student: req.session.student });
+      res.render('student/home', { title: 'Home', joinClassErr: req.session.studentJoinClassErr, subjects, classId, student: req.session.student });
       req.session.studentJoinClassErr = false
    })
 });
@@ -56,9 +56,9 @@ router.get('/signup', function (req, res, next) {
 
 /* POST signup page. */
 router.post('/signup', function (req, res, next) {
-   studentHelpers.doSignup(req.body).then((student) => {
-      req.session.student = student
-      res.redirect('/student')
+   studentHelpers.doSignup(req.body).then((signupMsg) => {
+      req.session.studentLoginErr = signupMsg
+      res.redirect('/student/login')
    }).catch((signupErr) => {
       req.session.studentSignupErr = signupErr
       res.redirect('/student/signup')
@@ -74,7 +74,7 @@ router.get('/logout', function (req, res, next) {
 /* GET profile page. */
 router.get('/profile', verifyLogin, function (req, res, next) {
    studentHelpers.getStudentDetails(req.session.student._id).then((student) => {
-      studentHelpers.getInstitutionDetails(student.institution).then(async(institution) => {
+      studentHelpers.getInstitutionDetails(student.institution).then(async (institution) => {
          student.institution = institution.name
          student.date = student.date.toDateString()
          if (student.gender === 'Male')
@@ -96,8 +96,8 @@ router.post('/profile', verifyLogin, function (req, res, next) {
 })
 
 /* POST profile picture. */
-router.post('/profile-picture', verifyLogin, function(req, res, next) {
-   studentHelpers.updateStudentProfilePicture(req.session.student._id, req.files).then(async()=> {
+router.post('/profile-picture', verifyLogin, function (req, res, next) {
+   studentHelpers.updateStudentProfilePicture(req.session.student._id, req.files).then(async () => {
       req.session.student = await studentHelpers.getStudentDetails(req.session.student._id)
       res.redirect('/student/profile')
    })
@@ -105,24 +105,32 @@ router.post('/profile-picture', verifyLogin, function(req, res, next) {
 
 /* GET institution announcement page. */
 router.get('/institution-announcement', verifyLogin, function (req, res, next) {
-   studentHelpers.getAllAnnouncements().then((announcements) => {
-      res.render('student/announcement', { title: 'Announcement', announcements, student: req.session.student })
+   studentHelpers.getAllInstitutionAnnouncements().then((announcements) => {
+      res.render('student/institution-announcement', { title: 'Institution Announcement', announcements, student: req.session.student })
+   })
+})
+
+/* GET tutor announcement page. */
+router.get('/tutor-announcement', verifyLogin, function (req, res, next) {
+   studentHelpers.getAllTutorAnnouncements(req.session.student.subjects).then((announcements) => {
+      res.render('student/tutor-announcement', { title: 'Tutor Announcement', announcements, student: req.session.student })
    })
 })
 
 /* POST join class */
-router.post('/join-class', verifyLogin, function(req, res, next) {
-   studentHelpers.joinClass(req.session.student._id, req.body.class).then(async()=> {
+router.post('/join-class', verifyLogin, function (req, res, next) {
+   studentHelpers.joinClass(req.session.student._id, req.body.class).then(async () => {
       req.session.student = await studentHelpers.getStudentDetails(req.session.student._id)
       res.redirect('/student')
-   }).catch((joinClassErr)=> {
+   }).catch((joinClassErr) => {
       req.session.studentJoinClassErr = joinClassErr
       res.redirect('/student')
    })
 })
 
-router.get('/unenroll-class/:id', verifyLogin, function(req, res, next) {
-   studentHelpers.unenrollClass(req.session.student._id, req.params.id).then(()=> {
+router.get('/unenroll-class/:id', verifyLogin, function (req, res, next) {
+   studentHelpers.unenrollClass(req.session.student._id, req.params.id).then(async () => {
+      req.session.student = await studentHelpers.getStudentDetails(req.session.student._id)
       res.redirect('/student')
    })
 })

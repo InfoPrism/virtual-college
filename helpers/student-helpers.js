@@ -22,9 +22,11 @@ module.exports = {
             if (institution) {
                studentData.institution = objectId(institution._id)
                studentData.password = await bcrypt.hash(studentData.password, 10)
+               studentData.status = 'Signup pending'
                db.get().collection(collections.STUDENT_COLLECTION).insertOne(studentData).then((data) => {
                   student = data.ops[0]
-                  resolve(student)
+                  signupMsg = "Your status is now pending. Institution will verify your details then you can logged in."
+                  resolve(signupMsg)
                })
             }
             else {
@@ -41,7 +43,21 @@ module.exports = {
          if (student) {
             bcrypt.compare(studentData.password, student.password).then((status) => {
                if (status) {
-                  resolve(student)
+                  if (student.status === 'Signup verified') {
+                     resolve(student)
+                  }
+                  else if (student.status === 'Signup pending') {
+                     loginErr = "Your status is now pending. Institution will verify your details then you can logged in."
+                     reject(loginErr)
+                  }
+                  else if (student.status == 'Signup denyed') {
+                     loginErr = "Your signup request was denied by institution. Please contact your institution."
+                     reject(loginErr)
+                  }
+                  else {
+                     loginErr = "Your account was blocked. Please contact your institution"
+                     reject(loginErr)
+                  }
                }
                else {
                   loginErr = "Invalid Email or Password"
@@ -107,10 +123,30 @@ module.exports = {
          }
       })
    },
-   getAllAnnouncements: function () {
+   getAllInstitutionAnnouncements: function () {
       return new Promise(async (resolve, reject) => {
          let announcements = await db.get().collection(collections.ANNOUNCEMENT_COLLECTION).find({ $or: [{ visiblity: 'Everyone' }, { visiblity: 'Student' }] }).sort({ _id: -1 }).toArray()
          resolve(announcements)
+      })
+   },
+   getAllTutorAnnouncements: function (subjects) {
+      return new Promise(async (resolve, reject) => {
+         let allAnnouncements = await db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).find({}).toArray()
+         subjectAnnouncements = []
+         subjects.forEach((subject) => {
+            allAnnouncements.forEach((announcement) => {
+               announcement.visibility.forEach((vis) => {
+                  let subjectAnnouncementExist = false
+                  subjectAnnouncements.forEach((subjectAnnouncement) => {
+                     if (announcement._id === subjectAnnouncement._id)
+                        subjectAnnouncementExist = true
+                  })
+                  if (subject.toString() === vis.toString() && subjectAnnouncementExist === false)
+                     subjectAnnouncements.push(announcement)
+               })
+            })
+         })
+         resolve(subjectAnnouncements)
       })
    },
    joinClass: function (studentId, subjectId) {
@@ -144,7 +180,7 @@ module.exports = {
    },
    unenrollClass: function (studentId, subjectId) {
       return new Promise((resolve, reject) => {
-         db.get().collection(collections.STUDENT_COLLECTION).updateOne({ _id: objectId(studentId) }, { $pull: { subjects: objectId(subjectId) } }).then(()=> {
+         db.get().collection(collections.STUDENT_COLLECTION).updateOne({ _id: objectId(studentId) }, { $pull: { subjects: objectId(subjectId) } }).then(() => {
             resolve()
          })
       })
