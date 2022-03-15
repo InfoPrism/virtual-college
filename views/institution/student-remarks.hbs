@@ -3,7 +3,9 @@
    <div class="container">
      
          <div class="row">
+            
             <div class="col-md-7">
+               
                <h3 class="mb-2 text-center" style="padding-top: 18px;">Remark of {{studentDetail.fname}} {{studentDetail.lname}}</h3>
                 {{#each studentRemarks}}
                  <div class="card">
@@ -21,6 +23,9 @@
                   
               
 	<div class="row z-depth-3">
+       
+
+    
        
 				<div class="col-sm-4 rounded-left" style="background-color: #000;">
 				   <div class="card-block text-center text-white">
@@ -88,7 +93,6 @@
 							  <h6 class="text-muted" id="student-email2">{{studentDetail.email}}</h6>
 					   </div>
 				   </div>
-				   <hr class="bg-primary">
 				    <div class="smallDevice-subjects">
 				      <h5 class="mt-3 font-weight-bold">Subjects Enrolled:</h5>
 					   
@@ -131,7 +135,7 @@
       <div class="row">
          <div class="col-md-12 text-center">
             <p class="mt-5">{{studentDetail.fname}} has not had any remark</p>
-            <a href="/institution/add-announcement" class="btn btn-sm" style="background-color:#222424; color: #fff;">Add new remark</a>
+            <a href="/institution/add-remarks/{{studentDetail._id}}" class="btn btn-sm" style="background-color:#222424; color: #fff;">Add new remark</a>
          </div>
       </div>
    </div>

@@ -78,9 +78,9 @@ function studentInfo(studentId) {
 
 
 
-      $("#view-remark").attr("href", "/institution/view-student-remarks/" + id)
+      $("#view-remark").attr("href", "/institution/view-student-remarks/?id=" + id)
 
-      $("#add-remark").attr("href", "/institution/add-remarks/" + id)
+      $("#add-remark").attr("href", "/institution/add-remarks/?id=" + id)
 
     })
 
@@ -103,7 +103,7 @@ function studentRemamrk(studentId) {
       let address = studentDetail.address
       let gender = studentDetail.gender
       let guardian = studentDetail.guardian
-      $("#add-remark").attr("href", "/institution/add-remarks/" + id)
+      $("#add-remark").attr("href", "/institution/add-remarks/?id=" + id)
       $("#student-id").val(id)
       $("#student-fullName").html(fullName)
       $("#student-fullName2").html(fullName)
@@ -548,8 +548,7 @@ $.ajax({
 
       $("#view-remark").attr("href","/institution/view-tutor-remarks/"+id)
       
-      $("#add-remark").attr("href","/institution/add-tutor-remarks/"+id)
-
+      $("#add-remark").attr("href","/institution/add-tutor-remarks/?id="+id)
    })
 
 })  

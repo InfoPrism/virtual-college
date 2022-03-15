@@ -3,15 +3,13 @@ var router = express.Router();
 var institutionHelpers = require('../helpers/institution-helpers');
 const url = require('url');
 
-verifyLogin = function(req, res, next) {
-  if(req.session.institution)
-  {
-    next();
-  }
-  else
-  {
-    res.redirect('/institution/login');
-  }
+verifyLogin = function (req, res, next) {
+   if (req.session.institution) {
+      next();
+   }
+   else {
+      res.redirect('/institution/login');
+   }
 };
 
 /* GET logout page. */
@@ -20,40 +18,36 @@ router.get('/logout', function (req, res, next) {
    res.redirect('/institution/login')
 })
 /* GET home page. */
-router.get('/', verifyLogin,async function(req, res, next) {
-   let institutionDetails= req.session.institution;
-   let resolveType='length'
-   let status='Signup pending'
-   let NoSignupPendingStudents= await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id,resolveType)
-   let NoSignupPendingTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
+router.get('/', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   let resolveType = 'length'
+   let status = 'Signup pending'
+   let NoSignupPendingStudents = await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id, resolveType)
+   let NoSignupPendingTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id, status, resolveType)
    console.log("+++++++++++++++++++++++++++++");
    console.log(NoSignupPendingStudents);
-   res.render('institution/home', {title:'Home', institution:true, institutionDetails,NoSignupPendingStudents,NoSignupPendingTutors});
+   res.render('institution/home', { title: 'Home', institution: true, institutionDetails, NoSignupPendingStudents, NoSignupPendingTutors });
 });
 
 /* GET login page. */
-router.get('/login', function(req, res, next) {
-   if(req.session.institution)
-   {
+router.get('/login', function (req, res, next) {
+   if (req.session.institution) {
       res.redirect('/institution')
    }
-   else
-   {
-      res.render('institution/login', {title:'Login', loginErr:req.session.institutionLoginErr, institution:true})
+   else {
+      res.render('institution/login', { title: 'Login', loginErr: req.session.institutionLoginErr, institution: true })
       req.session.institutionLoginErr = false
    }
 })
 
 /* POST login page. */
-router.post('/login', function(req, res, next) {
+router.post('/login', function (req, res, next) {
    institutionHelpers.doLogin(req.body).then((response) => {
-      if(response.status)
-      {
+      if (response.status) {
          req.session.institution = response.institution
          res.redirect('/institution')
       }
-      else
-      {
+      else {
          req.session.institutionLoginErr = response.loginErr
          res.redirect('/institution/login')
       }
@@ -61,30 +55,26 @@ router.post('/login', function(req, res, next) {
 })
 
 /* GET signup page. */
-router.get('/signup', function(req, res, next) {
-   if(req.session.institution)
-   {
+router.get('/signup', function (req, res, next) {
+   if (req.session.institution) {
       res.redirect('/institution')
    }
-   else
-   {
+   else {
       institutionHelpers.generateInstitutionId().then((institutionId) => {
-         res.render('institution/signup', {title:'SignUp', institutionId, signupErr:req.session.institutionSignupErr, institution:true})
+         res.render('institution/signup', { title: 'SignUp', institutionId, signupErr: req.session.institutionSignupErr, institution: true })
          req.session.institutionSignupErr = false
       })
    }
 })
 
 /* POST signup page. */
-router.post('/signup', function(req, res, next) {
+router.post('/signup', function (req, res, next) {
    institutionHelpers.doSignup(req.body).then((response) => {
-      if(response.status)
-      {
+      if (response.status) {
          req.session.institution = response.institution
          res.redirect('/institution')
       }
-      else
-      {
+      else {
          req.session.institutionSignupErr = response.signupErr
          res.redirect('/institution/signup')
       }
@@ -92,20 +82,20 @@ router.post('/signup', function(req, res, next) {
 })
 
 /* POST regenerate institutionid */
-router.get('/regenerate-institutionid-update', function(req, res, next) {
+router.get('/regenerate-institutionid-update', function (req, res, next) {
    console.log("ggggggggggggggggggggggggg");
-   let institutionDetails=req.session.institution;
-   institutionHelpers.generateInstitutionId().then(async(institutionCode) => {
-   institutionHelpers.changeInstitutionId(institutionDetails._id,institutionCode).then(async () => {
-      req.session.institution = await institutionHelpers.getInstitutionDetails(req.session.institution._id)
-      console.log("mmmmmmmmmm");
-      console.log(institutionCode);
-      res.redirect('/institution')
-   })
+   let institutionDetails = req.session.institution;
+   institutionHelpers.generateInstitutionId().then(async (institutionCode) => {
+      institutionHelpers.changeInstitutionId(institutionDetails._id, institutionCode).then(async () => {
+         req.session.institution = await institutionHelpers.getInstitutionDetails(req.session.institution._id)
+         console.log("mmmmmmmmmm");
+         console.log(institutionCode);
+         res.redirect('/institution')
+      })
    })
 })
 /* POST regenerate institutionid */
-router.post('/regenerate-institutionid', function(req, res, next) {
+router.post('/regenerate-institutionid', function (req, res, next) {
    console.log("ggggggggggggggggggggggggg");
    institutionHelpers.generateInstitutionId().then((institutionId) => {
       console.log("mmmmmmmmmm");
@@ -115,66 +105,78 @@ router.post('/regenerate-institutionid', function(req, res, next) {
 })
 
 /*GET add a new class by institution*/
-router.get('/add-class',verifyLogin,async function(req,res,next){
-   let institutionDetails=req.session.institution
+router.get('/add-class', verifyLogin, async function (req, res, next) {
+   let status = null
+   status = req.query.status;
+   let name = req.query.name;
+   console.log("hhhhhhhhhhhhhhhhhhh");
+   console.log(status);
+   let institutionDetails = req.session.institution
    let classes = await institutionHelpers.getAllClass(institutionDetails._id)
    console.log(classes);
-  res.render('institution/add-class',{title:'Add Class',institution:true,classes,institutionDetails})
+   res.render('institution/add-class', { title: 'Add Class', institution: true, classes, institutionDetails, status, name })
 })
 
 /*POST add a new class by institution*/
-router.post('/add-class',verifyLogin,function(req,res,next){
-   let institutionDetails=req.session.institution;
-   institutionHelpers.addClass(req.body,institutionDetails._id).then(()=>{
-   res.redirect('/institution/add-class')
+router.post('/add-class', verifyLogin, function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   institutionHelpers.addClass(req.body, institutionDetails._id).then(() => {
+      res.redirect(url.format({
+         pathname: "/institution/add-class",
+         query: {
+            "status": "success",
+            "name": req.body.name
+         }
+      }));
    })
 })
 /*GET Everyone Annoucement*/
-router.get('/everyOne-announcement',verifyLogin,async function(req,res,next){
-   let institutionDetails=req.session.institution;
-   let announcements= await institutionHelpers.getAnnouncements('Everyone',institutionDetails._id)
-  res.render('institution/everyOne-announcement',{title:'Everyone Announcements',institution:true,announcements})
+router.get('/everyOne-announcement', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   let announcements = await institutionHelpers.getAnnouncements('Everyone', institutionDetails._id)
+   res.render('institution/everyOne-announcement', { institution: true, title: 'Everyone Announcements', announcements })
 })
 /*GET Student Annoucement*/
-router.get('/student-announcement',verifyLogin,async function(req,res,next){
-   let institutionDetails=req.session.institution;
-   let announcements= await institutionHelpers.getAnnouncements('Student',institutionDetails._id)
-  res.render('institution/student-announcement',{title:'Student Announcements',institution:true,announcements})
+router.get('/student-announcement', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   let announcements = await institutionHelpers.getAnnouncements('Student', institutionDetails._id)
+   res.render('institution/student-announcement', { title: 'Student Announcements', institution: true, announcements })
 })
 /*GET Tutor Annoucement*/
-router.get('/tutor-announcement',verifyLogin,async function(req,res,next){
-   let institutionDetails=req.session.institution;
-   let announcements= await institutionHelpers.getAnnouncements('Tutor',institutionDetails._id)
-  res.render('institution/tutor-announcement',{title:'Tutor Announcements',institution:true,announcements})
+router.get('/tutor-announcement', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   let announcements = await institutionHelpers.getAnnouncements('Tutor', institutionDetails._id)
+   res.render('institution/tutor-announcement', { title: 'Tutor Announcements', institution: true, announcements })
 })
 /*GET Create new Announcement*/
-router.get('/add-announcement',verifyLogin,async function(req,res,next){
-   let institutionDetails=req.session.institution
+router.get('/add-announcement', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution
+   let visiblity = req.query.visiblity;
    console.log("ddddddd");
    console.log(institutionDetails);
-  res.render('institution/add-announcement',{title:'Add Announcement',institution:true,institutionDetails})
+   res.render('institution/add-announcement', { title: 'Add Announcement', institution: true, institutionDetails, visiblity })
 })
 
 /* POST Create new Announcement. Here we check the announcement is created to whom and it will redirect to that page*/
-router.post('/add-announcement', function(req, res, next) {
-   let announcement=req.body;
-   let institutionDetails=req.session.institution
-   institutionHelpers.addAnnouncement(req.body,institutionDetails._id).then((response) => {
-      if(announcement.visiblity=='Everyone')
-       res.redirect('/institution/everyOne-announcement')
-      else if(announcement.visiblity=='Student')
-       res.redirect('/institution/student-announcement')
-      else
-       res.redirect('/institution/tutor-announcement')
+router.post('/add-announcement', function (req, res, next) {
+   let announcement = req.body;
+   let institutionDetails = req.session.institution
+   institutionHelpers.addAnnouncement(req.body, institutionDetails._id).then((response) => {
+      res.redirect(url.format({
+         pathname: "/institution/add-announcement",
+         query: {
+            "visiblity": req.body.visiblity
+         }
+      }));
    })
 })
 /*GET all Students under corresponding Institution*/
-router.get('/all-students',verifyLogin,async function(req,res,next){
-   let type=req.params.type
+router.get('/all-students', verifyLogin, async function (req, res, next) {
+   let type = req.params.type
    console.log("ppppppppppp");
    console.log(type);
-   let institutionDetails=req.session.institution;
-   let StudentsIn_institution= await institutionHelpers.getStudentsIn_institution(institutionDetails._id)
+   let institutionDetails = req.session.institution;
+   let StudentsIn_institution = await institutionHelpers.getStudentsIn_institution(institutionDetails._id)
    let slno = 1
    StudentsIn_institution.forEach(student => {
       student.slno = slno
@@ -182,50 +184,61 @@ router.get('/all-students',verifyLogin,async function(req,res,next){
       slno++
    })
    slno = null
-  res.render('institution/all-students',{title:'All Students',institution:true,StudentsIn_institution,institutionDetails})
+   res.render('institution/all-students', { title: 'All Students', institution: true, StudentsIn_institution, institutionDetails })
 })
 /*GET Everyone Annoucement*/
-router.post('/student-info/:id',verifyLogin,async function(req,res,next){
+router.post('/student-info/:id', verifyLogin, async function (req, res, next) {
    console.log("api call..............................");
-   let institutionDetails=req.session.institution;
-   let announcements= await institutionHelpers.getAnnouncements('Everyone',institutionDetails._id)
-  res.render('institution/everyOne-announcement',{title:'Everyone Announcements',institution:true,announcements})
+   let institutionDetails = req.session.institution;
+   let announcements = await institutionHelpers.getAnnouncements('Everyone', institutionDetails._id)
+   res.render('institution/everyOne-announcement', { title: 'Everyone Announcements', institution: true, announcements })
 })
 /*GET student details to display student details in a model*/
-router.get('/get-student-details/:id',verifyLogin,async function(req,res,next){
-   let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
+router.get('/get-student-details/:id', verifyLogin, async function (req, res, next) {
+   let studentDetail = await institutionHelpers.getStudentDetails(req.params.id)
    res.json(studentDetail)
    console.log("ddddddddddddd");
    console.log(studentDetail);
 })
- 
+
 
 /*GET to display page to create ne remark to student*/
-router.get('/add-remarks/:id',verifyLogin,async function(req,res,next){
-   let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
-   let institutionDetails=req.session.institution;
-   let head_of_Institution=institutionDetails.head;
-  res.render('institution/add-remark',{title:'Add Remark',institution:true,studentDetail,head_of_Institution})
+router.get('/add-remarks', verifyLogin, async function (req, res, next) {
+   let id = req.query.id;
+   let status = req.query.status
+   console.log("ppppppppppppppp");
+   console.log(id);
+   let studentDetail = await institutionHelpers.getStudentDetails(id)
+   let institutionDetails = req.session.institution
+   let head_of_Institution = institutionDetails.head;
+   res.render('institution/add-remark', { title: 'Add Remark', institution: true, status, studentDetail, head_of_Institution })
 })
- /*POST add a new remark to student by institution*/
- router.post('/add-remarks',verifyLogin,function(req,res,next){
-   institutionHelpers.addRemarks(req.body).then(async()=>{
-      let studentDetail= await institutionHelpers.getStudentDetails(req.body.StudentId)
-      
-      /*res.redirect('/institution/view-student-remarks?id=' + studentDetail._id)*/
-      res.redirect('/institution/all-students')
+/*POST add a new remark to student by institution*/
+router.post('/add-remarks', verifyLogin, function (req, res, next) {
+   institutionHelpers.addRemarks(req.body).then(async () => {
+      let studentDetail = await institutionHelpers.getStudentDetails(req.body.StudentId)
+      console.log("+++++++++++++++++++++++++++++++");
+      console.log(studentDetail._id);
+      res.redirect(url.format({
+         pathname: "/institution/add-remarks",
+         query: {
+            "id": req.body.StudentId,
+            "status": "success"
+         }
+      }));
    })
 })
- /*Get student remarks*/
-router.get('/view-student-remarks/:id',verifyLogin,async function(req,res,next){
-   let studentRemarks= await institutionHelpers.getStudentRemarks(req.params.id)
-   let studentDetail= await institutionHelpers.getStudentDetails(req.params.id)
-   res.render('institution/student-remarks',{studentRemarks,studentDetail,institution:true,title:studentDetail.fname+' remarks'})
+/*Get student remarks*/
+router.get('/view-student-remarks', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   let studentRemarks = await institutionHelpers.getStudentRemarks(institutionDetails._id)
+   let studentDetail = await institutionHelpers.getStudentDetails(institutionDetails._id)
+   res.render('institution/student-remarks', { studentRemarks, studentDetail, institution: true, status, title: studentDetail.fname + ' remarks' })
 })
 /*GET all Tutors under corresponding Institution*/
-router.get('/all-tutors',verifyLogin,async function(req,res,next){
-   let institutionDetails=req.session.institution;
-   let tutorsIn_institution= await institutionHelpers.getTutorsIn_institution(institutionDetails._id)
+router.get('/all-tutors', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   let tutorsIn_institution = await institutionHelpers.getTutorsIn_institution(institutionDetails._id)
    let slno = 1
    tutorsIn_institution.forEach(student => {
       student.slno = slno
@@ -233,41 +246,48 @@ router.get('/all-tutors',verifyLogin,async function(req,res,next){
       slno++
    })
    slno = null
-  res.render('institution/all-tutors',{title:'All Tutors',institution:true,tutorsIn_institution,institutionDetails})
+   res.render('institution/all-tutors', { title: 'All Tutors', institution: true, tutorsIn_institution, institutionDetails })
 })
 /*GET tutor details to display tutor details in a model*/
-router.get('/get-tutor-details/:id',verifyLogin,async function(req,res,next){
-   let tutorDetail= await institutionHelpers.getTutorDetails(req.params.id)
+router.get('/get-tutor-details/:id', verifyLogin, async function (req, res, next) {
+   let tutorDetail = await institutionHelpers.getTutorDetails(req.params.id)
    res.json(tutorDetail)
    console.log("ddddddddddddd........");
    console.log(tutorDetail);
 })
- 
+
 /*GET add a new remark to student by institution*/
-router.get('/add-tutor-remarks/:id',verifyLogin,async function(req,res,next){
-   let tutorDetail= await institutionHelpers.getTutorDetails(req.params.id)
-   let institutionDetails=req.session.institution;
-   let head_of_Institution=institutionDetails.head;
-  res.render('institution/add-tutor-remark',{title:'Add Remark',institution:true,tutorDetail,head_of_Institution})
+router.get('/add-tutor-remarks', verifyLogin, async function (req, res, next) {
+   let status = req.query.status
+   let tutorDetail = await institutionHelpers.getTutorDetails(req.query.id)
+   let institutionDetails = req.session.institution;
+   let head_of_Institution = institutionDetails.head;
+   res.render('institution/add-tutor-remark', { title: 'Add Remark', status, institution: true, tutorDetail, head_of_Institution })
 })
- /*POST add a new remark to tutor by institution*/
- router.post('/add-tutor-remarks',verifyLogin,function(req,res,next){
-   institutionHelpers.addTutorRemarks(req.body).then(async()=>{
-      let tutorDetail= await institutionHelpers.getTutorDetails(req.body.tutorId)
-      res.redirect('/institution/all-tutors')
+/*POST add a new remark to tutor by institution*/
+router.post('/add-tutor-remarks', verifyLogin, function (req, res, next) {
+   institutionHelpers.addTutorRemarks(req.body).then(async () => {
+      let tutorDetail = await institutionHelpers.getTutorDetails(req.body.tutorId)
+      res.redirect(url.format({
+         pathname: "/institution/add-tutor-remarks",
+         query: {
+            "id": req.body.tutorId,
+            "status": "success"
+         }
+      }));
    })
 })
- /*Get tutor remarks*/
-router.get('/view-tutor-remarks/:id',verifyLogin,async function(req,res,next){
-   let tutorDetail= await institutionHelpers.getTutorDetails(req.params.id)
-   let tutorRemarks= await institutionHelpers.getTutorRemarks(req.params.id)
-   let institutionDetails=req.session.institution;
-   res.render('institution/view-tutor-remarks',{tutorRemarks,tutorDetail,institution:true,title:tutorDetail.fname+' remarks'})
+/*Get tutor remarks*/
+router.get('/view-tutor-remarks/:id', verifyLogin, async function (req, res, next) {
+   let tutorDetail = await institutionHelpers.getTutorDetails(req.params.id)
+   let tutorRemarks = await institutionHelpers.getTutorRemarks(req.params.id)
+   let institutionDetails = req.session.institution;
+   res.render('institution/view-tutor-remarks', { tutorRemarks, tutorDetail, institution: true, title: tutorDetail.fname + ' remarks' })
 })
 /*GET not verified  Students under corresponding Institution */
-router.get('/notverified-students',verifyLogin,async function(req,res,next){
-   let institutionDetails=req.session.institution;
-   let NotVerifiedStudents= await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id,resolveType='values')
+router.get('/notverified-students', verifyLogin, async function (req, res, next) {
+   let institutionDetails = req.session.institution;
+   let NotVerifiedStudents = await institutionHelpers.getNotVerifiedStudentsIn_institution(institutionDetails._id, resolveType = 'values')
    let slno = 1
    NotVerifiedStudents.forEach(student => {
       student.slno = slno
@@ -275,64 +295,64 @@ router.get('/notverified-students',verifyLogin,async function(req,res,next){
       slno++
    })
    slno = null
-  res.render('institution/notVerified-students',{title:'All Students',institution:true,NotVerifiedStudents,institutionDetails})
+   res.render('institution/notVerified-students', { title: 'All Students', institution: true, NotVerifiedStudents, institutionDetails })
 })
 /*POST change student status*/
-router.get('/change-student-status/:status/:id/:page',verifyLogin,async function(req,res,next){
-   let status=req.params.status
-   let studentId=req.params.id
-   let page=req.params.page
-   let data= await institutionHelpers.changeStudentStatus(studentId,status)
-   if(page=='all-students')
-   res.redirect('/institution/all-students')
-  else{
-  status=page;
-  res.redirect(url.format({
-     pathname:"/institution/all-students-different-status",
-     query: {
-        "status": status
-      }
-   }));
-  }
+router.get('/change-student-status/:status/:id/:page', verifyLogin, async function (req, res, next) {
+   let status = req.params.status
+   let studentId = req.params.id
+   let page = req.params.page
+   let data = await institutionHelpers.changeStudentStatus(studentId, status)
+   if (page == 'all-students')
+      res.redirect('/institution/all-students')
+   else {
+      status = page;
+      res.redirect(url.format({
+         pathname: "/institution/all-students-different-status",
+         query: {
+            "status": status
+         }
+      }));
+   }
 })
 /*POST cange tutor status*/
-router.get('/change-tutor-status/:status/:id/:page',verifyLogin,async function(req,res,next){
-   let status=req.params.status
-   let tutorId=req.params.id
-   let page=req.params.page
-   let data= await institutionHelpers.changeTutorStatus(tutorId,status)
+router.get('/change-tutor-status/:status/:id/:page', verifyLogin, async function (req, res, next) {
+   let status = req.params.status
+   let tutorId = req.params.id
+   let page = req.params.page
+   let data = await institutionHelpers.changeTutorStatus(tutorId, status)
    console.log(data);
-   if(page=='all-tutors')
-    res.redirect('/institution/all-tutors')
-   else{
-   status=page;
-   res.redirect(url.format({
-      pathname:"/institution/all-tutors-different-status",
-      query: {
-         "status": status
-       }
-    }));
+   if (page == 'all-tutors')
+      res.redirect('/institution/all-tutors')
+   else {
+      status = page;
+      res.redirect(url.format({
+         pathname: "/institution/all-tutors-different-status",
+         query: {
+            "status": status
+         }
+      }));
    }
-  
+
 })
 /*GET not verified  Students under corresponding Institution */
-router.get('/all-tutors-different-status',verifyLogin,async function(req,res,next){
-   let status= req.query.status;
-   let institutionDetails=req.session.institution;
-   let resolveType='values'
+router.get('/all-tutors-different-status', verifyLogin, async function (req, res, next) {
+   let status = req.query.status;
+   let institutionDetails = req.session.institution;
+   let resolveType = 'values'
    let slno = 1
-   let signupPendingTutors=[],signupDenyedTutors=[],blockedTutors=[],noTutors=[];
-   if(status=="Signup pending"){
-   signupPendingTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
-   signupPendingTutors.forEach(tutor => {
-      tutor.slno = slno
-      console.log(tutor.slno);
-      slno++
-   })
-   slno = null
+   let signupPendingTutors = [], signupDenyedTutors = [], blockedTutors = [], noTutors = [];
+   if (status == "Signup pending") {
+      signupPendingTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id, status, resolveType)
+      signupPendingTutors.forEach(tutor => {
+         tutor.slno = slno
+         console.log(tutor.slno);
+         slno++
+      })
+      slno = null
    }
-   else if(status=="Signup denied"){
-     signupDenyedTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
+   else if (status == "Signup denied") {
+      signupDenyedTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id, status, resolveType)
       signupDenyedTutors.forEach(tutor => {
          tutor.slno = slno
          console.log(tutor.slno);
@@ -340,8 +360,8 @@ router.get('/all-tutors-different-status',verifyLogin,async function(req,res,nex
       })
       slno = null
    }
-   else if(status=="Blocked"){
-      blockedTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id,status,resolveType)
+   else if (status == "Blocked") {
+      blockedTutors = await institutionHelpers.getTutorsOfDifferentStatus(institutionDetails._id, status, resolveType)
       blockedTutors.forEach(tutor => {
          tutor.slno = slno
          console.log(tutor.slno);
@@ -351,31 +371,30 @@ router.get('/all-tutors-different-status',verifyLogin,async function(req,res,nex
    }
    console.log(blockedTutors);
    console.log(signupPendingTutors);
-   if(signupPendingTutors.length==0 &&signupDenyedTutors.length==0&&blockedTutors.length==0)
-   {
-     noTutors=[1];
-    }
-  res.render('institution/tutors-different-status',{title:'Tutor Different Status',institution:true,signupPendingTutors,signupDenyedTutors,blockedTutors,noTutors,status,institutionDetails})
+   if (signupPendingTutors.length == 0 && signupDenyedTutors.length == 0 && blockedTutors.length == 0) {
+      noTutors = [1];
+   }
+   res.render('institution/tutors-different-status', { title: 'Tutor Different Status', institution: true, signupPendingTutors, signupDenyedTutors, blockedTutors, noTutors, status, institutionDetails })
 })
 
 /*GET not verified  Students under corresponding Institution */
-router.get('/all-students-different-status',verifyLogin,async function(req,res,next){
-   let status= req.query.status;
-   let institutionDetails=req.session.institution;
-   let resolveType='values'
+router.get('/all-students-different-status', verifyLogin, async function (req, res, next) {
+   let status = req.query.status;
+   let institutionDetails = req.session.institution;
+   let resolveType = 'values'
    let slno = 1
-   let signupPendingStudents=[],signupDenyedStudents=[],blockedStudents=[],noStudents=[];
-   if(status=="Signup pending"){
-   signupPendingStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id,status,resolveType)
-   signupPendingStudents.forEach(student => {
-      student.slno = slno
-      console.log(student.slno);
-      slno++
-   })
-   slno = null
+   let signupPendingStudents = [], signupDenyedStudents = [], blockedStudents = [], noStudents = [];
+   if (status == "Signup pending") {
+      signupPendingStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id, status, resolveType)
+      signupPendingStudents.forEach(student => {
+         student.slno = slno
+         console.log(student.slno);
+         slno++
+      })
+      slno = null
    }
-   else if(status=="Signup denied"){
-     signupDenyedStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id,status,resolveType)
+   else if (status == "Signup denied") {
+      signupDenyedStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id, status, resolveType)
       signupDenyedStudents.forEach(student => {
          student.slno = slno
          console.log(student.slno);
@@ -383,8 +402,8 @@ router.get('/all-students-different-status',verifyLogin,async function(req,res,n
       })
       slno = null
    }
-   else if(status=="Blocked"){
-      blockedStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id,status,resolveType)
+   else if (status == "Blocked") {
+      blockedStudents = await institutionHelpers.getStudentsOfDifferentStatus(institutionDetails._id, status, resolveType)
       blockedStudents.forEach(student => {
          student.slno = slno
          console.log(student.slno);
@@ -394,26 +413,25 @@ router.get('/all-students-different-status',verifyLogin,async function(req,res,n
    }
    console.log(blockedStudents);
    console.log(signupPendingStudents);
-   if(signupPendingStudents.length==0 &&signupDenyedStudents.length==0&&blockedStudents.length==0)
-   {
-     noStudents=[1];
-    }
-  res.render('institution/students-different-status',{title:'Student Different Status',institution:true,signupPendingStudents,signupDenyedStudents,blockedStudents,noStudents,status,institutionDetails})
+   if (signupPendingStudents.length == 0 && signupDenyedStudents.length == 0 && blockedStudents.length == 0) {
+      noStudents = [1];
+   }
+   res.render('institution/students-different-status', { title: 'Student Different Status', institution: true, signupPendingStudents, signupDenyedStudents, blockedStudents, noStudents, status, institutionDetails })
 })
 
 /* GET profile page. */
 router.get('/profile', verifyLogin, function (req, res, next) {
-   institutionHelpers.getInstitutionDetails(req.session.institution._id).then(async(institutionDetails) => {
+   institutionHelpers.getInstitutionDetails(req.session.institution._id).then(async (institutionDetails) => {
       console.log(institutionDetails);
-         institutionDetails.date = institutionDetails.date.toDateString()
-         let classes = await institutionHelpers.getAllClass(req.session.institution._id)
-         let noData;
-         noData = await institutionHelpers.getNoData(req.session.institution._id)
-         maxNoData=Math.max(...noData);
-         console.log(maxNoData);
-         console.log(noData);
-         res.render('institution/profile',{title:'Profile',classes,institutionDetails,maxNoData,noData,institution:true})
-      })
+      institutionDetails.date = institutionDetails.date.toDateString()
+      let classes = await institutionHelpers.getAllClass(req.session.institution._id)
+      let noData;
+      noData = await institutionHelpers.getNoData(req.session.institution._id)
+      maxNoData = Math.max(...noData);
+      console.log(maxNoData);
+      console.log(noData);
+      res.render('institution/profile', { title: 'Profile', classes, institutionDetails, maxNoData, noData, institution: true })
+   })
 })
 
 /* POST profile page. */
@@ -425,8 +443,8 @@ router.post('/profile', verifyLogin, function (req, res, next) {
 })
 
 /* POST profile picture. */
-router.post('/profile-picture', verifyLogin, function(req, res, next) {
-   institutionHelpers.updateInstitutionProfilePicture(req.session.institution._id, req.files).then(async()=> {
+router.post('/profile-picture', verifyLogin, function (req, res, next) {
+   institutionHelpers.updateInstitutionProfilePicture(req.session.institution._id, req.files).then(async () => {
       req.session.institution = await institutionHelpers.getInstitutionDetails(req.session.institution._id)
       res.redirect('/institution/profile')
    })

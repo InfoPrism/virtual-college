@@ -3,8 +3,13 @@
      
          <div class="row">
             <div class="col-md-7">
-                <form action="/institution/add-tutor-remarks" method="POST" id="">
-               <h3 class="mb-2 text-center" style="padding-top: 18px;">Add Remark to {{tutorDetail.fname}} {{studentDetail.lname}}</h3>
+                 <form action="/institution/add-tutor-remarks" method="POST" id="">
+               <h3 class="mb-2 text-center" style="padding-top: 18px;">Add Remark to {{tutorDetail.fname}} {{tutorDetail.lname}}</h3>
+               {{#if status}}
+                <div class="alert alert-success" role="alert">
+                <span class="font-weight-bold">Success!</span> new remark is added about {{tutorDetail.fname}}.
+                </div>
+                {{/if}}
 			    <a href="/institution/view-tutor-remarks/{{tutorDetail._id}}" class="btn btn ml-auto mr-0 mb-3" style="background-color: #212529; color: #fff;">View Remarks</a>
                 <div class="form-group">
                    <input type="text" name="tutorId" id="" value="{{tutorDetail._id}}" hidden>
@@ -25,17 +30,15 @@
                  <button class="btn btn-dark float-right" type="submit">Submit</button>
                  </form>
             </div>
-            
-            <!--
-                 <div class="col-md-5 my-auto">
+
+ <div class="hide-small col-md-5 my-auto">
                  
 	<div class="row z-depth-3">
 				<div class="col-sm-4 rounded-left" style="background-color: #000;">
 				   <div class="card-block text-center text-white">
 					   <i class="fas fa-user-tie fa-7x mt-5"></i>
-					   <h2 class="small-device-name font-weight-bold mt-4">{{studentDetail.fname}} {{studentDetail.lname}}</h2>
-					   <!--<h2 class="large-device-name font-weight-bold mt-4">{{studentDetail.fname}}</h2>-->
-                  <!--
+					   <h2 class="small-device-name font-weight-bold mt-4">{{tutorDetail.fname}} {{tutorDetail.lname}}</h2>
+					   <!--<h2 class="large-device-name font-weight-bold mt-4">{{tutorDetail.fname}}</h2>-->
 					   <p class="small-device-name">Student</p>
 					   <div class="subjects">
 						   <hr class="bg-primary">
@@ -56,48 +59,46 @@
 				   </div>
 			   </div>
 			   <div   class="col-sm-8 bg-white rounded-right">
-				   <h3 class="large-device-name mt-3 text-center" id="student-fullName2">{{studentDetail.fname}} {{studentDetail.lname}}</h3>
+				   <h3 class="large-device-name mt-3 text-center" id="student-fullName2">{{tutorDetail.fname}} {{tutorDetail.lname}}</h3>
 				   <h3 class="small-device-name mt-3 text-center">Informations</h3>
 				   <hr  class="bg-primary mt-0 w-25" style="margin-left: 37%;">
 				   
 					  <div class="row">
-
+                   <div class="col-sm-6">
+						   <p class="font-weight-bold">Name:</p>
+							  <h6 class=" text-muted" id="student-gender">{{tutorDetail.fname}}</h6>
+					   </div>
 						   <div class="small-email col-sm-6">
 						   <p class="font-weight-bold">Email:</p>
-							  <h6 class="text-muted">{{studentDetail.email}}</h6>
+							  <h6 class="text-muted">{{tutorDetail.email}}</h6>
 					   </div>
 					  
 					   <div class="col-sm-6">
 						   <p class="font-weight-bold">Mobile:</p>
-							  <h6 class="text-muted" id="student-mobile">{{studentDetail.mobile}}</h6>
+							  <h6 class="text-muted" id="student-mobile">{{tutorDetail.mobile}}</h6>
 					   </div>
 					    <div class="col-sm-6">
 						   <p class="font-weight-bold">Gender:</p>
-							  <h6 class=" text-muted" id="student-gender">{{studentDetail.gender}}</h6>
+							  <h6 class=" text-muted" id="student-gender">{{tutorDetail.gender}}</h6>
 					   </div>
 					   <div class="col-sm-6">
-						<p class="font-weight-bold">Gardian:</p>
-						   <h6 class=" text-muted" id="student-guardian">{{studentDetail.guardian}}</h6>
+						<p class="font-weight-bold">Status:</p>
+						   <h6 class=" text-muted" id="student-guardian">{{tutorDetail.status}}</h6>
 					</div>
 					<div class="col-sm-6">
 						<p class="font-weight-bold">Joined Date</p>
-						   <h6 class="text-muted">{{studentDetail.date}}</h6>
-					</div>
-					<div class="col-sm-6">
-						<p class="font-weight-bold">Address:</p>
-						   <h6 class=" text-muted" id="student-address">{{studentDetail.address}}</h6>
+						   <h6 class="text-muted">{{tutorDetail.date}}</h6>
 					</div>
 					<div class="large-device-name col-sm-6">
 						<p class="font-weight-bold">Type:</p>
-						   <h6 class="text-muted">Student</h6>
+						   <h6 class="text-muted">Tutor</h6>
 					</div>
 					 
 					   <div class="large-email col-sm-6">
 						   <p class="font-weight-bold">Email:</p>
-							  <h6 class="text-muted" id="student-email2">{{studentDetail.email}}</h6>
+							  <h6 class="text-muted" id="student-email2">{{tutorDetail.email}}</h6>
 					   </div>
 				   </div>
-				   <hr class="bg-primary">
 				    <div class="smallDevice-subjects">
 				      <h5 class="mt-3 font-weight-bold">Subjects Enrolled:</h5>
 					   
@@ -128,77 +129,11 @@
 			</div>  
              
             </div>            
-   
-       <!--    -->
          </div>
       
    </div>
 </section>
 
-<!--view Remarks-->
-<section>
-   <div class="modal fade" id="studentremarks" tabindex="-1" role="dialog" aria-labelledby="shareProductLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-   <div class="modal-content">
-   <div class="share-modal-header">
-   <span>Sivin Remarks</span>
-   <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
-   </div>
-   <div class="share-modal-body">
-     <div class="card">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-Where does it come from?
-
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-	   <div class="card" style="background:#ffcccb ;">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-Where does it come from?
-
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-	   <div class="card" style="background-color:  	#98FB98;">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-Where does it come from?
-
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-	   <div class="card" style="background:#ffcccb ;">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-Where does it come from?
-
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-   </div>
-
-   </div>
-   </div>
-   </div>
-</section>
 
 
 
@@ -365,7 +300,7 @@ function tutor() {
     /*margin-left: 250px;*/
     padding: 0px 0px 0px 0px;
     background-size: cover;
-   margin-left: 0;
+    margin-left: 0;
     transition: 0.4s;
 }
 
@@ -411,5 +346,10 @@ function tutor() {
 	display: none;
 }
 }
-
+@media screen and (max-width: 600px) {
+/*Hide in small Devices*/
+.hide-small{
+	display: none;
+}
+}
 </style>
