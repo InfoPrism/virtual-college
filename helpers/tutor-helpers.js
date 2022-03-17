@@ -2,6 +2,8 @@ var bcrypt = require('bcryptjs');
 var objectId = require('mongodb').ObjectID;
 var db = require('../config/connection');
 var collections = require('../config/collections');
+var fs = require('fs');
+var path = require('path');
 
 module.exports = {
    doSignup: function (tutorData) {
@@ -74,7 +76,7 @@ module.exports = {
             },
             {
                $project: {
-                  class_name: 1
+                  name: 1
                }
             }
          ]).toArray()
@@ -86,7 +88,7 @@ module.exports = {
 
    addSubject: function (subjectDetails) {
       return new Promise(async (resolve, reject) => {
-         let class_details = await db.get().collection(collections.CLASS_COLLECTION).findOne({ class_name: subjectDetails.class_name })
+         let class_details = await db.get().collection(collections.CLASS_COLLECTION).findOne({ name: subjectDetails.class_name })
          subjectDetails.class = class_details._id;
          delete subjectDetails.class_name;
          subjectDetails.tutor = objectId(subjectDetails.tutor);
@@ -173,7 +175,6 @@ module.exports = {
          if (typeof (announcement.visibility) != "object") {
             announcement.visibility = [announcement.visibility]
          }
-         console.log(announcement.visibility);
          for (let i = 0; i < announcement.visibility.length; i++) {
             announcement.visibility[i] = objectId(announcement.visibility[i])
          }
@@ -214,8 +215,101 @@ module.exports = {
          ]).toArray()
          resolve(subjects)
       })
-   }
+   },
+   /* GET details of subject for showing classes posted */
+   getEachSubject: function(subjectId){
+      return new Promise(async (resolve,reject)=>{
+         let subject = await db.get().collection(collections.SUBJECT_COLLECTION).aggregate([
+            {
+               $match : {_id : objectId(subjectId)}
+            },
+            {
+              $lookup : {
+               from: collections.CLASS_COLLECTION,
+               localField: 'class',
+               foreignField: '_id',
+               as: 'class'
+              }
+            }
+         ]).toArray()
+         resolve(subject)
+      })
+   },
 
+   /* POST a class with files uploaded*/
+   postUploadClassWithFile: function(uploadClass,files){
+      return new Promise((resolve,reject)=>{   
+         let date = new Date()
+         uploadClass.date = date
+         uploadClass.no_of_files=1
+         if(files.file[0] != undefined){
+            uploadClass.no_of_files = files.file.length;
+         }
+         uploadClass.subject = objectId(uploadClass.subject);
+         uploadClass.tutor = objectId(uploadClass.tutor);
+
+         if(uploadClass.file == ''){
+            delete uploadClass.file;
+         }
+
+         if(uploadClass.link == undefined){
+            delete uploadClass.link;
+         }
+         else if(typeof(uploadClass.link) != "object"){
+            uploadClass.link = [uploadClass.link]
+         }
+
+
+         db.get().collection(collections.TOPIC_COLLECTION).insertOne(uploadClass).then(async (data) => {
+            /*if there are multiple files, this IF STATEMENT executes*/
+            if(files.file[0] != undefined){
+               
+               for(let i=0;i<files.file.length;i++){
+                  let id = data.ops[0]._id; 
+                  let fileName = id+'_'+i+path.extname(files.file[i].name);
+                  let savePath = path.join('public','tutor_files','uploaded_files','topics',fileName)
+                  console.log(savePath);
+                  await files.file[i].mv(savePath);
+               }
+            }
+
+             /*if there is only a single file, this ELSE STATEMENT executes*/
+            else{
+               console.log(files.file);
+               let id = data.ops[0]._id; 
+                  let fileName = id+'_1'+path.extname(files.file.name);
+                  let savePath = path.join('public','tutor_files','uploaded_files','topics',fileName)
+                  console.log(savePath);
+                  await files.file.mv(savePath);
+            }
+            resolve()
+         })
+      })
+   },
+
+   /* POST a class without files uploaded*/
+   postUploadClassWithoutFile: function(uploadClass){
+      return new Promise((resolve,reject)=>{
+         let date = new Date()
+         uploadClass.date = date
+         uploadClass.no_of_files = 0
+         uploadClass.subject = objectId(uploadClass.subject);
+         uploadClass.tutor = objectId(uploadClass.tutor);
+         if(uploadClass.file == ''){
+            delete uploadClass.file;
+         }
+         if(uploadClass.link == undefined){
+            delete uploadClass.link;
+         }
+         else if(typeof(uploadClass.link) != "object"){
+            uploadClass.link = [uploadClass.link]
+         }
+         db.get().collection(collections.TOPIC_COLLECTION).insertOne(uploadClass).then((data) => {
+            console.log(data.ops[0]._id);
+            resolve()
+         })
+      })
+   }  
 }
 
 

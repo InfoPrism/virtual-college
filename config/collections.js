@@ -5,5 +5,6 @@ module.exports = {
    CLASS_COLLECTION:'class',
    ANNOUNCEMENT_COLLECTION:'announcement',
    SUBJECT_COLLECTION:'subject',
-   TUTOR_ANNOUNCEMENT_COLLECTION:'TutorAnnouncement'
+   TUTOR_ANNOUNCEMENT_COLLECTION:'TutorAnnouncement',
+   TOPIC_COLLECTION : "Topics"
 }

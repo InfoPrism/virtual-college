@@ -426,8 +426,6 @@ $(document).ready(function () {
 /*--Modal for create a class--*/
 
 $('#createsubject').on('show.bs.modal', function (event) {
-  // var button = $(event.relatedTarget) // Button that triggered the modal
-  //var recipient = button.data('whatever') // Extract info from data-* attributes
   // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
   // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
   function generateId() {
@@ -455,7 +453,7 @@ function getclasses() {
       var sizeOfArrray = classes.length;
       console.log(sizeOfArrray);
       for (var i = 0; i < sizeOfArrray; i++) {
-        $('#getClasses').append($('<option>').val(classes[i].class_name).text(classes[i].class_name));
+        $('#getClasses').append($('<option>').val(classes[i].name).text(classes[i].name));
       }
     })
   })
@@ -560,9 +558,6 @@ $.ajax({
 
   var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
   removeItemButton: true,
-  //maxItemCount:5,
-  //searchResultLimit:5,
-  //renderChoiceLimit:5
   })
   });
 

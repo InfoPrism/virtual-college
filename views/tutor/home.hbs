@@ -7,14 +7,13 @@
                     <div class="row" style="height: 120px;">
                         <div class="col-4">
                             {{#each class}}
-                            <div class="class-title limit-line-length-vertical">{{this.class_name}}</div>
+                            <div class="class-title limit-line-length-vertical">{{this.name}}</div>
                             {{/each}}
                         </div>
                         <div class="col-8">
                             <i class="far fa-trash-alt text-muted delete-btn" data-toggle="modal"
                                 data-target="#delete-subject" onclick="openDeleteSubjectModal('{{this._id}}')"></i>
                             <div class="subject-title limit-line-length-vertical">{{this.name}}</div>
-                            <small class="tutor-name limit-line-length-horizontal">{{this.tutor.fname}} {{this.tutor.lname}}</small>
                         </div>
                         <a href="/tutor/view-subject/{{this._id}}" class="continue-btn">Continue</a>
                     </div>
@@ -40,6 +39,7 @@
     </div>
 </div>
 
+
 <style>
 
 .card {
@@ -49,7 +49,7 @@
 
     .card .col-4 {
         position: relative;
-        background: #2A265F;
+        background: #2a265f;
         color: #fff;
         padding: 5px 28px;
     }

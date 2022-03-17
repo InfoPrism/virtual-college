@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var tutorHelpers = require('../helpers/tutor-helpers');
+var objectId = require('mongodb').ObjectID;
 
 verifyLogin = function (req, res, next) {
    if (req.session.tutor) {
@@ -136,6 +137,31 @@ router.get('/delete-announcement',verifyLogin,function(req,res,next){
 
 router.get('/delete-subject/:id',verifyLogin,function(req,res,next){
    res.redirect('/tutor')
+})
+
+/* View my class */
+
+router.get('/view-subject/:id',verifyLogin,function(req,res,next){
+   let subjectId = req.params.id
+   tutorHelpers.getEachSubject(subjectId).then((subject)=>{
+      res.render('tutor/my-class',{title: 'My Class',tutor : true,tutorDetails : req.session.tutor,subject})
+   })
+})
+
+/* upload a post to your class*/
+
+router.post('/upload-class',verifyLogin,function(req,res,next){
+   req.body.tutor = req.session.tutor._id;
+   if(req.files == undefined){
+      tutorHelpers.postUploadClassWithoutFile(req.body).then(()=>{
+         res.redirect('/tutor/view-subject/'+req.body.subject)
+      })
+   }
+   else{
+      tutorHelpers.postUploadClassWithFile(req.body,req.files).then(()=>{
+         res.redirect('/tutor/view-subject/'+req.body.subject)
+      })
+   }
 })
 
 module.exports = router;
