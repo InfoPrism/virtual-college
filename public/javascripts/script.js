@@ -581,3 +581,35 @@ function changeStudentStatus(studentId,status,studentFname) {
   })
 }
 */
+
+/* --Google sheet form submit-- */
+$("#user-feedback").submit((e) => {
+  e.preventDefault()
+  $.ajax({
+    url: "https://script.google.com/macros/s/AKfycbxMWMZW4CTCltsilgfekVUruTg5UmtLxlgJ91SL/exec",
+    data: $("#user-feedback").serialize(),
+    method: "post",
+    success: function (response) {
+      $("#feedback-response").html("Feedback Submitted Successfully!")
+      $( "#feedback-response" ).removeClass("alert-danger")
+      $( "#feedback-response" ).addClass("alert-success")
+      $("#feedback-response").css("display", "block")
+      window.location.href = "#user-feedback"
+      setTimeout(()=> {
+        $("#feedback-response").css("display", "none")
+        $("#feedback-response").trigger("reset")
+      }, 3000)
+    },
+    error: function (err) {
+      $("#feedback-response").html("Feedback  Submission Error!")
+      $( "#feedback-response" ).removeClass("alert-success")
+      $( "#feedback-response" ).addClass("alert-danger")
+      $("#feedback-response").css("display", "block")
+      window.location.href = "#user-feedback"
+      setTimeout(()=> {
+        $("#feedback-response").css("display", "none")
+        $("#feedback-response").trigger("reset")
+      }, 3000)
+    }
+  })
+})

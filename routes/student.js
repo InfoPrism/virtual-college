@@ -135,4 +135,8 @@ router.get('/unenroll-class/:id', verifyLogin, function (req, res, next) {
    })
 })
 
+router.get('/view-class/:id', verifyLogin, function (req, res, next) {
+   res.render('student/view-class', {title:'view Class', student:req.session.student})
+})
+
 module.exports = router;
