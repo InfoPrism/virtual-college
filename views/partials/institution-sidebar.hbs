@@ -1,51 +1,59 @@
-
 {{#if institutionDetails}}
 <div class="wrapper sidebar-collapse">
    <div class="sidebar scrollmenu">
       <div class="sidebar-menu">
          <center class="profile">
-             
-       <img src="{{#if institutionDetails.picture}}/images/institution_profile/{{institutionDetails._id}}.jpg{{else}}/images/school.jpg{{/if}}" alt="{{institutionDetails.name}}" width="150px" height="150px" class="rounded-circle mb-3">
+
+            <img
+               src="{{#if institutionDetails.picture}}/images/institution_profile/{{institutionDetails._id}}.jpg{{else}}/images/school.jpg{{/if}}"
+               alt="{{institutionDetails.name}}" width="150px" height="150px" class="rounded-circle mb-3">
             <p>
                <span class="name">{{institutionDetails.name}}</span><br>
-               <span class="email" >{{institutionDetails.email}}</span><br>
+               <span class="email">{{institutionDetails.email}}</span><br>
                <a data-toggle="modal" data-target="#shareLink" class="share-btn"><i class="far fa-share-alt"></i></a>
                <span class="secret-code">{{institutionDetails.id}}</span>
-               <a href="/institution/regenerate-institutionid-update/sidebar" onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')" class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
+               <a href="/institution/regenerate-institutionid-update/sidebar"
+                  onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')"
+                  class="regenerate-btn"><i class="far fa-sync-alt"></i></a>
             </p>
-           
+
          </center>
          <ul>
             <li class="item">
-               <a href="#" class="menu-btn">
-               <i class="far fa-home"></i><span>Home</span>
+               <a href="/institution" class="menu-btn">
+                  <i class="far fa-home"></i><span>Home</span>
                </a>
             </li>
             <li class="item" id="messages">
                <a href="#messages" class="menu-btn">
-               <i class="far fa-users"></i><span>Tutor & Student<i class="fas fa-chevron-down drop-down"></i></span>
+                  <i class="far fa-users"></i><span>Tutor & Student<i class="fas fa-chevron-down drop-down"></i></span>
                </a>
                <div class="sub-menu">
                   <a href="/institution/all-tutors"><i class="far fa-chalkboard-teacher"></i> <span>Tutor</span></a>
                   <a href="/institution/all-students"><i class="far fa-user-graduate"></i> <span>Student</span></a>
                </div>
             </li>
-            
-             <li class="item" id="profile">
+
+            <li class="item" id="profile">
                <a data-toggle="modal" data-target="#shareLink" class="menu-btn">
-               <i class="far fa-share-alt" data-toggle="modal" data-target="#shareLink"></i><span>Share</span>
+                  <i class="far fa-share-alt" data-toggle="modal" data-target="#shareLink"></i><span>Share</span>
                </a>
             </li>
-            
-         
+
+
             <li class="item" id="settings">
                <a href="#settings" class="menu-btn">
-               <i class="far fa-cog"></i><span>Settings<i class="fas fa-chevron-down drop-down"></i></span>
+                  <i class="far fa-cog"></i><span>Settings<i class="fas fa-chevron-down drop-down"></i></span>
                </a>
                <div class="sub-menu">
                   <a href="/institution/profile"><i class="far fa-user-circle"></i> <span>Profile</span></a>
                   <a href="/institution/logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
                </div>
+            </li>
+            <li class="item">
+               <a href="/about" class="menu-btn">
+                  <i class="far fa-info-circle"></i><span>About</span>
+               </a>
             </li>
          </ul>
       </div>
@@ -53,44 +61,58 @@
 </div>
 {{/if}}
 
-
 <!--Share Model Starts-->
 <section>
-   <div class="modal fade" id="shareLink" tabindex="-1" role="dialog" aria-labelledby="shareLinkLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-   <div class="modal-content">
-   <div class="share-modal-header">
-   <span>Share Link</span>
-   <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
-   </div>
-   <div class="share-modal-body">
-   <p>Share link to student</p>
-   <div class="icons">
-   <input type="text" value="https://onorg.tk/student/signup?institution={{institutionDetails.id}}" id="InputStudent" hidden>
-   <button onclick="student()"><i class="far fa-copy"></i></button>
-   <button onclick="shareLink('whatsapp','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-whatsapp"></i></button>
-   <button onclick="shareLink('telegram','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-telegram-plane"></i></button>
-   <button onclick="shareLink('linkedin','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-linkedin-in"></i></button>
-   </div>
-   </div>
-    <div class="share-modal-body">
-   <p>Share link to Tutor</p>
-   <div class="icons">
-   <input type="text" value="https://onorg.tk/tutor/signup?institution={{institutionDetails.id}}" id="InputTutor" hidden>
-  <button onclick="tutor()"><i class="far fa-copy"></i></button>
+   <div class="modal fade" id="shareLink" tabindex="-1" role="dialog" aria-labelledby="shareLinkLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="share-modal-header">
+               <span>Share Link</span>
+               <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+            </div>
+            <div class="share-modal-body">
+               <p>Share link to student</p>
+               <div class="icons">
+                  <input type="text" value="https://onorg.tk/student/signup/?institution={{institutionDetails.id}}"
+                     id="InputStudent" hidden>
+                  <button onclick="student()"><i class="far fa-copy"></i></button>
+                  <button
+                     onclick="shareLink('whatsapp','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i
+                        class="fab fa-whatsapp"></i></button>
+                  <button
+                     onclick="shareLink('telegram','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i
+                        class="fab fa-telegram-plane"></i></button>
+                  <button
+                     onclick="shareLink('linkedin','student', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i
+                        class="fab fa-linkedin-in"></i></button>
+               </div>
+            </div>
+            <div class="share-modal-body">
+               <p>Share link to Tutor</p>
+               <div class="icons">
+                  <input type="text" value="https://onorg.tk/tutor/signup/?institution={{institutionDetails.id}}"
+                     id="InputTutor" hidden>
+                  <button onclick="tutor()"><i class="far fa-copy"></i></button>
 
-   
-   
-   
-   <button onclick="shareLink('whatsapp','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-whatsapp"></i></button>
-   <button onclick="shareLink('telegram','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-telegram-plane"></i></button>
-   <button onclick="shareLink('linkedin','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i class="fab fa-linkedin-in"></i></button>
-   </div>
-   
 
-   </div>
-   </div>
-   </div>
+
+
+                  <button
+                     onclick="shareLink('whatsapp','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i
+                        class="fab fa-whatsapp"></i></button>
+                  <button
+                     onclick="shareLink('telegram','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i
+                        class="fab fa-telegram-plane"></i></button>
+                  <button
+                     onclick="shareLink('linkedin','tutor', '{{institutionDetails.id}}', '{{institutionDetails.name}}')"><i
+                        class="fab fa-linkedin-in"></i></button>
+               </div>
+
+
+            </div>
+         </div>
+      </div>
    </div>
 </section>
 
@@ -98,45 +120,57 @@
 
 
 <style>
-   .modal-content{
+   .modal-content {
       padding: 20px;
    }
-   .share-modal-header, .icons, .field{
+
+   .share-modal-header,
+   .icons,
+   .field {
       display: flex;
       align-items: center;
       justify-content: space-between;
    }
-   .share-modal-header{
+
+   .share-modal-header {
       padding-bottom: 15px;
       border-bottom: 1px solid #ebedf9;
    }
-   .share-modal-header span{
+
+   .share-modal-header span {
       font-size: 21px;
       font-weight: 600;
    }
-   .close-btn, .icons button{
+
+   .close-btn,
+   .icons button {
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
    }
-   .close-btn{
+
+   .close-btn {
       height: 33px;
       width: 33px;
       color: #878787;
       background: #f2f3fb;
       cursor: pointer;
    }
-   .share-modal-body{
+
+   .share-modal-body {
       margin: 10px 0;
    }
-   .share-modal-body p{
+
+   .share-modal-body p {
       font-size: 16px;
    }
-   .icons{
+
+   .icons {
       margin: 10px 0 15px 0;
    }
-   .icons button{
+
+   .icons button {
       background: transparent;
       height: 50px;
       width: 50px;
@@ -145,107 +179,128 @@
       text-decoration: none;
       transition: all 0.3s ease-in-out;
    }
-   .icons button:nth-child(1){
+
+   .icons button:nth-child(1) {
       color: #A9A9A9;
       border-color: #a3c9fa;
    }
-   .icons button:nth-child(1):hover{
+
+   .icons button:nth-child(1):hover {
       background: #A9A9A9;
    }
-   .icons button:nth-child(2){
+
+   .icons button:nth-child(2) {
       color: #696969;
       border-color: #b5e6fb;
    }
-   .icons button:nth-child(2):hover{
+
+   .icons button:nth-child(2):hover {
       background: #696969;
    }
-   .icons button:nth-child(3){
-   color:  #25d336;
-   border-color:  #a6efad;
+
+   .icons button:nth-child(3) {
+      color: #25d336;
+      border-color: #a6efad;
    }
-   .icons button:nth-child(3):hover{
-   background:  #25d336;
+
+   .icons button:nth-child(3):hover {
+      background: #25d336;
    }
-   .icons button:nth-child(4){
+
+   .icons button:nth-child(4) {
       color: #0088cc;
       border-color: #85d6ff;
    }
-   .icons button:nth-child(4):hover{
+
+   .icons button:nth-child(4):hover {
       background: #0088cc;
    }
-   .icons button:nth-child(5){
+
+   .icons button:nth-child(5) {
       color: #0a66c2;
       border-color: #8bc2f9;
    }
-   .icons button:nth-child(5):hover{
+
+   .icons button:nth-child(5):hover {
       background: #0a66c2;
    }
-   .icons button:hover{
+
+   .icons button:hover {
       color: #fff;
       border-color: transparent;
       outline: none;
    }
-   .icons button i{
+
+   .icons button i {
       transition: transform all 0.3s ease-in-out;
    }
-   .icons button:hover i{
+
+   .icons button:hover i {
       transform: scale(1.2);
    }
-   
+
+   .subjectnew {
+      background: #D3D3D3;
+      color: #000;
+      padding: 15px 0px 0px 15px;
+      font-size: 14px;
+      margin-bottom: 10px;
+      margin-right: 10px;
+
+   }
 </style>
 
 
 
 
 <script>
-   function shareLink(method,to, institutionId, InstitutionName)
-   {
+   function shareLink(method, to, institutionId, InstitutionName) {
       InstitutionName = InstitutionName.replace(/ /g, "%20")
-     if(to==='student')
-      InstitutionLink = "https://onorg.tk/student/signup/"+institutionId
+      if (to === 'student')
+         InstitutionLink = "https://onorg.tk/student/signup/?institution=" + institutionId
       else
-      InstitutionLink = "https://onorg.tk/tutor/signup/"+institutionId
-      if(method === 'facebook')
-         location.href = "https://facebook.com/sharer/sharer.php?u="+productLink+"&quote="+productName+"%20at%20"+productPrice+"%20Only%0ACheck%20it%20now&hashtag=%23ShoppingCart"
-      else if(method === 'twitter')
-         location.href = "https://twitter.com/intent/tweet?url="+productLink+"&text="+productName+"%20at%20"+productPrice+"%20Only%0ACheck%20it%20now%0A"
-      else if(method === 'linkedin')
-         location.href = "http://linkedin.com/shareArticle?mini=true&url="+productLink+"&title="+productName+"%20at%20"+productPrice+"%20Only%0ACheck%20it%20now&summary=Only%20limited%20products%20available&source="+productLink
-      else if(method === 'whatsapp')
-         location.href = "https://api.whatsapp.com/send?text="+InstitutionName+"%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now%0A"+InstitutionLink
+         InstitutionLink = "https://onorg.tk/tutor/signup/?institution=" + institutionId
+      if (method === 'facebook')
+         location.href = "https://facebook.com/sharer/sharer.php?u=" + productLink + "&quote=" + productName + "%20at%20" + productPrice + "%20Only%0ACheck%20it%20now&hashtag=%23ShoppingCart"
+      else if (method === 'twitter')
+         location.href = "https://twitter.com/intent/tweet?url=" + productLink + "&text=" + productName + "%20at%20" + productPrice + "%20Only%0ACheck%20it%20now%0A"
+      else if (method === 'linkedin')
+         location.href = "http://linkedin.com/shareArticle?mini=true&url=" + productLink + "&title=" + productName + "%20at%20" + productPrice + "%20Only%0ACheck%20it%20now&summary=Only%20limited%20products%20available&source=" + productLink
+      else if (method === 'whatsapp')
+         location.href = "https://api.whatsapp.com/send?text=" + InstitutionName + "%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now%0A" + InstitutionLink
       else
-         location.href = "https://telegram.me/share/url?url="+InstitutionLink+"&text="+InstitutionName+"%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now"
+         location.href = "https://telegram.me/share/url?url=" + InstitutionLink + "&text=" + InstitutionName + "%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now"
    }
-   
 
-function student() {
-  /* Get the text field */
-  var copyText = document.getElementById("InputStudent");
 
-  /* Select the text field */
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+   function student() {
+      /* Get the text field */
+      var copyText = document.getElementById("InputStudent");
 
-  /* Copy the text inside the text field */
-  navigator.clipboard.writeText(copyText.value);
-  
-  /* Alert the copied text */
-  alert("Copied the text: " + copyText.value);
-}
-function tutor() {
-  /* Get the text field */
-  var copyText = document.getElementById("InputTutor");
+      /* Select the text field */
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
-  /* Select the text field */
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+      /* Copy the text inside the text field */
+      navigator.clipboard.writeText(copyText.value);
 
-  /* Copy the text inside the text field */
-  navigator.clipboard.writeText(copyText.value);
-  
-  /* Alert the copied text */
-  alert("Copied the text: " + copyText.value);
-}
+      /* Alert the copied text */
+      alert("Copied the text: " + copyText.value);
+   }
+   function tutor() {
+      /* Get the text field */
+      var copyText = document.getElementById("InputTutor");
+
+      /* Select the text field */
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      navigator.clipboard.writeText(copyText.value);
+
+      /* Alert the copied text */
+      alert("Copied the text: " + copyText.value);
+   }
 </script>
 
 

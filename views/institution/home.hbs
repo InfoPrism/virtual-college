@@ -2,71 +2,81 @@
     <div class="container-fluid">
         <div class="row mb-3">
             <div class="col-12">
-                 <a href="/institution/add-class" style="text-decoration: none;">
-      <div class="card">
-         <h6>Create new class</h6>
-         <p>Here we can create new class or department. We can also see the classes already created. </p>
-     </div>
-     </a>
-       
-      <a href="/institution/all-tutors" style="text-decoration: none;">
-      <div class="card">
-         <h6>All Tutors</h6>
-         <p>Here we can see all teachers in our institution</p>
-         </div>
-     </a>
-      <a href="/institution/all-students-different-status/?status=Signup pending" style="text-decoration: none;">
-      <div class="card">
-        <h6>Validate Stuent Signup</h6>
-         
-         <p>Here we can verify the sighnup of tutors by checking their details.</p>
-         {{#if NoSignupPendingStudents}}
-         <span class="ml-auto text-decoration-none" style="color:#222424" href="" ><i class="far fa-bell" style="margin-right: auto; font-size:20px;"></i><span class="badge badge" style="padding-right: px; background-color: #222424;" id="cart-count">{{NoSignupPendingStudents}}</span></span>
-         {{/if}}
-        
-         </div>
-     </a>
-      <a href="/institution/all-tutors-different-status/?status=Signup pending" style="text-decoration: none;">
-      <div class="card">
-         <h6>Validate Tutor Signup</h6>
-         <p>Here we can verify the sighnup of tutors by checking their details.</p>
-         {{#if NoSignupPendingTutors}}
-         <span class="ml-auto text-decoration-none" style="color:#222424" href="" ><i class="far fa-bell" style="margin-right: auto; font-size:20px;"></i><span class="badge badge" style="padding-right: px; background-color: #222424;" id="cart-count">{{NoSignupPendingTutors}}</span></span>
-         {{/if}}
-         </div>
-     </a>
-     <a data-toggle="modal" data-target="#exampleModalCenter" style="text-decoration: none;">
-      <div class="card">
-         <h6>Create new announcement</h6>
-         <p>Here we can create new announcement to everyone or separate announcement to student and tutor </p>
-         </div>
-     </a>
-      <a href="/institution/all-students" style="text-decoration: none;">
-      <div class="card">
-         <h6>All students</h6>
-         <p>Here we can see all students in our institution</p>
-         </div>
-     </a>
-     
+                <a href="/institution/add-class" style="text-decoration: none;">
+                    <div class="card">
+                        <h6>Create new class</h6>
+                        <p>Here we can create new class or department. We can also see the classes already created. </p>
+                    </div>
+                </a>
+                <a href="/institution/all-students-different-status/?status=Signup pending"
+                    style="text-decoration: none;">
+                    <div class="card">
+                        <h6>Validate Stuent Signup</h6>
+
+                        <p>Here we can verify the sighnup of tutors by checking their details.</p>
+                        {{#if NoSignupPendingStudents}}
+                        <span class="ml-auto text-decoration-none" style="color:#222424" href=""><i class="far fa-bell"
+                                style="margin-right: auto; font-size:20px;"></i><span class="badge badge"
+                                style="padding-right: px; background-color: #222424;"
+                                id="cart-count">{{NoSignupPendingStudents}}</span></span>
+                        {{/if}}
+
+                    </div>
+                </a>
+                <a href="/institution/all-tutors-different-status/?status=Signup pending"
+                    style="text-decoration: none;">
+                    <div class="card">
+                        <h6>Validate Tutor Signup</h6>
+                        <p>Here we can verify the sighnup of tutors by checking their details.</p>
+                        {{#if NoSignupPendingTutors}}
+                        <span class="ml-auto text-decoration-none" style="color:#222424" href=""><i class="far fa-bell"
+                                style="margin-right: auto; font-size:20px;"></i><span class="badge badge"
+                                style="padding-right: px; background-color: #222424;"
+                                id="cart-count">{{NoSignupPendingTutors}}</span></span>
+                        {{/if}}
+                    </div>
+                </a>
+                <a data-toggle="modal" data-target="#InstitutionAnnouncement" style="text-decoration: none;">
+                    <div class="card">
+                        <h6>Create new announcement</h6>
+                        <p>Here we can create new announcement to everyone or separate announcement to student and tutor
+                        </p>
+                    </div>
+                </a>
+                <a href="/institution/all-students" style="text-decoration: none;">
+                    <div class="card">
+                        <h6>All students</h6>
+                        <p>Here we can see all students in our institution</p>
+                    </div>
+                </a>
+                <a href="/institution/all-tutors" style="text-decoration: none;">
+                    <div class="card">
+                        <h6>All Tutors</h6>
+                        <p>Here we can see all teachers in our institution</p>
+                    </div>
+                </a>
+                <a href="/institution/all-classes-subjects" style="text-decoration: none;">
+                    <div class="card">
+                        <h6>All classes</h6>
+                        <p>Here we can see all classes and the different subjects created by different tutors under the
+                            corresponding classes.</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
 <style>
+    .main-container .card {
+        background: #D3D3D3;
+        color: #000;
+        padding: 15px 0px 0px 15px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        margin-right: 10px;
 
-.main-container .card{
-    background:#D3D3D3;
-    color: #000;
-    padding: 15px 0px 0px 15px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-
-}
-
-
-
+    }
 </style>
 
 <!-- OLD home page

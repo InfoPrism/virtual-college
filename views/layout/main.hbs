@@ -1,76 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <!-- Required meta tags -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <!-- Bootstrap, Font Awesome CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css">
-      <link href="/stylesheets/style.css" type="text/css" rel="stylesheet"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-<!-- Google Fonts -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-<!-- Bootstrap core CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-{{#if institution}}
-<!-- Material Design Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
-{{/if}}
-{{!-- Added for multiple selectbox --}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
- <!-- Bootstrap, Font Awesome CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css">
-      <link href="/stylesheets/style.css" type="text/css" rel="stylesheet">
 
-    
+<head>
+   <!-- Required meta tags -->
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <!-- Bootstrap, Font Awesome CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css">
+   <link href="/stylesheets/style.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+   <!-- Google Fonts -->
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+   <!-- Bootstrap core CSS -->
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+   {{#if institutionDetails}}
+   {{#if maxNoData}}
+   <link href="">
+   {{else}}
+   <!-- Material Design Bootstrap -->
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+   {{/if}}
+   {{/if}}
+   {{!-- Added for multiple selectbox --}}
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+   <!-- Bootstrap, Font Awesome CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css">
+   <link href="/stylesheets/style.css" type="text/css" rel="stylesheet">
 
-      {{#if student}}
-      <title>onOrg Student | {{{title}}}</title>
-      {{else if tutor}}
-      <title>OnOrg Tutor | {{{title}}}</title>
-      {{else if institution}}
-      <title>onOrg Institution | {{{title}}}</title>
-      {{else}}
-      <title>onOrg | {{{title}}}</title>
-      {{/if}}
-   </head>
-   <body>
-      {{#if student}}
-      {{>student-header}}
-      {{>student-sidebar}}
-      {{else if tutor}}
-      {{>tutor-header}}
-      {{>tutor-sidebar}}
-      {{else if institution}}
-      {{>institution-header}}
-      {{>institution-sidebar}}
-      {{else}}
-      {{>main-header}}
-      {{/if}}
-      <div class="main-container">
+
+
+   {{#if student}}
+   <title>onOrg Student | {{{title}}}</title>
+   {{else if tutor}}
+   <title>OnOrg Tutor | {{{title}}}</title>
+   {{else if institution}}
+   <title>onOrg Institution | {{{title}}}</title>
+   {{else}}
+   <title>onOrg | {{{title}}}</title>
+   {{/if}}
+</head>
+
+<body>
+   {{#if student}}
+   {{>student-header}}
+   {{>student-sidebar}}
+   {{else if tutor}}
+   {{>tutor-header}}
+   {{>tutor-sidebar}}
+   {{else if institution}}
+   {{>institution-header}}
+   {{>institution-sidebar}}
+   {{else}}
+   {{>main-header}}
+   {{/if}}
+   <div class="main-container">
       {{{body}}}
-      </div>
-      {{#if student}}
-      {{>student-footer}}
-      {{else if tutor}}
-      {{>tutor-footer}}
-      {{else if institution}}
-      {{>Institution-footer}}
-      {{else}}
-      {{#unless index}}
-      {{>main-footer}}
-      {{/unless}}
-      {{/if}}
-      <!-- Optional JavaScript -->
-      <!-- jQuery first, then Popper.js, then Bootstrap JS, then Form Validation -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-      {{!-- added for multiple selectbox --}}
-      <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
-      {{!-- end --}}
-      <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
-      <script src="/javascripts/script.js"></script>
-   </body>
+   </div>
+   {{#if student}}
+   {{>student-footer}}
+   {{else if tutor}}
+   {{>tutor-footer}}
+   {{else if institution}}
+   {{>Institution-footer}}
+   {{else}}
+   {{#unless index}}
+   {{>main-footer}}
+   {{/unless}}
+   {{/if}}
+   <!-- Optional JavaScript -->
+   <!-- jQuery first, then Popper.js, then Bootstrap JS, then Form Validation -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+   {{!-- added for multiple selectbox --}}
+   <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+   {{!-- end --}}
+   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+   <script src="/javascripts/script.js"></script>
+</body>
+
 </html>

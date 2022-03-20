@@ -6,7 +6,7 @@
       </div>
       {{/if}}
       <div class="row">
-         <div class="col-md-7">
+         <div class="col-md-5">
             <form action="/institution/add-class" method="POST" id="">
                <h3 class="mb-2 text-center" style="padding-top: 18px;">Add New Class</h3>
 
@@ -14,12 +14,6 @@
                   <label for="name">Class Name</label>
                   <input type="text" class="form-control" id="name" name="name" required>
                </div>
-               <!-- SHORT NAME we can enable if we want
-                 <div class="form-group">
-                  <label for="name">Short Name</label>
-                  <input type="text" class="form-control" id="name" name="name" value="{{user.name}}" required>
-               </div>
-               -->
                <div class="form-group">
                   <label for="address">Class Description</label>
                   <textarea rows="3" type="text" class="form-control" id="description" name="description"></textarea>
@@ -42,19 +36,59 @@
             </form>
          </div>
          {{#if classes}}
-         <div class="col-md-5 my-auto">
+         <div class="col-md-4 my-auto">
             <div class="p-3 pb-4 border border-secondary rounded" style="margin-top:4em;">
                <h5>Classes Already Created</h5>
                <hr>
                <!--Here we check there is any class created or not -->
                <div id="list-example" class="list-group">
                   {{#each classes}}
-                  <a class="list-group-item list-group-item-action">{{this.name}}</a>
+                  <a href="/institution/add-class/?classId={{this._id}}&className={{this.name}}"
+                     class="list-group-item list-group-item-action">{{this.name}}</a>
                   {{/each}}
 
                </div>
             </div>
          </div>
+         {{/if}}
+         {{#if subjects}}
+         <div class="col-md-3 my-auto">
+            <div class="p-3 pb-4 border border-secondary rounded" style="margin-top:4em;">
+               <h5>Subjects in {{className}}</h5>
+               <hr>
+               <!--Here we check there is any class created or not -->
+               <div id="list-example" class="list-group">
+                  {{#each subjects}}
+                  <div class="list-group-item list-group-item-action">
+                     <h6>{{this.name}}</h6>
+
+                     <div class="row">
+                        <small class="w-50" style="padding-left: 15px; padding-top: 0;">created By:
+                           {{this.tutor.fname}}</small><br>
+                        <small class="w-50" style="padding-left: 15px; padding-top: 0;">Date: {{this.date}}</small>
+                     </div>
+                  </div>
+                  {{/each}}
+
+               </div>
+            </div>
+         </div>
+         {{else}}
+         {{#if className}}
+         <div class="col-md- my-auto">
+            <div class="p-3 pb-4 border border-secondary rounded">
+               <h5>Subjects in {{className}}</h5>
+               <hr>
+               <!--Here we check there is any class created or not -->
+               <div id="list-example" class="list-group">
+
+                  <div class="list-group-item list-group-item-action">
+                     <h6>There is no subjects under {{className}}</h6>
+                  </div>
+               </div>
+            </div>
+         </div>
+         {{/if}}
          {{/if}}
       </div>
    </div>

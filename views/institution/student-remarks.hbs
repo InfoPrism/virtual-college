@@ -1,210 +1,235 @@
 {{#if studentRemarks}}
 <section>
    <div class="container">
-     
-         <div class="row">
-            
-            <div class="col-md-7">
-               
-               <h3 class="mb-2 text-center" style="padding-top: 18px;">Remark of {{studentDetail.fname}} {{studentDetail.lname}}</h3>
-                {{#each studentRemarks}}
-                 <div class="card">
-          <h6>{{this.remarkedPerson}}</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">Remarked on: {{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>{{this.remark}}</p> 
-        
-     </div>
-     {{/each}}
+
+      <div class="row">
+
+         <div class="col-md-7">
+
+            <h3 class="mb-2 text-center" style="padding-top: 18px;">Remark of {{studentDetail.fname}}
+               {{studentDetail.lname}}</h3>
+            {{#each studentRemarks}}
+            <div class="card">
+               <h6>{{this.remarkedPerson}}</h6>
+               <div class="row">
+                  <small class="w-50" style="padding-left: 15px; padding-top: 0;">Remarked on: {{this.date}}</small>
+               </div>
+               <hr class="p-0">
+               <p>{{this.remark}}</p>
+
             </div>
-                 <div class="student-information col-md-5 my-auto">
-                  
-              
-	<div class="row z-depth-3">
-       
+            {{/each}}
+         </div>
+         <div class="student-information col-md-5 my-auto">
 
-    
-       
-				<div class="col-sm-4 rounded-left" style="background-color: #000;">
-				   <div class="card-block text-center text-white">
-					   <i class="fas fa-user-tie fa-7x mt-5"></i>
-					   <h2 class="small-device-name font-weight-bold mt-4">{{studentDetail.fname}} {{studentDetail.lname}}</h2>
-					   <!--<h2 class="large-device-name font-weight-bold mt-4">{{studentDetail.fname}}</h2>-->
-					   <p class="small-device-name">Student</p>
-					   <div class="subjects">
-						   <hr class="bg-primary">
-					   <h5>Subjects</h5>
-					  <div class="row">
-					   <div class="col-sm-6">
-						<ul>
-							<li>*Java</li>
-							<li>*Phython</li>
-							<li>*DBMS</li>
-						  </ul> 
-					   </div>
-					   
-				   </div>
-				   </div>
-					   
-					
-				   </div>
-			   </div>
-			   <div   class="col-sm-8 bg-white rounded-right">
-				   <h3 class="large-device-name mt-3 text-center" id="student-fullName2">{{studentDetail.fname}} {{studentDetail.lname}}</h3>
-				   <h3 class="small-device-name mt-3 text-center">Informations</h3>
-				   <hr  class="bg-primary mt-0 w-25" style="margin-left: 37%;">
-				   
-					  <div class="row">
 
-						   <div class="small-email col-sm-6">
-						   <p class="font-weight-bold">Email:</p>
-							  <h6 class="text-muted">{{studentDetail.email}}</h6>
-					   </div>
-					  
-					   <div class="col-sm-6">
-						   <p class="font-weight-bold">Mobile:</p>
-							  <h6 class="text-muted" id="student-mobile">{{studentDetail.mobile}}</h6>
-					   </div>
-					    <div class="col-sm-6">
-						   <p class="font-weight-bold">Gender:</p>
-							  <h6 class=" text-muted" id="student-gender">{{studentDetail.gender}}</h6>
-					   </div>
-					   <div class="col-sm-6">
-						<p class="font-weight-bold">Gardian:</p>
-						   <h6 class=" text-muted" id="student-guardian">{{studentDetail.guardian}}</h6>
-					</div>
-					<div class="col-sm-6">
-						<p class="font-weight-bold">Joined Date</p>
-						   <h6 class="text-muted">{{studentDetail.date}}</h6>
-					</div>
-					<div class="col-sm-6">
-						<p class="font-weight-bold">Address:</p>
-						   <h6 class=" text-muted" id="student-address">{{studentDetail.address}}</h6>
-					</div>
-					<div class="large-device-name col-sm-6">
-						<p class="font-weight-bold">Type:</p>
-						   <h6 class="text-muted">Student</h6>
-					</div>
-					 
-					   <div class="large-email col-sm-6">
-						   <p class="font-weight-bold">Email:</p>
-							  <h6 class="text-muted" id="student-email2">{{studentDetail.email}}</h6>
-					   </div>
-				   </div>
-				    <div class="smallDevice-subjects">
-				      <h5 class="mt-3 font-weight-bold">Subjects Enrolled:</h5>
-					   
-					  <div class="row">
-					   <div class="col-sm-6">
-							  <h6 class="text-muted">*Java</h6>
-							  <h6 class="text-muted">*Phython</h6>
-							  <h6 class="text-muted">*Data Structures</h6>
-							 
-					   </div>
-					 </div>
-				 </div>
-					   
-				
-					  
-				
-					   
-					   <!--
+            <div class="row z-depth-3">
+
+
+
+
+               <div class="col-sm-4 rounded-left" style="background-color: #000;">
+                  <div class="card-block text-center text-white">
+                     <i class="fas fa-user-tie fa-7x mt-5"></i>
+                     <h2 class="small-device-name font-weight-bold mt-4">{{studentDetail.fname}} {{studentDetail.lname}}
+                     </h2>
+                     <!--<h2 class="large-device-name font-weight-bold mt-4">{{studentDetail.fname}}</h2>-->
+                     <p class="small-device-name">Student</p>
+                     <div class="subjects">
+                        <hr class="bg-primary">
+                        <h5>Subjects</h5>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <ul>
+                                 <li>*Java</li>
+                                 <li>*Phython</li>
+                                 <li>*DBMS</li>
+                              </ul>
+                           </div>
+
+                        </div>
+                     </div>
+
+
+                  </div>
+               </div>
+               <div class="col-sm-8 bg-white rounded-right">
+                  <h3 class="large-device-name mt-3 text-center" id="student-fullName2">{{studentDetail.fname}}
+                     {{studentDetail.lname}}</h3>
+                  <h3 class="small-device-name mt-3 text-center">Informations</h3>
+                  <hr class="bg-primary mt-0 w-25" style="margin-left: 37%;">
+
+                  <div class="row">
+
+                     <div class="small-email col-sm-6">
+                        <p class="font-weight-bold">Email:</p>
+                        <h6 class="text-muted">{{studentDetail.email}}</h6>
+                     </div>
+
+                     <div class="col-sm-6">
+                        <p class="font-weight-bold">Mobile:</p>
+                        <h6 class="text-muted" id="student-mobile">{{studentDetail.mobile}}</h6>
+                     </div>
+                     <div class="col-sm-6">
+                        <p class="font-weight-bold">Gender:</p>
+                        <h6 class=" text-muted" id="student-gender">{{studentDetail.gender}}</h6>
+                     </div>
+                     <div class="col-sm-6">
+                        <p class="font-weight-bold">Gardian:</p>
+                        <h6 class=" text-muted" id="student-guardian">{{studentDetail.guardian}}</h6>
+                     </div>
+                     <div class="col-sm-6">
+                        <p class="font-weight-bold">Joined Date</p>
+                        <h6 class="text-muted">{{studentDetail.date}}</h6>
+                     </div>
+                     <div class="col-sm-6">
+                        <p class="font-weight-bold">Address:</p>
+                        <h6 class=" text-muted" id="student-address">{{studentDetail.address}}</h6>
+                     </div>
+                     <div class="large-device-name col-sm-6">
+                        <p class="font-weight-bold">Type:</p>
+                        <h6 class="text-muted">Student</h6>
+                     </div>
+
+                     <div class="large-email col-sm-6">
+                        <p class="font-weight-bold">Email:</p>
+                        <h6 class="text-muted" id="student-email2">{{studentDetail.email}}</h6>
+                     </div>
+                  </div>
+                  <div class="smallDevice-subjects">
+                     <h5 class="mt-3 font-weight-bold">Subjects Enrolled:</h5>
+
+                     <div class="row">
+                        <div class="col-sm-6">
+                           <h6 class="text-muted">*Java</h6>
+                           <h6 class="text-muted">*Phython</h6>
+                           <h6 class="text-muted">*Data Structures</h6>
+
+                        </div>
+                     </div>
+                  </div>
+
+
+
+
+
+                  <!--
 					   <li>  <a href="/student" class="btn btn " style="color:white; background-color: #222424;">Add Remark</a></li>
 					   <li><a href="#!"><i class="fab fa-youtube px-3 h4 text-info"></i></a></li>
 					   <li><a href="#!"><i class="fab fa-twitter px-3 h4 text-info"></i></a></li>
 					   -->
-					  </ul>  
-					  
-				 </div>
-				
-			</div>  
-             
-            </div>            
-   
-           
+                  </ul>
+
+               </div>
+
+            </div>
+
          </div>
-      
+
+
+      </div>
+
    </div>
 </section>
- {{else}}         
-    <section>
-         <div class="container-fluid">
-   <div class="container">
-      <div class="row">
-         <div class="col-md-12 text-center">
-            <p class="mt-5">{{studentDetail.fname}} has not had any remark</p>
-            <a href="/institution/add-remarks/{{studentDetail._id}}" class="btn btn-sm" style="background-color:#222424; color: #fff;">Add new remark</a>
+{{else}}
+<section>
+   <div class="container-fluid">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 text-center">
+               <p class="mt-5">{{studentDetail.fname}} has not had any remark</p>
+               <a href="/institution/add-remarks/{{studentDetail._id}}" class="btn btn-sm"
+                  style="background-color:#222424; color: #fff;">Add new remark</a>
+            </div>
          </div>
       </div>
    </div>
-         </div>
-    </section>             
-        
-    {{/if}}
+</section>
+
+{{/if}}
 <!--view Remarks-->
 <section>
-   <div class="modal fade" id="studentremarks" tabindex="-1" role="dialog" aria-labelledby="shareProductLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-   <div class="modal-content">
-   <div class="share-modal-header">
-   <span>Sivin Remarks</span>
-   <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
-   </div>
-   <div class="share-modal-body">
-     <div class="card">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+   <div class="modal fade" id="studentremarks" tabindex="-1" role="dialog" aria-labelledby="shareProductLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="share-modal-header">
+               <span>Sivin Remarks</span>
+               <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+            </div>
+            <div class="share-modal-body">
+               <div class="card">
+                  <h6>Principal:</h6>
+                  <div class="row">
+                     <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
+                  </div>
+                  <hr class="p-0">
+                  <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a
+                     more-or-less normal distribution of letters, as opposed to using 'Content here, content here',
+                     making it look like readable English. Many desktop publishing packages and web page editors now use
+                     Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+                     still in their infancy. Various versions have evolved over the years, sometimes by accident,
+                     sometimes on purpose (injected humour and the like).
 
-Where does it come from?
+                     Where does it come from?
 
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-	   <div class="card" style="background:#ffcccb ;">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                     Contrary to popular belief, Lorem Ipsum is</p>
+               </div>
+               <div class="card" style="background:#ffcccb ;">
+                  <h6>Principal:</h6>
+                  <div class="row">
+                     <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
+                  </div>
+                  <hr class="p-0">
+                  <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a
+                     more-or-less normal distribution of letters, as opposed to using 'Content here, content here',
+                     making it look like readable English. Many desktop publishing packages and web page editors now use
+                     Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+                     still in their infancy. Various versions have evolved over the years, sometimes by accident,
+                     sometimes on purpose (injected humour and the like).
 
-Where does it come from?
+                     Where does it come from?
 
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-	   <div class="card" style="background-color:  	#98FB98;">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                     Contrary to popular belief, Lorem Ipsum is</p>
+               </div>
+               <div class="card" style="background-color:  	#98FB98;">
+                  <h6>Principal:</h6>
+                  <div class="row">
+                     <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
+                  </div>
+                  <hr class="p-0">
+                  <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a
+                     more-or-less normal distribution of letters, as opposed to using 'Content here, content here',
+                     making it look like readable English. Many desktop publishing packages and web page editors now use
+                     Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+                     still in their infancy. Various versions have evolved over the years, sometimes by accident,
+                     sometimes on purpose (injected humour and the like).
 
-Where does it come from?
+                     Where does it come from?
 
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-	   <div class="card" style="background:#ffcccb ;">
-         <h6>Principal:</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
-        </div>
-          <hr class="p-0">
-         <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                     Contrary to popular belief, Lorem Ipsum is</p>
+               </div>
+               <div class="card" style="background:#ffcccb ;">
+                  <h6>Principal:</h6>
+                  <div class="row">
+                     <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
+                  </div>
+                  <hr class="p-0">
+                  <p>ontent of a page when looking at its layout. The point of using Lorem Ipsum is that it has a
+                     more-or-less normal distribution of letters, as opposed to using 'Content here, content here',
+                     making it look like readable English. Many desktop publishing packages and web page editors now use
+                     Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+                     still in their infancy. Various versions have evolved over the years, sometimes by accident,
+                     sometimes on purpose (injected humour and the like).
 
-Where does it come from?
+                     Where does it come from?
 
-Contrary to popular belief, Lorem Ipsum is</p> 
-     </div>
-   </div>
+                     Contrary to popular belief, Lorem Ipsum is</p>
+               </div>
+            </div>
 
-   </div>
-   </div>
+         </div>
+      </div>
    </div>
 </section>
 
@@ -212,45 +237,57 @@ Contrary to popular belief, Lorem Ipsum is</p>
 
 
 <style>
-   .modal-content{
+   .modal-content {
       padding: 20px;
    }
-   .share-modal-header, .icons, .field{
+
+   .share-modal-header,
+   .icons,
+   .field {
       display: flex;
       align-items: center;
       justify-content: space-between;
    }
-   .share-modal-header{
+
+   .share-modal-header {
       padding-bottom: 15px;
       border-bottom: 1px solid #ebedf9;
    }
-   .share-modal-header span{
+
+   .share-modal-header span {
       font-size: 21px;
       font-weight: 600;
    }
-   .close-btn, .icons button{
+
+   .close-btn,
+   .icons button {
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
    }
-   .close-btn{
+
+   .close-btn {
       height: 33px;
       width: 33px;
       color: #878787;
       background: #f2f3fb;
       cursor: pointer;
    }
-   .share-modal-body{
+
+   .share-modal-body {
       margin: 10px 0;
    }
-   .share-modal-body p{
+
+   .share-modal-body p {
       font-size: 16px;
    }
-   .icons{
+
+   .icons {
       margin: 10px 0 15px 0;
    }
-   .icons button{
+
+   .icons button {
       background: transparent;
       height: 50px;
       width: 50px;
@@ -259,136 +296,157 @@ Contrary to popular belief, Lorem Ipsum is</p>
       text-decoration: none;
       transition: all 0.3s ease-in-out;
    }
-   .icons button:nth-child(1){
+
+   .icons button:nth-child(1) {
       color: #A9A9A9;
       border-color: #a3c9fa;
    }
-   .icons button:nth-child(1):hover{
+
+   .icons button:nth-child(1):hover {
       background: #A9A9A9;
    }
-   .icons button:nth-child(2){
+
+   .icons button:nth-child(2) {
       color: #696969;
       border-color: #b5e6fb;
    }
-   .icons button:nth-child(2):hover{
+
+   .icons button:nth-child(2):hover {
       background: #696969;
    }
-   .icons button:nth-child(3){
-   color:  #25d336;
-   border-color:  #a6efad;
+
+   .icons button:nth-child(3) {
+      color: #25d336;
+      border-color: #a6efad;
    }
-   .icons button:nth-child(3):hover{
-   background:  #25d336;
+
+   .icons button:nth-child(3):hover {
+      background: #25d336;
    }
-   .icons button:nth-child(4){
+
+   .icons button:nth-child(4) {
       color: #0088cc;
       border-color: #85d6ff;
    }
-   .icons button:nth-child(4):hover{
+
+   .icons button:nth-child(4):hover {
       background: #0088cc;
    }
-   .icons button:nth-child(5){
+
+   .icons button:nth-child(5) {
       color: #0a66c2;
       border-color: #8bc2f9;
    }
-   .icons button:nth-child(5):hover{
+
+   .icons button:nth-child(5):hover {
       background: #0a66c2;
    }
-   .icons button:hover{
+
+   .icons button:hover {
       color: #fff;
       border-color: transparent;
       outline: none;
    }
-   .icons button i{
+
+   .icons button i {
       transition: transform all 0.3s ease-in-out;
    }
-   .icons button:hover i{
+
+   .icons button:hover i {
       transform: scale(1.2);
    }
-   
 </style>
 
 
 
 <style>
-.main-container{
-   
-   
-    /*margin-left: 250px;*/
-    padding: 0px 0px 0px 0px;
-    background-size: cover;
-   
-    transition: 0.4s;
-}
+   .main-container {
+
+
+      /*margin-left: 250px;*/
+      padding: 0px 0px 0px 0px;
+      background-size: cover;
+
+      transition: 0.4s;
+   }
 
 
 
-.main-container .card{
-    
-    color: #000;
-    padding: 15px 0px 0px 15px;
-    font-size: 14px;
-    margin-bottom: 10px;
+   .main-container .card {
 
-}
+      color: #000;
+      padding: 15px 0px 0px 15px;
+      font-size: 14px;
+      margin-bottom: 10px;
+
+   }
 </style>
 <style>
-@media screen and (max-width: 600px) {
-/*Hide in small Devices*/
-.student-information{
-    display: none;
-}
-.subjects{
-    display: none;
-  }
-.large-device-name{
-	display: none;
-  }
-.large-email{
-	display: none;
-}
-}
-@media screen and (min-width: 600px) {
-/*Hide in medium Devices*/
-.small-device-name{
-	display: none;
-  }
-  .smallDevice-subjects{
-	  display: none;
-  }
-  .close-modal-header{
-	  display: none;
-  }
-  .student-info-close{
-	  display: none;
-  }
-  .small-email{
-	display: none;
-}
-}
+   @media screen and (max-width: 600px) {
 
+      /*Hide in small Devices*/
+      .student-information {
+         display: none;
+      }
+
+      .subjects {
+         display: none;
+      }
+
+      .large-device-name {
+         display: none;
+      }
+
+      .large-email {
+         display: none;
+      }
+   }
+
+   @media screen and (min-width: 600px) {
+
+      /*Hide in medium Devices*/
+      .small-device-name {
+         display: none;
+      }
+
+      .smallDevice-subjects {
+         display: none;
+      }
+
+      .close-modal-header {
+         display: none;
+      }
+
+      .student-info-close {
+         display: none;
+      }
+
+      .small-email {
+         display: none;
+      }
+   }
 </style>
 
 
 <style>
-.main-container{
-   
-    /*margin-left: 250px;*/
-    
-    background-size: cover;
-    height: 100vh;
-    transition: 0.4s;
-    margin-left: 0;
-}
+   .main-container {
+
+      /*margin-left: 250px;*/
+
+      background-size: cover;
+      height: 100vh;
+      transition: 0.4s;
+      margin-left: 0;
+   }
 
 
 
-.main-container .card{
-    background:#D3D3D3;
-    color: #000;
-    padding: 15px 0px 0px 15px;
-    font-size: 14px;
-    margin-bottom: 10px;
+   .main-container .card {
+      background: #D3D3D3;
+      color: #000;
+      padding: 15px 0px 0px 15px;
+      font-size: 14px;
+      margin-bottom: 10px;
 
-}
+   }
 </style>

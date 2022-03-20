@@ -1,57 +1,59 @@
 {{#if announcements}}
- <section>
-<div class="main-container ml-5">
-     <h5 class="mt-4 text-center" style="color: #222424;"><b>Everyone Announcement</b></h5>
-      <a href="/institution/add-announcement" class="btn btn ml-auto mr-0 mb-3" style="background-color: #222424; color: #fff;">Create New Announcement</a>
-     <a href="" style="text-decoration: none;">
-     {{#each announcements}}
-      <div class="card">
-         <h6>{{this.title}}</h6>
-           <div class="row">
-         <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
+<section>
+    <div class="main-container ml-5">
+        <h5 class="mt-4 text-center" style="color: #222424;"><b>Everyone Announcement</b></h5>
+        <a href="/institution/add-announcement" class="btn btn ml-auto mr-0 mb-3"
+            style="background-color: #222424; color: #fff;">Create New Announcement</a>
+        <a href="" style="text-decoration: none;">
+            {{#each announcements}}
+            <div class="card">
+                <h6>{{this.title}}</h6>
+                <div class="row">
+                    <small class="w-50" style="padding-left: 15px; padding-top: 0;">{{this.date}}</small>
+                </div>
+                <hr class="p-0">
+                <p>{{this.content}}</p>
+            </div>
+        </a>
+        {{/each}}
+    </div>
+</section>
+{{else}}
+<section>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="mt-5">You haven't created any announcement to Everyone</p>
+                    <a href="/institution/add-announcement" class="btn btn btn-sm"
+                        style="background-color:#222424; color: #fff;">Create New Announcement</a>
+                </div>
+            </div>
         </div>
-          <hr class="p-0">
-         <p>{{this.content}}</p> 
-     </div>
-     </a>
-     {{/each}}
-     </div>
-</section>   
-    {{else}}         
-    <section>
-         <div class="container-fluid">
-   <div class="container">
-      <div class="row">
-         <div class="col-md-12 text-center">
-            <p class="mt-5">You haven't created any announcement to Everyone</p>
-            <a href="/institution/add-announcement" class="btn btn btn-sm" style="background-color:#222424; color: #fff;">Create New Announcement</a>
-         </div>
-      </div>
-   </div>
-         </div>
-    </section>             
-        
-    {{/if}}
+    </div>
+</section>
+
+{{/if}}
 
 <style>
-.main-container{
-   
-
-    background-size: cover;
-    height: 100vh;
-    transition: 0.4s;
-    margin-left:0;
-    margin-right: 15px;
-}
+    .main-container {
 
 
+        background-size: cover;
+        height: 100vh;
+        transition: 0.4s;
+        margin-left: 25px;
+        margin-right: 15px;
+    }
 
-.main-container .card{
-    background:#D3D3D3;
-    color: #000;
-    padding: 15px 0px 0px 15px;
-    font-size: 14px;
-    margin-bottom: 10px;
 
-}
+
+    .main-container .card {
+        background: #D3D3D3;
+        color: #000;
+        padding: 15px 0px 0px 15px;
+        font-size: 14px;
+        margin-bottom: 10px;
+
+    }
 </style>

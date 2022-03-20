@@ -4,19 +4,20 @@
          <div class="col-md-6">
             <h2 class="text-center">Institution Login</h2>
             <form action="/institution/login" method="POST" id="login" onchange="loginErr()">
-              <div class="form-group">
-               <label for="email">Email</label>
-               <input type="email" name="email" class="form-control">
-              </div>
-              <div class="form-group">
-               <label for="password">Password</label>
-               <input type="password" name="password" class="form-control">
-               {{#if loginErr}}
-               <small class="text-danger" id="loginErr">{{loginErr}}</small>
-               {{/if}}
-              </div>
-              <a href="/institution/signup">Create new account ?</a>
-            <button type="submit" class="btn btn  float-right" style="background-color: #222424; color: #fff;">Login</button>
+               <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" name="email" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" name="password" class="form-control">
+                  {{#if loginErr}}
+                  <small class="text-danger" id="loginErr">{{loginErr}}</small>
+                  {{/if}}
+               </div>
+               <a href="/institution/signup">Create new account ?</a>
+               <button type="submit" class="btn btn  float-right"
+                  style="background-color: #222424; color: #fff;">Login</button>
             </form>
          </div>
       </div>
@@ -30,8 +31,7 @@
 
 
 <script>
-   function loginErr()
-   {
+   function loginErr() {
       document.getElementById('loginErr').style.display = 'none'
    }
 </script>
