@@ -1,12 +1,13 @@
 <section>
     <div class="container-fluid">
         <div class="row mb-3 pl-3">
+            {{#if subjects}}
             {{#each subjects}}
             <div class="col-md-6 pl-0 pb-3">
                 <div class="card" style="height: 120px;">
                     <div class="row" style="height: 120px;">
                         <div class="col-4">
-                            <div class="class-title limit-line-length-vertical">{{this.class.class_name}}</div>
+                            <div class="class-title limit-line-length-vertical">{{this.class.name}}</div>
                         </div>
                         <div class="col-8">
                             <i class="far fa-trash-alt text-muted un-enroll-btn" data-toggle="modal"
@@ -19,6 +20,10 @@
                 </div>
             </div>
             {{/each}}
+            {{else}}
+            <h6 class="text-center" style="position: absolute; left: 50%; transform: translateX(-50%);">No Classes joined yet.</h6>
+            <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#join-class" style="position: absolute; left: 50%; top: 115px; transform: translateX(-50%);">Join Class</a>
+            {{/if}}
         </div>
     </div>
 </section>

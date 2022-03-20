@@ -3,6 +3,7 @@ var objectId = require('mongodb').ObjectID;
 var db = require('../config/connection');
 var collections = require('../config/collections');
 var fs = require('fs');
+var path = require('path');
 
 module.exports = {
    doSignup: function (studentData) {
@@ -50,7 +51,7 @@ module.exports = {
                      loginErr = "Your status is now pending. Institution will verify your details then you can logged in."
                      reject(loginErr)
                   }
-                  else if (student.status == 'Signup denyed') {
+                  else if (student.status == 'Signup denied') {
                      loginErr = "Your signup request was denied by institution. Please contact your institution."
                      reject(loginErr)
                   }
@@ -234,7 +235,49 @@ module.exports = {
                   student[0].subjects[i].class = student[0].classes[k]
             }
          }
-         resolve(student[0].subjects)
+         resolve(student[0].subjects.reverse())
+      })
+   },
+   getClassDetails: function (subjectId) {
+      return new Promise(async (resolve, reject) => {
+         let subject = await db.get().collection(collections.SUBJECT_COLLECTION).aggregate([
+            {
+               $match: { _id: objectId(subjectId) }
+            },
+            {
+               $lookup: {
+                  from: collections.TOPIC_COLLECTION,
+                  localField: '_id',
+                  foreignField: 'subject',
+                  as: 'topics'
+               }
+            },
+            {
+               $lookup: {
+                  from: collections.CLASS_COLLECTION,
+                  localField: 'class',
+                  foreignField: '_id',
+                  as: 'class'
+               }
+            },
+            {
+               $project: { name: 1, subject_id: 1, date: 1, class: { $arrayElemAt: ["$class", 0] }, topics: 1 }
+            }
+         ]).toArray()
+         subject[0].topics.reverse()
+         resolve(subject[0])
+      })
+   },
+   getTopicDetails: function (topicId) {
+      return new Promise(async (resolve, reject) => {
+         let topic = await db.get().collection(collections.TOPIC_COLLECTION).findOne({ _id: objectId(topicId) })
+         let folderPath = path.join('public', 'tutor_files', 'uploaded_files', 'topics', topic._id.toString())
+         fs.readdir(folderPath, (err, files) => {
+            if (files) {
+               topic.files = files
+            }
+            resolve(topic)
+         })
       })
    }
 }

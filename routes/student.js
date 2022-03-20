@@ -135,8 +135,17 @@ router.get('/unenroll-class/:id', verifyLogin, function (req, res, next) {
    })
 })
 
-router.get('/view-class/:id', verifyLogin, function (req, res, next) {
-   res.render('student/view-class', {title:'view Class', student:req.session.student})
+router.get('/view-class/:id', verifyLogin, async function (req, res, next) {
+   let subject = await studentHelpers.getClassDetails(req.params.id)
+   subject.topics.forEach((topic) => {
+      topic.date = topic.date.toDateString()
+   })
+   res.render('student/view-class', { title: 'view Class', subject, student: req.session.student })
+})
+
+router.post('/view-topic', verifyLogin, async function (req, res, next) {
+   let topic = await studentHelpers.getTopicDetails(req.body.id)
+   res.json(topic)
 })
 
 module.exports = router;

@@ -3,7 +3,17 @@ var objectId = require('mongodb').ObjectID;
 var db = require('../config/connection');
 var collections = require('../config/collections');
 var fs = require('fs');
+var rimraf = require('rimraf')
 var path = require('path');
+
+function getYTVideoId(videoUrl) {
+   if (videoUrl != undefined || videoUrl != '') {
+      let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+      let match = videoUrl.match(regExp);
+      return match[2]
+   }
+   return null
+}
 
 module.exports = {
    doSignup: function (tutorData) {
@@ -71,7 +81,7 @@ module.exports = {
 
                $match:
                {
-                  institutionId: institutionId
+                  institutionId: objectId(institutionId)
                }
             },
             {
@@ -142,9 +152,9 @@ module.exports = {
                $match: { tutor: objectId(tutor) }
             },
             {
-               $lookup :{
-                  from : collections.SUBJECT_COLLECTION,
-                  let : {visibility : '$visibility'},
+               $lookup: {
+                  from: collections.SUBJECT_COLLECTION,
+                  let: { visibility: '$visibility' },
                   pipeline: [
                      {
                         $match: {
@@ -154,12 +164,12 @@ module.exports = {
                         }
                      }
                   ],
-                  as : 'visibility'
+                  as: 'visibility'
                }
             },
             {
                $project: {
-                  title: 1, content: 1, date: 1,visibility : 1
+                  title: 1, content: 1, date: 1, visibility: 1
                }
             }
          ]).sort({ _id: -1 }).toArray()
@@ -167,9 +177,9 @@ module.exports = {
       })
    },
 
-/* Post my announcements */
+   /* Post my announcements */
 
-   postMyAnnouncements: function(announcement) {
+   postMyAnnouncements: function (announcement) {
       return new Promise(async (resolve, reject) => {
          let date = new Date()
          if (typeof (announcement.visibility) != "object") {
@@ -186,9 +196,9 @@ module.exports = {
       })
    },
 
-/* Delete my announcement */
+   /* Delete my announcement */
 
-   deleteMyAnnouncement: function(id) {
+   deleteMyAnnouncement: function (id) {
       return new Promise((resolve, reject) => {
          db.get().collection(collections.TUTOR_ANNOUNCEMENT_COLLECTION).deleteOne({ _id: objectId(id) }).then((data) => {
             resolve()
@@ -198,118 +208,178 @@ module.exports = {
 
    /* Get full details of subject */
 
-   getAllSubjectDetails: function(tutor){
-      return new Promise(async (resolve,reject)=>{
+   getAllSubjectDetails: function (tutor) {
+      return new Promise(async (resolve, reject) => {
          let subjects = await db.get().collection(collections.SUBJECT_COLLECTION).aggregate([
             {
-               $match : {tutor : objectId(tutor)}
+               $match: { tutor: objectId(tutor) }
             },
             {
-              $lookup : {
-               from: collections.CLASS_COLLECTION,
-               localField: 'class',
-               foreignField: '_id',
-               as: 'class'
-              }
+               $lookup: {
+                  from: collections.CLASS_COLLECTION,
+                  localField: 'class',
+                  foreignField: '_id',
+                  as: 'class'
+               }
             }
          ]).toArray()
-         resolve(subjects)
+         resolve(subjects.reverse())
       })
    },
    /* GET details of subject for showing classes posted */
-   getEachSubject: function(subjectId){
-      return new Promise(async (resolve,reject)=>{
+   getEachSubject: function (subjectId) {
+      return new Promise(async (resolve, reject) => {
          let subject = await db.get().collection(collections.SUBJECT_COLLECTION).aggregate([
             {
-               $match : {_id : objectId(subjectId)}
+               $match: { _id: objectId(subjectId) }
             },
             {
-              $lookup : {
-               from: collections.CLASS_COLLECTION,
-               localField: 'class',
-               foreignField: '_id',
-               as: 'class'
-              }
+               $lookup: {
+                  from: collections.TOPIC_COLLECTION,
+                  localField: '_id',
+                  foreignField: 'subject',
+                  as: 'topics'
+               }
+            },
+            {
+               $lookup: {
+                  from: collections.CLASS_COLLECTION,
+                  localField: 'class',
+                  foreignField: '_id',
+                  as: 'class'
+               }
+            },
+            {
+               $project: { name: 1, subject_id: 1, date: 1, class: { $arrayElemAt: ["$class", 0] }, topics: 1 }
             }
          ]).toArray()
-         resolve(subject)
+         subject[0].topics.reverse()
+         resolve(subject[0])
+      })
+   },
+   deleteSubject: function (subjectId) {
+      return new Promise((resolve, reject) => {
+         db.get().collection(collections.SUBJECT_COLLECTION).deleteOne({ _id: objectId(subjectId) }).then(async () => {
+            let topics = await db.get().collection(collections.TOPIC_COLLECTION).find({ subject: objectId(subjectId) }).toArray()
+            db.get().collection(collections.TOPIC_COLLECTION).deleteMany({ subject: objectId(subjectId) }).then((response) => {
+               topics.forEach((topic) => {
+                  let folderPath = path.join('public', 'tutor_files', 'uploaded_files', 'topics', topic._id.toString())
+                  rimraf(folderPath, (err) => {
+                     if (err)
+                        console.log(err);
+                  })
+               })
+               db.get().collection(collections.STUDENT_COLLECTION).updateMany({ subjects: objectId(subjectId) }, { $pull: { subjects: objectId(subjectId) } })
+               resolve()
+            })
+         })
       })
    },
 
    /* POST a class with files uploaded*/
-   postUploadClassWithFile: function(uploadClass,files){
-      return new Promise((resolve,reject)=>{   
+   postUploadClassWithFile: function (uploadClass, files) {
+      return new Promise((resolve, reject) => {
          let date = new Date()
          uploadClass.date = date
-         uploadClass.no_of_files=1
-         if(files.file[0] != undefined){
-            uploadClass.no_of_files = files.file.length;
-         }
          uploadClass.subject = objectId(uploadClass.subject);
          uploadClass.tutor = objectId(uploadClass.tutor);
-
-         if(uploadClass.file == ''){
+         if (uploadClass.file == '') {
             delete uploadClass.file;
          }
-
-         if(uploadClass.link == undefined){
+         if (uploadClass.link == undefined) {
             delete uploadClass.link;
          }
-         else if(typeof(uploadClass.link) != "object"){
+         else if (typeof (uploadClass.link) != "object") {
             uploadClass.link = [uploadClass.link]
          }
-
-
-         db.get().collection(collections.TOPIC_COLLECTION).insertOne(uploadClass).then(async (data) => {
-            /*if there are multiple files, this IF STATEMENT executes*/
-            if(files.file[0] != undefined){
-               
-               for(let i=0;i<files.file.length;i++){
-                  let id = data.ops[0]._id; 
-                  let fileName = id+'_'+i+path.extname(files.file[i].name);
-                  let savePath = path.join('public','tutor_files','uploaded_files','topics',fileName)
-                  console.log(savePath);
-                  await files.file[i].mv(savePath);
+         if (uploadClass.link) {
+            uploadClass.YTvideos = []
+            for (let i = 0; i < uploadClass.link.length; i++) {
+               uploadClass.YTvideos[i] = getYTVideoId(uploadClass.link[i])
+            }
+            delete uploadClass.link
+         }
+         db.get().collection(collections.TOPIC_COLLECTION).insertOne(uploadClass).then((data) => {
+            let id = data.ops[0]._id.toString();
+            let folderPath = path.join('public', 'tutor_files', 'uploaded_files', 'topics', id)
+            fs.mkdir(folderPath, async (err) => {
+               if (err) {
+                  console.log(err);
                }
-            }
-
-             /*if there is only a single file, this ELSE STATEMENT executes*/
-            else{
-               console.log(files.file);
-               let id = data.ops[0]._id; 
-                  let fileName = id+'_1'+path.extname(files.file.name);
-                  let savePath = path.join('public','tutor_files','uploaded_files','topics',fileName)
-                  console.log(savePath);
-                  await files.file.mv(savePath);
-            }
+               else {
+                  /*if there are multiple files, this IF STATEMENT executes*/
+                  if (files.file[0] != undefined) {
+                     for (let i = 0; i < files.file.length; i++) {
+                        let fileName = i + path.extname(files.file[i].name);
+                        let filePath = path.join('public', 'tutor_files', 'uploaded_files', 'topics', id, fileName)
+                        await files.file[i].mv(filePath);
+                     }
+                  }
+                  /*if there is only a single file, this ELSE STATEMENT executes*/
+                  else {
+                     let fileName = '0' + path.extname(files.file.name);
+                     let filePath = path.join('public', 'tutor_files', 'uploaded_files', 'topics', id, fileName)
+                     await files.file.mv(filePath);
+                  }
+               }
+            })
             resolve()
          })
       })
    },
 
    /* POST a class without files uploaded*/
-   postUploadClassWithoutFile: function(uploadClass){
-      return new Promise((resolve,reject)=>{
+   postUploadClassWithoutFile: function (uploadClass) {
+      return new Promise((resolve, reject) => {
          let date = new Date()
          uploadClass.date = date
-         uploadClass.no_of_files = 0
          uploadClass.subject = objectId(uploadClass.subject);
          uploadClass.tutor = objectId(uploadClass.tutor);
-         if(uploadClass.file == ''){
+         if (uploadClass.file == '') {
             delete uploadClass.file;
          }
-         if(uploadClass.link == undefined){
+         if (uploadClass.link == undefined) {
             delete uploadClass.link;
          }
-         else if(typeof(uploadClass.link) != "object"){
+         else if (typeof (uploadClass.link) != "object") {
             uploadClass.link = [uploadClass.link]
          }
+         if (uploadClass.link) {
+            uploadClass.YTvideos = []
+            for (let i = 0; i < uploadClass.link.length; i++) {
+               uploadClass.YTvideos[i] = getYTVideoId(uploadClass.link[i])
+            }
+            delete uploadClass.link
+         }
          db.get().collection(collections.TOPIC_COLLECTION).insertOne(uploadClass).then((data) => {
-            console.log(data.ops[0]._id);
             resolve()
          })
       })
-   }  
+   },
+   getTopicDetails: function (topicId) {
+      return new Promise(async (resolve, reject) => {
+         let topic = await db.get().collection(collections.TOPIC_COLLECTION).findOne({ _id: objectId(topicId) })
+         let folderPath = path.join('public', 'tutor_files', 'uploaded_files', 'topics', topic._id.toString())
+         fs.readdir(folderPath, (err, files) => {
+            if (files) {
+               topic.files = files
+            }
+            resolve(topic)
+         })
+      })
+   },
+   removeTopic: function (topicId) {
+      return new Promise((resolve, reject) => {
+         db.get().collection(collections.TOPIC_COLLECTION).removeOne({ _id: objectId(topicId) }).then(() => {
+            let folderPath = path.join('public', 'tutor_files', 'uploaded_files', 'topics', topicId)
+            rimraf(folderPath, (err) => {
+               if (err)
+                  console.log(err);
+            })
+            resolve()
+         })
+      })
+   }
 }
 
 

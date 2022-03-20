@@ -3,28 +3,30 @@
         <div class="card pl-3">
             <div class="class-head">
                 <div class="row">
-                    {{#each subject}}
-                    <h1>{{this.name}}</h1><i class="far fa-info-circle"></i>
+                    <h1>{{subject.name}}</h1><i class="far fa-info-circle"></i>
                 </div>
             </div>
             <div class="subjectId row">
-                <div id="subject-Id">{{this.subject_id}}</div>&nbsp;<a class="btn btn-" onclick="copySubjectId()"><i
+                <div id="subject-Id">{{subject.subject_id}}</div>&nbsp;<a class="btn btn-" onclick="copySubjectId()"><i
                         class="far fa-copy"></i></a>
             </div>
             <div class="row pl-3">
-                {{#each this.class}}
-                <h5 class="w-50" style="padding-left: 15px; padding-top: 0;;">{{this.name}}</h5>
-                {{/each}}
-                {{/each}}
+                <h5 class="w-50" style="padding-left: 15px; padding-top: 0;;">{{subject.class.name}}</h5>
             </div>
         </div>
         <a href="" data-toggle="modal" data-target="#postClass" style="text-decoration: none; color : #000">
             <div class="card1 mt-3"><small>Post your class here...</small></div>
         </a>
-        {{#if subject}}
-        <div class="card2">
-
+        {{#if subject.topics}}
+        {{#each subject.topics}}
+        <div class="posts" data-toggle="modal" data-target="#view-post" onclick="getTopicDetails('{{this._id}}')">
+            <i class="far fa-folder folder-icon"></i>
+            <div class="posts-body">
+                <div class="posts-title" style="font-size: 16px; font-weight: 500;">{{this.name}}</div>
+                <div class="posts-date" style="font-size: 12px;">{{this.date}}</div>
+            </div>
         </div>
+        {{/each}}
         {{else}}
         <center>
             <div class="blank">You haven't posted anything</div>
@@ -42,16 +44,14 @@
             </div>
             <div class="modal-body">
                 <form class="form" id="uploadForm" action="/tutor/upload-class" method="post">
-                {{#each subject}}
-                <input type="text" name="subject" value="{{this._id}}" hidden>
-                {{/each}}
+                    <input type="text" name="subject" value="{{subject._id}}" hidden>
                     <div class="form-group">
                         <input type="text" class="form-control" id="topic-name" name="name" placeholder="Topic"
                             required>
                     </div>
                     <div class="form-group">
-                        <textarea rows="6" name="content" placeholder="write something here..."
-                            class="form-control"></textarea>
+                        <textarea rows="6" name="content" placeholder="write something here..." class="form-control"
+                            required></textarea>
                     </div>
                     <br>
                     <hr class="p-0" style="background: #5f9ea0">
@@ -60,8 +60,8 @@
 
                         <div class="file-upload">
                             <input class="file-upload__input" type="file"
-                                accept="image/*,application/pdf,.xlsx,.pptx,.txt,.pps,.doc,.docx"
-                                name="file" id="myFile" multiple>
+                                accept="image/*,application/pdf,.xlsx,.pptx,.txt,.pps,.doc,.docx" name="file"
+                                id="myFile" multiple>
                             <button class="file-upload__button" type="button">Choose File(s)</button>
                             <span class="file-upload__label"></span>
                         </div>
@@ -74,9 +74,11 @@
 
                         <div class="row" style="padding: 25px 0px 0px 5px;">
                             <a class="btn-btn addLink" onclick="addLink()"><i class="far fa-plus"></i></a>&nbsp;&nbsp;
-                            <div class="link">Add Link</div>
+                            <div class="link">Add YT video Link</div>
                         </div>
                         <div id="new_chq"></div>
+                        <div class='error-text'><small style='color : red; visibility: hidden;' id="link-error">*Only
+                                valid YouTube video url are accepted.</small></div>
                         <input type="hidden" value="1" id="total_chq">
                     </div>
             </div>
@@ -88,6 +90,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="view-post" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-post-content">
+            <div class="modal-header">
+                <div class="limit-line-length-vertical"
+                    style="font-size: 17px; font-weight: 500; -webkit-line-clamp: 1;" id="posts-title"></div>
+                <div class="fal fa-trash-alt remove-topic-icon" id="remove-topic"></div>
+                <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+            </div>
+            <div class="modal-body">
+                <div style="font-size: 15px;" id="posts-content"></div>
+                <div class="row mt-2" id="posts-body" style="padding-left: 7.6px; padding-right: 7.6px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
 
     /* Function for copying subject id*/
@@ -98,7 +119,7 @@
             range.moveToElementText(document.getElementById("subject-Id"));
             range.select().createTextRange();
             document.execCommand("copy");
-        } 
+        }
         else if (window.getSelection) {
             var range = document.createRange();
             range.selectNode(document.getElementById("subject-Id"));
@@ -112,7 +133,7 @@
     /* Function to add link on button click */
     function addLink() {
         var new_chq_no = parseInt($('#total_chq').val()) + 1;
-        var new_input = "<div class='row' id='input-box' style='padding-top : 10px;'><input type='url' class='form-control' name='link' placeholder='https://example.com' id='new_" + new_chq_no + "'><a class='btn-btn removeLink' onclick='removeLink()'><i class='fas fa-minus' id='remove_" + new_chq_no + "'></i></a></div>";
+        var new_input = "<div class='row' id='input-box' style='padding-top : 10px;'><input type='url' class='form-control' name='link' placeholder='https://youtu.be/videoid' id='new_" + new_chq_no + "'><a class='btn-btn removeLink' onclick='removeLink()'><i class='fas fa-minus' id='remove_" + new_chq_no + "'></i></a></div>";
 
         $('#new_chq').append(new_input);
 
@@ -168,47 +189,113 @@
     let status = true;
     uploadForm.addEventListener("submit", uploadFile);
     async function uploadFile(e) {
-        const file = document.getElementById("myFile").files;
-        for (let i = 0; i < file.length; i++) {
-            var fileSizeInMB = ((file[i].size / 1024) / 1024).toFixed(4);
-            if (fileSizeInMB > 15) {
-                status = false;
-                break;
+        let totalChq = parseInt($('#total_chq').val())
+        let videoUrlStatus = true
+        for (let i = 2; i <= totalChq; i++) {
+            let videoUrl = document.getElementById("new_" + i).value
+            if (videoUrl != undefined || videoUrl != '') {
+                let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+                let match = videoUrl.match(regExp);
+                if (match && match[2].length == 11) {
+                    videoUrlStatus = true
+                }
+                else {
+                    videoUrlStatus = false
+                }
             }
         }
-        if (status === true) {
-            if (file.length != 0) {
-                e.preventDefault();
-                let new_element = "<div class='progress' id='progressBar'><div class='progress-bar progress-bar-striped progress-bar-animated bg-dark progress-bar-fill' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'><span class='progress-bar-text'></span></div></div>"
-                document.getElementById("progress-part").innerHTML = new_element;
-                const progressBarFill = document.querySelector("#progressBar > .progress-bar-fill");
-                const progressBarText = progressBarFill.querySelector(".progress-bar-text");
-
-                const xhr = new XMLHttpRequest();
-               xhr.open("POST", "/tutor/upload-class");
-
-                /*Function that updating values in progress bar*/
-                xhr.upload.addEventListener("progress", e => {
-                    const percent = e.lengthComputable ? (e.loaded / e.total) * 100 : 0;
-                    progressBarFill.style.width = percent.toFixed(2) + "%";
-                    progressBarText.textContent = percent.toFixed(2) + "%";
-                    console.log(progressBarFill.style.width);
-                    if(progressBarFill.textContent === "100.00%"){
-                        window.location.reload();
+        if (videoUrlStatus === true) {
+            const file = document.getElementById("myFile").files;
+            for (let i = 0; i < file.length; i++) {
+                var fileSizeInMB = ((file[i].size / 1024) / 1024).toFixed(4);
+                if (fileSizeInMB > 15) {
+                    status = false;
+                    break;
                 }
-                });
-                xhr.send(new FormData(uploadForm));
+            }
+            if (status === true) {
+                if (file.length != 0) {
+                    e.preventDefault();
+                    let new_element = "<div class='progress' id='progressBar'><div class='progress-bar progress-bar-striped progress-bar-animated bg-dark progress-bar-fill' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'><span class='progress-bar-text'></span></div></div>"
+                    document.getElementById("progress-part").innerHTML = new_element;
+                    const progressBarFill = document.querySelector("#progressBar > .progress-bar-fill");
+                    const progressBarText = progressBarFill.querySelector(".progress-bar-text");
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/tutor/upload-class");
+                    /*Function that updating values in progress bar*/
+                    xhr.upload.addEventListener("progress", e => {
+                        const percent = e.lengthComputable ? (e.loaded / e.total) * 100 : 0;
+                        progressBarFill.style.width = percent.toFixed(2) + "%";
+                        progressBarText.textContent = percent.toFixed(2) + "%";
+                        console.log(progressBarFill.style.width);
+                        if (progressBarFill.textContent === "100.00%") {
+                            window.location.reload();
+                        }
+                    });
+                    xhr.send(new FormData(uploadForm));
+                }
+            }
+            else {
+                e.preventDefault();
+                let error_message = "<div class='error-text'><small style='color : red'>*Files with size above 15MB is not accepted.</small></div>"
+                document.getElementById("progress-part").innerHTML = error_message;
+                status = true;
             }
         }
         else {
-            let error_message = "<div class='error-text'><small style='color : red'>*Files with size above 15MB is not accepted.</small></div>"
-            document.getElementById("progress-part").innerHTML = error_message;
             e.preventDefault();
-            status = true;
+            document.getElementById("link-error").style.visibility = 'visible'
+            videoUrlStatus = true
         }
+    }
 
+    function getTopicDetails(topicId) {
+        $.ajax({
+            url: '/tutor/view-topic',
+            method: 'post',
+            data: { id: topicId },
+            success: ((topic) => {
+                $("#posts-body").empty()
+                $("#posts-title").html(topic.name)
+                $("#posts-content").html(topic.content)
+                $("#remove-topic").attr("onclick", "removeTopic('" + topic._id + "')")
+                if (topic.YTvideos) {
+                    topic.YTvideos.forEach((video) => {
+                        $.ajax({
+                            url: 'https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=' + video + '&format=json',
+                            method: 'get',
+                            success: ((videoDetails) => {
+                                let postsContent = "<div class='col-6 col-md-4 topic-media mb-3' style='padding: 8px; position: relative;'><img src='https://img.youtube.com/vi/" + video + "/mqdefault.jpg' alt=" + videoDetails.title + " width='100%'class='rounded topic-thumb'><a href='https://youtu.be/" + video + "' target='_blank' class='fal fa-play-circle play-btn'></a><div class='limit-line-length-horizontal topic-video-name'>" + videoDetails.title + "</div></div>"
+                                $("#posts-body").append(postsContent)
+                            })
+                        })
+                    })
+                }
+                if (topic.files) {
+                    topic.files.forEach((file) => {
+                        let postsContent = "<div class='col-6 col-md-4 mb-3 topic-media style='height:100%' style='padding: 8px; position: relative;'><div class='topic-file'><div class='fas fa-file-alt file-icon'></div></div><div class='topic-file-name limit-line-length-horizontal'>" + topic.name + "_" + file + "</div><a href='/tutor_files/uploaded_files/topics/" + topic._id + "/" + file + "' download='" + topic.name + "_" + file + "' class='fal fa-arrow-alt-down play-btn'></a></div>"
+                        $("#posts-body").append(postsContent)
+                    })
+                }
+            })
+        })
+    }
+
+    function removeTopic(topicId) {
+        if (confirm("Do You want to remove the Topic?")) {
+            $.ajax({
+                url: '/tutor/remove-topic',
+                method: 'post',
+                data: { id: topicId },
+                success: ((response) => {
+                    location.reload()
+                })
+            })
+        }
     }
 </script>
+
+
 
 <style>
     .card {
@@ -222,6 +309,34 @@
         position: relative;
     }
 
+    .posts {
+        position: relative;
+        background: #fff;
+        height: 90px;
+        border-radius: 10px;
+        margin-top: 12px;
+        padding: 15px;
+        cursor: pointer;
+    }
+
+    .posts .folder-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #2a265f;
+        color: #fff;
+        font-size: 20px;
+        padding: 10px 10px;
+        border-radius: 50%;
+    }
+
+    .posts .posts-body {
+        position: absolute;
+        top: 50%;
+        left: 63px;
+        transform: translateY(-50%);
+    }
+
     @media screen and (max-width : 400px) {
         .card {
             background: #2a265f;
@@ -233,7 +348,8 @@
             height: 150px;
             position: relative;
         }
-        .card .class-head h1{
+
+        .card .class-head h1 {
             font-size: 22px;
         }
     }
@@ -256,7 +372,7 @@
         padding: 10px;
     }
 
-    .subjectId #subject-Id{
+    .subjectId #subject-Id {
         padding-top: 8px;
     }
 
@@ -386,5 +502,87 @@
         #input-box input {
             width: 19em;
         }
+    }
+
+    @media all and (max-width:575px) {
+        .topic-file {
+            height: 78.3px;
+        }
+    }
+
+    @media all and (min-width:576px) {
+        .modal .modal-post-content {
+            width: 34em;
+        }
+
+        .topic-media .topic-thumb {
+            height: 86.4px;
+        }
+
+        .topic-file {
+            width: 100%;
+            height: 86.4px;
+        }
+    }
+
+    .remove-topic-icon {
+        position: absolute;
+        top: 29px;
+        right: 65px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .topic-file {
+        background: #2a265f;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .file-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 23px;
+    }
+
+    .play-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 23px;
+        color: #fff;
+        cursor: pointer;
+        display: none;
+    }
+
+    .play-btn:hover {
+        color: #fff;
+        font-weight: 900;
+        text-decoration: none;
+    }
+
+    .topic-media:hover .topic-thumb {
+        filter: brightness(60%);
+    }
+
+    .topic-media:hover .play-btn {
+        display: block;
+    }
+
+    .topic-media:hover .file-icon {
+        display: none;
+    }
+
+    .topic-video-name,
+    .topic-file-name {
+        position: absolute;
+        bottom: -1;
+        font-size: small;
+        overflow: hidden;
+        width: calc(100% - 15px);
+        margin-top: 4px;
     }
 </style>

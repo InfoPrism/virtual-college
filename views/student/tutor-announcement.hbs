@@ -1,5 +1,6 @@
 <section>
     <div class="container-fluid">
+        {{#if announcements}}
         {{#each announcements}}
         <div class="row mb-3">
             <div class="col-12">
@@ -12,6 +13,9 @@
             </div>
         </div>
         {{/each}}
+        {{else}}
+        <h6 class="text-center" style="position: absolute; left: 50%; transform: translateX(-50%);">No Announcements posted yet.</h6>
+        {{/if}}
     </div>
 </section>
 

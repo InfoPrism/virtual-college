@@ -15,8 +15,8 @@ verifyLogin = function (req, res, next) {
 /* GET home page. */
 router.get('/', verifyLogin, async function (req, res, next) {
    let tutorDetails = req.session.tutor;
-   let subjects =await tutorHelpers.getAllSubjectDetails(tutorDetails._id);
-   res.render('tutor/home', { title: 'Home', tutor: true,tutorDetails,subjects });
+   let subjects = await tutorHelpers.getAllSubjectDetails(tutorDetails._id);
+   res.render('tutor/home', { title: 'Home', tutor: true, tutorDetails, subjects });
 });
 
 /* GET login page. */
@@ -71,7 +71,7 @@ router.post('/signup', function (req, res, next) {
 
 /* Logout */
 
-router.get('/logout',function(req,res,next){
+router.get('/logout', function (req, res, next) {
    req.session.tutor = null;
    res.redirect('/tutor')
 })
@@ -96,72 +96,88 @@ router.post('/add-subject', verifyLogin, async function (req, res, next) {
 
 router.get('/announcement', verifyLogin, function (req, res, next) {
    tutorHelpers.getAllAnnouncements().then((announcements) => {
-      res.render('tutor/announcement', { title: 'Announcement', announcements, tutor: true,tutorDetails : req.session.tutor})
+      res.render('tutor/announcement', { title: 'Announcement', announcements, tutor: true, tutorDetails: req.session.tutor })
    })
 })
 
 /* GET my announcements page. */
 
-router.get('/my-announcements',verifyLogin,function (req,res,next){
-tutorHelpers.getMyannouncements(req.session.tutor._id).then((announcements)=>{
-   res.render('tutor/my-announcements',{title : 'My Announcements',announcements,tutor : true,tutorDetails : req.session.tutor})
-})
+router.get('/my-announcements', verifyLogin, function (req, res, next) {
+   tutorHelpers.getMyannouncements(req.session.tutor._id).then((announcements) => {
+      res.render('tutor/my-announcements', { title: 'My Announcements', announcements, tutor: true, tutorDetails: req.session.tutor })
+   })
 })
 
 /* GET add announcement page. */
 
-router.get('/add-announcement',verifyLogin,function(req,res,next){
-   tutorHelpers.getSubjects(req.session.tutor._id).then((subjects)=>{
-      res.render('tutor/add-announcement',{title : 'Add Announcement',subjects,tutor : true,tutorDetails : req.session.tutor})
+router.get('/add-announcement', verifyLogin, function (req, res, next) {
+   tutorHelpers.getSubjects(req.session.tutor._id).then((subjects) => {
+      res.render('tutor/add-announcement', { title: 'Add Announcement', subjects, tutor: true, tutorDetails: req.session.tutor })
 
    })
 })
 
 /* POST my announcement page. */
 
-router.post('/add-announcement',verifyLogin, function(req,res,next){
-   tutorHelpers.postMyAnnouncements(req.body).then(()=>{
+router.post('/add-announcement', verifyLogin, function (req, res, next) {
+   tutorHelpers.postMyAnnouncements(req.body).then(() => {
       res.redirect('/tutor/my-announcements')
    })
 })
 
 /* Delete my announcement */
 
-router.get('/delete-announcement',verifyLogin,function(req,res,next){
-   tutorHelpers.deleteMyAnnouncement(req.query.id).then(()=>{
+router.get('/delete-announcement', verifyLogin, function (req, res, next) {
+   tutorHelpers.deleteMyAnnouncement(req.query.id).then(() => {
       res.redirect('/tutor/my-announcements')
    })
 })
 
 /* Delete Subject */
 
-router.get('/delete-subject/:id',verifyLogin,function(req,res,next){
-   res.redirect('/tutor')
+router.get('/delete-subject/:id', verifyLogin, function (req, res, next) {
+   tutorHelpers.deleteSubject(req.params.id).then(() => {
+      res.redirect('/tutor')
+   })
 })
 
 /* View my class */
 
-router.get('/view-subject/:id',verifyLogin,function(req,res,next){
+router.get('/view-subject/:id', verifyLogin, function (req, res, next) {
    let subjectId = req.params.id
-   tutorHelpers.getEachSubject(subjectId).then((subject)=>{
-      res.render('tutor/my-class',{title: 'My Class',tutor : true,tutorDetails : req.session.tutor,subject})
+   tutorHelpers.getEachSubject(subjectId).then((subject) => {
+      subject.topics.forEach((topic) => {
+         topic.date = topic.date.toDateString()
+      })
+      res.render('tutor/my-class', { title: 'My Class', tutor: true, tutorDetails: req.session.tutor, subject })
    })
 })
 
 /* upload a post to your class*/
 
-router.post('/upload-class',verifyLogin,function(req,res,next){
+router.post('/upload-class', verifyLogin, function (req, res, next) {
    req.body.tutor = req.session.tutor._id;
-   if(req.files == undefined){
-      tutorHelpers.postUploadClassWithoutFile(req.body).then(()=>{
-         res.redirect('/tutor/view-subject/'+req.body.subject)
+   if (req.files == undefined) {
+      tutorHelpers.postUploadClassWithoutFile(req.body).then(() => {
+         res.redirect('/tutor/view-subject/' + req.body.subject)
       })
    }
-   else{
-      tutorHelpers.postUploadClassWithFile(req.body,req.files).then(()=>{
-         res.redirect('/tutor/view-subject/'+req.body.subject)
+   else {
+      tutorHelpers.postUploadClassWithFile(req.body, req.files).then(() => {
+         res.redirect('/tutor/view-subject/' + req.body.subject)
       })
    }
+})
+
+router.post('/view-topic', verifyLogin, async function (req, res, next) {
+   let topic = await tutorHelpers.getTopicDetails(req.body.id)
+   res.json(topic)
+})
+
+router.post('/remove-topic', verifyLogin, function (req, res, next) {
+   tutorHelpers.removeTopic(req.body.id).then(() => {
+      res.json({ status: true })
+   })
 })
 
 module.exports = router;

@@ -13,6 +13,9 @@
 
 body{
     background: #E4E9F7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -117,11 +120,11 @@ header .header-menu ul li a:hover{
 /* --Sidebar-- */
 .sidebar{
     position: fixed;
-    z-index: 15;
+    z-index: 100;
     background: #11101d;
     top:70px;
     width: 230px;
-    height: calc(100% - 125px);
+    height: 100%;
     transition: 0.3s;
     transition-property: width;
     overflow-y: auto;
@@ -271,14 +274,14 @@ header .header-menu ul li a:hover{
 
 /* --Main Container-- */
 .main-container{
-    margin: 85px 0 70px 55px;
+    margin: 85px 0 15px 55px;
 }
 
 
 /* --Modal-- */
 .modal .modal-content {
     margin: auto;
-    padding: 0.7em;
+    padding: 0.5em;
 }
 
 .modal .modal-content .close-btn {
@@ -287,7 +290,7 @@ header .header-menu ul li a:hover{
     border-radius: 50%;
     color: #878787;
     background: #f2f3fb;
-    padding: 1px 7px;
+    padding: 1px 7.6px;
     cursor: pointer;
 }
 
@@ -317,9 +320,8 @@ header .header-menu ul li a:hover{
 
 /* --Footer-- */
 footer{
-    position: fixed;
-    z-index:100;
     background: #11101d;
+    z-index:100;
     width: 100%;
     margin-top: auto;
     bottom:0;

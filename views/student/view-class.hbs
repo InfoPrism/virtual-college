@@ -1,5 +1,274 @@
 <section>
-    <div class="container-fluid">
-        <div class="card"></div>
+    <div class="container">
+        <div class="card pl-3">
+            <div class="class-head">
+                <div class="row">
+                    <h1>{{subject.name}}</h1><i class="far fa-info-circle"></i>
+                </div>
+            </div>
+            <div class="subjectId row">
+                <div id="subject-Id">{{subject.subject_id}}</div>&nbsp;<a class="btn" onclick="copySubjectId()"><i class="far fa-copy"></i></a>
+            </div>
+            <div class="row pl-3">
+                <h5 style="padding-left: 15px; padding-top: 0;">{{subject.class.name}}</h5>
+            </div>
+        </div>
+        {{#if subject.topics}}
+        {{#each subject.topics}}
+        <div class="posts" data-toggle="modal" data-target="#view-post" onclick="getTopicDetails('{{this._id}}')">
+            <i class="far fa-folder folder-icon"></i>
+            <div class="posts-body">
+                <div class="posts-title" style="font-size: 16px; font-weight: 500;">{{this.name}}</div>
+                <div class="posts-date" style="font-size: 12px;">{{this.date}}</div>
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <center>
+            <div class="blank">You haven't posted anything</div>
+        </center>
+        {{/if}}
     </div>
 </section>
+
+<div class="modal fade" id="view-post" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-post-content">
+            <div class="modal-header">
+                <div class="limit-line-length-vertical" style="font-size: 17px; font-weight: 500; -webkit-line-clamp: 1;" id="posts-title"></div>
+                <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+            </div>
+            <div class="modal-body">
+                <div style="font-size: 15px;" id="posts-content"></div>
+                <div class="row mt-2" id="posts-body" style="padding-left: 7.6px; padding-right: 7.6px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    /* Function for copying subject id*/
+    function copySubjectId() {
+        if (document.selection) {
+            var range = document.body.createTextRange();
+            range.moveToElementText(document.getElementById("subject-Id"));
+            range.select().createTextRange();
+            document.execCommand("copy");
+        }
+        else if (window.getSelection) {
+            var range = document.createRange();
+            range.selectNode(document.getElementById("subject-Id"));
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+        }
+    }
+    /*Function ends*/
+
+    function getTopicDetails(topicId) {
+        $.ajax({
+            url: '/student/view-topic',
+            method: 'post',
+            data: { id: topicId },
+            success: ((topic) => {
+                $("#posts-body").empty()
+                $("#posts-title").html(topic.name)
+                $("#posts-content").html(topic.content)
+                if (topic.YTvideos) {
+                    topic.YTvideos.forEach((video) => {
+                        $.ajax({
+                            url: 'https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=' + video + '&format=json',
+                            method: 'get',
+                            success: ((videoDetails) => {
+                                let postsContent = "<div class='col-6 col-md-4 topic-media mb-3' style='padding: 8px; position: relative;'><img src='https://img.youtube.com/vi/" + video + "/mqdefault.jpg' alt=" + videoDetails.title + " width='100%'class='rounded topic-thumb'><a href='https://youtu.be/" + video + "' target='_blank' class='fal fa-play-circle play-btn'></a><div class='limit-line-length-horizontal topic-video-name'>" + videoDetails.title + "</div></div>"
+                                $("#posts-body").append(postsContent)
+                            })
+                        })
+                    })
+                }
+                if(topic.files) {
+                    topic.files.forEach((file)=>{
+                        let postsContent = "<div class='col-6 col-md-4 mb-3 topic-media style='height:100%' style='padding: 8px; position: relative;'><div class='topic-file'><div class='fas fa-file-alt file-icon'></div></div><div class='topic-file-name limit-line-length-horizontal'>"+topic.name+"_"+file+"</div><a href='/tutor_files/uploaded_files/topics/"+topic._id+"/"+file+"' download='"+topic.name+"_"+file+"' class='fal fa-arrow-alt-down play-btn'></a></div>"
+                        $("#posts-body").append(postsContent)
+                    })
+                }
+            })
+        })
+    }
+</script>
+
+
+
+<style>
+    .card {
+        background: #2a265f;
+        color: #fff;
+        padding: 15px 0px 0px 15px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        height: 250px;
+        position: relative;
+    }
+
+    .posts {
+        position: relative;
+        background: #fff;
+        height: 90px;
+        border-radius: 10px;
+        margin-top: 12px;
+        padding: 15px;
+        cursor: pointer;
+    }
+
+    .posts .folder-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #2a265f;
+        color: #fff;
+        font-size: 20px;
+        padding: 10px 10px;
+        border-radius: 50%;
+    }
+
+    .posts .posts-body {
+        position: absolute;
+        top: 50%;
+        left: 63px;
+        transform: translateY(-50%);
+    }
+
+    @media screen and (max-width : 400px) {
+        .card {
+            background: #2a265f;
+            color: #fff;
+            padding: 15px 0px 0px 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            height: 150px;
+            position: relative;
+        }
+
+        .card .class-head h1 {
+            font-size: 22px;
+        }
+    }
+
+    .class-head {
+        padding-left: 15px;
+    }
+
+    @media screen and (min-width : 401px) {
+        .class-head {
+            padding-left: 30px;
+            padding-top: 35px;
+        }
+    }
+
+    .subjectId {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        padding: 10px;
+    }
+
+    .subjectId #subject-Id {
+        padding-top: 8px;
+    }
+
+    .blank {
+        letter-spacing: .00625em;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5rem;
+        color: #3c4043;
+        margin-top: 10%;
+    }
+
+    @media screen and (max-width : 400px) {
+        .blank {
+            letter-spacing: .00625em;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5rem;
+            color: #3c4043;
+            margin-top: 20%;
+        }
+    }
+
+    @media all and (max-width:575px) {
+        .topic-file {
+            height: 78.3px;
+        }
+    }
+    
+    @media all and (min-width:576px) {
+        .modal .modal-post-content {
+            width: 34em;
+        }
+
+        .topic-media .topic-thumb {
+            height: 86.4px;
+        }
+
+        .topic-file {
+            width: 100%;
+            height: 86.4px;
+        }
+    }
+
+    .topic-file {
+        background: #2a265f;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .file-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 23px;
+    }
+
+    .play-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 23px;
+        color: #fff;
+        cursor: pointer;
+        display: none;
+    }
+
+    .play-btn:hover {
+        color: #fff;
+        font-weight: 900;
+        text-decoration: none;
+    }
+
+    .topic-media:hover .topic-thumb {
+        filter: brightness(60%);
+    }
+
+    .topic-media:hover .play-btn {
+        display: block;
+    }
+
+    .topic-media:hover .file-icon {
+        display: none;
+    }
+
+    .topic-video-name, .topic-file-name {
+        position: absolute;
+        bottom: -1;
+        font-size: small;
+        overflow: hidden;
+        width: calc(100% - 15px );
+        margin-top: 4px;
+    }
+</style>
