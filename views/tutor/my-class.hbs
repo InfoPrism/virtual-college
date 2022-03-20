@@ -3,7 +3,8 @@
         <div class="card pl-3">
             <div class="class-head">
                 <div class="row">
-                    <h1>{{subject.name}}</h1><i class="far fa-info-circle"></i>
+                    <h1>{{subject.name}}</h1><i class="fal fa-edit edit-subject-icon" data-toggle="modal"
+                        data-target="#editsubject"></i>
                 </div>
             </div>
             <div class="subjectId row">
@@ -105,6 +106,31 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="editsubject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Subject</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/tutor/edit-subject/{{subject._id}}" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="class-name" class="col-form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="class-name" name="name" value="{{subject.name}}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
 </div>
 
 
@@ -356,6 +382,14 @@
 
     .class-head {
         padding-left: 15px;
+    }
+
+    .class-head .edit-subject-icon {
+        cursor: pointer;
+    }
+
+    .class-head .edit-subject-icon:hover {
+        font-weight: 900;
     }
 
     @media screen and (min-width : 401px) {

@@ -1,0 +1,181 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card align-items-center text-center p-3">
+                    <img src="{{#if tutor.picture}}/images/tutor_profile/{{tutor._id}}.jpg{{else}}/images/tutor_profile_{{tutor.gender}}_def.jpg{{/if}}" alt="{{tutor.fname}} {{tutor.lname}}" width="150px" height="150px" class="rounded-circle mb-3">
+                    <div class="camera-icon" data-toggle="modal" data-target="#choose-image"><i class="far fa-camera" style="margin-top: 10px;"></i></div>
+                    <h5 class="card-text">{{tutor.fname}} {{tutor.lname}}</h5>
+                    <div class="text-muted">{{tutor.email}}</div>
+                    <div class="text-muted">Joined on {{tutor.date}}</div>
+                    <div style="margin-top: 0.85em;">
+                        <button class="btn btn-outline-primary" onclick="editToSaveBtn()">Edit</button>
+                        <a href="/tutor/logout" class="btn btn-primary">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card p-3">
+                    <h4>Statistics</h4>
+                    <small>Speaking</small>
+                    <div class="progress mb-3 mt-1">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width:34%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100">34%</div>
+                    </div>
+                    <small>Reading</small>
+                    <div class="progress mb-3 mt-1">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 52%" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100">52%</div>
+                    </div>
+                    <small>Writing</small>
+                    <div class="progress mb-3 mt-1">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100">78%</div>
+                    </div>
+                    <small>Listening</small>
+                    <div class="progress mb-3 mt-1">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 24%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100">24%</div>
+                    </div>
+                    <small>Overall</small>
+                    <div class="progress mt-1">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card p-3" style="height: 20.7em;">
+                    <h4>Subjects</h4>
+                    <div class="scrollmenu" style="overflow-y: scroll;">
+                        {{#each subjects}}
+                        <a href="/tutor/view-class/{{this._id}}" class="btn btn-primary m-1">{{this.name}}</a>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card p-3">
+                    <form action="/tutor/profile" method="POST" id="tutor-signup">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="fname">First Name</label>
+                                <input type="text" name="fname" value="{{tutor.fname}}" class="form-control" id="fname" style="background: #fff;" disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lname">Last Name</label>
+                                <input type="text" name="lname" value="{{tutor.lname}}" class="form-control" id="lname" style="background: #fff;" disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" value="{{tutor.email}}" class="form-control" id="email" style="background: #fff;" disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Mobile</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">+91</div>
+                                    </div>
+                                    <input type="tel" class="form-control" name="mobile" value="{{tutor.mobile}}" id="mobile" style="background: #fff;" disabled>
+                                </div>
+                                <span id="mobileErr"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="institution">Institution</label>
+                                <input type="text" name="institution" value="{{tutor.institution}}" class="form-control" placeholder="Institution ID" style="background: #fff;" disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="gender">Gender</label>
+                                <input type="text" class="form-control" name="gender" value="{{tutor.gender}}" style="background: #fff;" disabled>
+                            </div>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" id="edit-btn" onclick="editToSaveBtn()">Edit</button>
+                                <button type="submit" class="btn btn-primary" id="save-btn" style="display: none;">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="choose-image" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5>Choose Image</h5>
+            <div class="delete-img-btn" id="delete-img-btn" onclick="deleteImage()" {{#unless tutor.picture}}hidden{{/unless}}><i class="far fa-trash-alt"></i></div>
+            <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+         </div>
+         <div class="modal-body">
+            <form action="/tutor/profile-picture" method="post" enctype="multipart/form-data">
+                <div class="text-center">
+                    <img src="/images/tutor_profile/{{tutor._id}}.jpg" alt="" style="width:200px; height:200px;" id="img-view" class="text-center pb-3" {{#unless tutor.picture}}hidden{{/unless}}>
+                </div>
+                <div class="custom-file mb-3">
+                    <input type="file" name="image" class="custom-file-input" id="customFile" onchange="uploadImage(event)">
+                    <label class="custom-file-label" for="customFile" id="img-name">No file chosen</label>
+                </div>
+               <button type="submit" class="btn btn-primary float-right" id="save-img-btn" disabled>Save</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<style>
+    .camera-icon {
+        position: absolute;
+        top: 6em;
+        right: calc(47% - 70px);
+        background: #007bff;
+        color: #fff;
+        height: 38px;
+        width: 38px;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .camera-icon:hover {
+        background: #0069d9;
+    }
+
+    .delete-img-btn {
+        position: absolute;
+        color: #878787;
+        right: 4.5em;
+        cursor: pointer;
+    }
+</style>
+
+
+
+<script>
+    function uploadImage(event) {
+        document.getElementById('img-view').hidden = false
+        document.getElementById('img-view').src = URL.createObjectURL(event.target.files[0])
+        document.getElementById('img-name').innerHTML = event.target.files[0].name
+        document.getElementById('delete-img-btn').hidden = true
+        document.getElementById('save-img-btn').disabled = false
+    }
+
+    function deleteImage() {
+        document.getElementById('img-view').hidden = true
+        document.getElementById('delete-img-btn').hidden = true
+        document.getElementById('save-img-btn').disabled = false
+    }
+
+   function editToSaveBtn()
+   {
+      document.getElementById('edit-btn').style.display = 'none'
+      document.getElementById('save-btn').style.display = 'block'
+      document.getElementById('fname').disabled = false
+      document.getElementById('lname').disabled = false
+      document.getElementById('email').disabled = false
+      document.getElementById('mobile').disabled = false
+      document.getElementById('guardian').disabled = false
+      document.getElementById('address').disabled = false
+      document.getElementById('fname').focus()
+   }
+</script>

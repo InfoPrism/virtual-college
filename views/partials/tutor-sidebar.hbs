@@ -3,7 +3,7 @@
    <div class="sidebar scrollmenu">
       <div class="sidebar-menu">
          <center class="profile">
-           <img src="/images/college logo.jpeg" alt="Student Profile">
+           <img src="{{#if tutorDetails.picture}}/images/tutor_profile/{{tutorDetails._id}}.jpg{{else}}/images/tutor_profile_{{tutorDetails.gender}}_def.jpg{{/if}}" alt="{{tutorDetails.fname}} {{tutorDetails.lname}}">
             <p>
                <span class="name">{{tutorDetails.fname}} {{tutorDetails.lname}}</span><br>
                <span class="email" >{{tutorDetails.email}}</span><br>
@@ -20,21 +20,12 @@
                <i class="far fa-megaphone"></i><span>Announcement</span>
                </a>
             </li>
-            <li class="item" id="profile">
-               <a href="#profile" class="menu-btn">
-               <i class="far fa-share-alt"></i><span>Share <i class="fas fa-chevron-down drop-down"></i></span>
-               </a>
-               <div class="sub-menu">
-                  <a href="#"><i class="far fa-chalkboard-teacher"></i> <span>Tutor</span></a>
-                  <a href="#"><i class="far fa-user-graduate"></i> <span>Student</span></a>
-               </div>
-            </li>
              <li class="item" id="settings">
                <a href="#settings" class="menu-btn">
                <i class="far fa-cog"></i><span>Settings  <i class="fas fa-chevron-down drop-down"></i></span>
                </a>
                <div class="sub-menu">
-                  <a href="#"><i class="far fa-user-circle"></i> <span>Profile</span></a>
+                  <a href="/tutor/profile"><i class="far fa-user-circle"></i> <span>Profile</span></a>
                   <a href="/tutor/logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
                </div>
             </li>

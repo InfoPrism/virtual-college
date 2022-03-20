@@ -73,6 +73,56 @@ module.exports = {
          }
       })
    },
+   getTutorDetails: function (tutorId) {
+      return new Promise(async (resolve, reject) => {
+         let tutor = await db.get().collection(collections.TUTOR_COLLECTION).findOne({ _id: objectId(tutorId) })
+         resolve(tutor)
+      })
+   },
+   getInstitutionDetails: function (institutionId) {
+      return new Promise(async (resolve, reject) => {
+         let institution = await db.get().collection(collections.INSTITUTION_COLLECTION).findOne({ _id: objectId(institutionId) })
+         resolve(institution)
+      })
+   },
+   updateTutorDetails: function (tutorData, tutorId) {
+      return new Promise((resolve, reject) => {
+         db.get().collection(collections.TUTOR_COLLECTION).updateOne({ _id: objectId(tutorId) },
+            {
+               $set:
+               {
+                  fname: tutorData.fname,
+                  lname: tutorData.lname,
+                  email: tutorData.email,
+                  mobile: tutorData.mobile
+               }
+            }).then(() => {
+               resolve()
+            })
+      })
+   },
+   updateTutorProfilePicture: function (tutorId, files) {
+      return new Promise((resolve, reject) => {
+         if (files) {
+            files.image.mv('./public/images/tutor_profile/' + tutorId + '.jpg', function (err) {
+               if (!err) {
+                  db.get().collection(collections.TUTOR_COLLECTION).updateOne({ _id: objectId(tutorId) }, { $set: { picture: true } }).then(() => {
+                     resolve()
+                  })
+               }
+            })
+         }
+         else {
+            fs.unlink('./public/images/tutor_profile/' + tutorId + '.jpg', function (err) {
+               if (!err) {
+                  db.get().collection(collections.TUTOR_COLLECTION).updateOne({ _id: objectId(tutorId) }, { $unset: { picture: 1 } }).then(() => {
+                     resolve()
+                  })
+               }
+            })
+         }
+      })
+   },
    /*get all classes*/
    getAllClass: function (institutionId) {
       return new Promise(async (resolve, reject) => {
@@ -110,6 +160,19 @@ module.exports = {
          })
       })
 
+   },
+
+   editSubject: function (subjectId, subjectDetails) {
+      return new Promise((resolve, reject) => {
+         console.log(subjectId);
+         console.log(subjectDetails.name);
+         db.get().collection(collections.SUBJECT_COLLECTION).updateOne({ _id: objectId(subjectId) },
+            {
+               $set: { name: subjectDetails.name }
+            }).then(() => {
+               resolve()
+            })
+      })
    },
 
    /* Get all announcements */

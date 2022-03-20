@@ -50,7 +50,8 @@ router.get('/signup', function (req, res, next) {
       res.redirect('/tutor')
    }
    else {
-      res.render('tutor/signup', { title: 'SignUp', signupErr: req.session.tutorSignupErr, tutor: true })
+      let institutionId = req.query.institution
+      res.render('tutor/signup', { title: 'SignUp', institutionId, signupErr: req.session.tutorSignupErr, tutor: true })
       req.session.tutorSignupErr = false
    }
 })
@@ -76,6 +77,38 @@ router.get('/logout', function (req, res, next) {
    res.redirect('/tutor')
 })
 
+/* GET profile page. */
+router.get('/profile', verifyLogin, function (req, res, next) {
+   tutorHelpers.getTutorDetails(req.session.tutor._id).then((tutor) => {
+      tutorHelpers.getInstitutionDetails(tutor.institution).then(async (institution) => {
+         tutor.institution = institution.name
+         tutor.date = tutor.date.toDateString()
+         if (tutor.gender === 'Male')
+            tutor.male = 'checked'
+         else
+            tutor.female = 'checked'
+         let subjects = await tutorHelpers.getAllSubjectDetails(req.session.tutor._id)
+         res.render('tutor/profile', { title: 'Profile', subjects, tutor, tutorDetails: req.session.tutor })
+      })
+   })
+})
+
+/* POST profile page. */
+router.post('/profile', verifyLogin, function (req, res, next) {
+   tutorHelpers.updateTutorDetails(req.body, req.session.tutor._id).then(async () => {
+      req.session.tutor = await tutorHelpers.getTutorDetails(req.session.tutor._id)
+      res.redirect('/tutor/profile')
+   })
+})
+
+/* POST profile picture. */
+router.post('/profile-picture', verifyLogin, function (req, res, next) {
+   tutorHelpers.updateTutorProfilePicture(req.session.tutor._id, req.files).then(async () => {
+      req.session.tutor = await tutorHelpers.getTutorDetails(req.session.tutor._id)
+      res.redirect('/tutor/profile')
+   })
+})
+
 /*Get classs details to modal*/
 
 router.get('/get-class', verifyLogin, async function (req, res, next) {
@@ -89,6 +122,14 @@ router.post('/add-subject', verifyLogin, async function (req, res, next) {
    req.body.tutor = req.session.tutor._id;
    tutorHelpers.addSubject(req.body).then(() => {
       res.redirect('/tutor');
+   })
+})
+
+/* GET edit-subject */
+router.post('/edit-subject/:id', verifyLogin, async function (req, res, next) {
+   req.body.tutor = req.session.tutor._id;
+   tutorHelpers.editSubject(req.params.id, req.body).then(() => {
+      res.redirect('/tutor/view-subject/' + req.params.id);
    })
 })
 
@@ -169,11 +210,13 @@ router.post('/upload-class', verifyLogin, function (req, res, next) {
    }
 })
 
+/* POST view-topic */
 router.post('/view-topic', verifyLogin, async function (req, res, next) {
    let topic = await tutorHelpers.getTopicDetails(req.body.id)
    res.json(topic)
 })
 
+/* POST remove-topic */
 router.post('/remove-topic', verifyLogin, function (req, res, next) {
    tutorHelpers.removeTopic(req.body.id).then(() => {
       res.json({ status: true })

@@ -326,3 +326,13 @@ footer{
     margin-top: auto;
     bottom:0;
 }
+
+@media all and (max-width:575px) {
+    .sidebar-collapse .sidebar {
+        width: 0;
+    }
+
+    .main-container {
+        margin-left: 0;
+    }
+}
