@@ -7,9 +7,13 @@
                         data-target="#editsubject"></i>
                 </div>
             </div>
-            <div class="subjectId row">
-                <div id="subject-Id">{{subject.subject_id}}</div>&nbsp;<a class="btn btn-" onclick="copySubjectId()"><i
-                        class="far fa-copy"></i></a>
+            <div class="row">
+                <i class="far fa-share-alt share-subject" data-toggle="modal" data-target="#shareSubject"></i>
+
+                <div class="row subjectId">
+                    <div id="subject-Id">{{subject.subject_id}}</div>&nbsp;<a class="btn btn-"
+                        onclick="copySubjectId()"><i class="far fa-copy"></i></a>
+                </div>
             </div>
             <div class="row pl-3">
                 <h5 class="w-50" style="padding-left: 15px; padding-top: 0;;">{{subject.class.name}}</h5>
@@ -36,6 +40,32 @@
     </div>
 </section>
 
+<div class="modal fade" id="shareSubject" tabindex="-1" role="dialog" aria-labelledby="shareLinkLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="share-modal-header">
+                <span>Share Subject</span>
+                <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+            </div>
+            <div class="share-modal-body">
+                <div class="icons">
+                    <input type="text" value="https://onorg.tk/student?class={{subject.subject_id}}" id="subjectLink"
+                        hidden>
+                    <button onclick="copySubjectLink()"><i class="far fa-copy"></i></button>
+                    <button onclick="shareLink('whatsapp','{{subject.subject_id}}', '{{subject.name}}')"><i
+                            class="fab fa-whatsapp"></i></button>
+                    <button onclick="shareLink('telegram','{{subject.subject_id}}', '{{subject.name}}')"><i
+                            class="fab fa-telegram-plane"></i></button>
+                    <button onclick="shareLink('linkedin','{{subject.subject_id}}', '{{subject.name}}')"><i
+                            class="fab fa-linkedin-in"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="postClass" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -57,7 +87,6 @@
                     <br>
                     <hr class="p-0" style="background: #5f9ea0">
                     <br>
-                    <div class="icons">
 
                         <div class="file-upload">
                             <input class="file-upload__input" type="file"
@@ -66,11 +95,6 @@
                             <button class="file-upload__button" type="button">Choose File(s)</button>
                             <span class="file-upload__label"></span>
                         </div>
-                        {{!-- <div class="progress-bar" id="progressBar">
-                            <div class="progress-bar-fill">
-                                <span class="progress-bar-text"></span>
-                            </div>
-                        </div> --}}
                         <div id="progress-part"></div>
 
                         <div class="row" style="padding: 25px 0px 0px 5px;">
@@ -81,7 +105,6 @@
                         <div class='error-text'><small style='color : red; visibility: hidden;' id="link-error">*Only
                                 valid YouTube video url are accepted.</small></div>
                         <input type="hidden" value="1" id="total_chq">
-                    </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-dark">Create</button>
@@ -122,7 +145,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="class-name" class="col-form-label">Subject Name</label>
-                        <input type="text" class="form-control" id="class-name" name="name" value="{{subject.name}}" required>
+                        <input type="text" class="form-control" id="class-name" name="name" value="{{subject.name}}"
+                            required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -136,6 +160,33 @@
 
 
 <script>
+    /* Function for copying subject link*/
+    function copySubjectLink() {
+        /* Get the text field */
+        var copyText = document.getElementById("subjectLink");
+
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(copyText.value);
+
+        /* Alert the copied text */
+        alert("Copied the text: " + copyText.value);
+    }
+
+    function shareLink(method, subjectId, subjectName) {
+        subjectName = subjectName.replace(/ /g, "%20")
+        subjectLink = "https://onorg.tk/student?class=" + subjectId
+
+        if (method === 'linkedin')
+            location.href = "http://linkedin.com/shareArticle?mini=true&url=" + productLink + "&title=" + productName + "%20at%20" + productPrice + "%20Only%0ACheck%20it%20now&summary=Only%20limited%20products%20available&source=" + productLink
+        else if (method === 'whatsapp')
+            location.href = "https://api.whatsapp.com/send?text=" + subjectName + "%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now%0A" + subjectLink
+        else
+            location.href = "https://telegram.me/share/url?url=" + subjectLink + "&text=" + subjectName + "%20online%20platform%20SignUp%20Link%0Ajoin%20it%20now"
+    }
 
     /* Function for copying subject id*/
     function copySubjectId() {
@@ -253,9 +304,10 @@
                         const percent = e.lengthComputable ? (e.loaded / e.total) * 100 : 0;
                         progressBarFill.style.width = percent.toFixed(2) + "%";
                         progressBarText.textContent = percent.toFixed(2) + "%";
-                        console.log(progressBarFill.style.width);
                         if (progressBarFill.textContent === "100.00%") {
-                            window.location.reload();
+                            setTimeout(function () {
+                                window.location.reload();    
+                            }, 5000);
                         }
                     });
                     xhr.send(new FormData(uploadForm));
@@ -343,6 +395,7 @@
         margin-top: 12px;
         padding: 15px;
         cursor: pointer;
+        box-shadow: 5px 5px 10px #aaaaaa;
     }
 
     .posts .folder-icon {
@@ -399,14 +452,29 @@
         }
     }
 
+    .share-subject {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 15px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .share-subject:hover {
+        font-weight: 900;
+    }
+
     .subjectId {
         position: absolute;
         right: 0;
         bottom: 0;
         padding: 10px;
+
     }
 
     .subjectId #subject-Id {
+
         padding-top: 8px;
     }
 
@@ -619,4 +687,122 @@
         width: calc(100% - 15px);
         margin-top: 4px;
     }
+
+    /*Share Modal styling begins here*/
+    .share-modal-header,
+    .icons,
+    .field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .share-modal-header {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ebedf9;
+    }
+
+    .share-modal-header span {
+        font-size: 21px;
+        font-weight: 600;
+    }
+
+    .close-btn,
+    .icons button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .close-btn {
+        height: 33px;
+        width: 33px;
+        color: #878787;
+        background: #f2f3fb;
+        cursor: pointer;
+    }
+
+    .share-modal-body {
+        margin: 10px 0;
+    }
+
+    .share-modal-body p {
+        font-size: 16px;
+    }
+
+    .icons {
+        margin: 10px 0 15px 0;
+    }
+
+    .icons button {
+        background: transparent;
+        height: 50px;
+        width: 50px;
+        font-size: 20px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .icons button:nth-child(1) {
+        color: #A9A9A9;
+        border-color: #a3c9fa;
+    }
+
+    .icons button:nth-child(1):hover {
+        background: #A9A9A9;
+    }
+
+    .icons button:nth-child(2) {
+        color: #696969;
+        border-color: #b5e6fb;
+    }
+
+    .icons button:nth-child(2):hover {
+        background: #696969;
+    }
+
+    .icons button:nth-child(3) {
+        color: #25d336;
+        border-color: #a6efad;
+    }
+
+    .icons button:nth-child(3):hover {
+        background: #25d336;
+    }
+
+    .icons button:nth-child(4) {
+        color: #0088cc;
+        border-color: #85d6ff;
+    }
+
+    .icons button:nth-child(4):hover {
+        background: #0088cc;
+    }
+
+    .icons button:nth-child(5) {
+        color: #0a66c2;
+        border-color: #8bc2f9;
+    }
+
+    .icons button:nth-child(5):hover {
+        background: #0a66c2;
+    }
+
+    .icons button:hover {
+        color: #fff;
+        border-color: transparent;
+        outline: none;
+    }
+
+    .icons button i {
+        transition: transform all 0.3s ease-in-out;
+    }
+
+    .icons button:hover i {
+        transform: scale(1.2);
+    }
+
+    /*Share Modal styling ends here*/
 </style>

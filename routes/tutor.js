@@ -32,16 +32,13 @@ router.get('/login', function (req, res, next) {
 
 /* POST login page. */
 router.post('/login', function (req, res, next) {
-   tutorHelpers.doLogin(req.body).then((response) => {
-      if (response.status) {
-         req.session.tutor = response.tutor
+   tutorHelpers.doLogin(req.body).then((tutor) => {
+         req.session.tutor = tutor
          res.redirect('/tutor')
-      }
-      else {
-         req.session.tutorLoginErr = response.loginErr
+      }).catch((loginErr) => {
+         req.session.tutorLoginErr = loginErr
          res.redirect('/tutor/login')
-      }
-   })
+      })
 })
 
 /* GET signup page. */
@@ -58,15 +55,13 @@ router.get('/signup', function (req, res, next) {
 
 /* POST signup page. */
 router.post('/signup', function (req, res, next) {
-   tutorHelpers.doSignup(req.body).then((response) => {
-      if (response.status) {
-         req.session.tutor = response.tutor
-         res.redirect('/tutor')
-      }
-      else {
-         req.session.tutorSignupErr = response.signupErr
-         res.redirect('/tutor/signup')
-      }
+   tutorHelpers.doSignup(req.body).then((signupMsg) => {
+      console.log(signupMsg);
+      req.session.tutorLoginErr = signupMsg
+      res.redirect('/tutor/login')
+   }).catch((signupErr) => {
+      req.session.tutorLoginErr = signupErr
+      res.redirect('/tutor/signup')
    })
 })
 

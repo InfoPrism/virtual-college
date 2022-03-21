@@ -20,30 +20,28 @@ module.exports = {
       return new Promise(async (resolve, reject) => {
          delete tutorData.cpassword
          tutorData.date = new Date()
-         tutorData.status = 'Signup pending'
          tutorData.remarks = []
-         response = {}
+         //response = {}
          let tutor = await db.get().collection(collections.TUTOR_COLLECTION).findOne({ $or: [{ email: tutorData.email }, { mobile: tutorData.mobile }] })
          if (tutor) {
-            response.signupErr = "Account already exists. Please login"
-            response.status = false
-            resolve(response)
+            signupErr = "Account already exists. Please login"
+            reject(signupErr)
          }
          else {
             let institution = await db.get().collection(collections.INSTITUTION_COLLECTION).findOne({ id: tutorData.institution })
             if (institution) {
                tutorData.institution = objectId(institution._id)
                tutorData.password = await bcrypt.hash(tutorData.password, 10)
+               tutorData.status = 'Signup pending'
                db.get().collection(collections.TUTOR_COLLECTION).insertOne(tutorData).then((data) => {
-                  response.tutor = data.ops[0]
-                  response.status = true
-                  resolve(response)
+                  //tutor = data.ops[0]
+                  signupMsg = "Your status is now pending. Institution will verify your details then you can login."
+                  resolve(signupMsg)
                })
             }
             else {
-               response.signupErr = "Institution does not exists. Please check and try again"
-               response.status = false
-               resolve(response)
+               signupErr = "Institution does not exists. Please check and try again"
+               reject(signupErr)
             }
          }
       })
@@ -55,21 +53,31 @@ module.exports = {
          if (tutor) {
             bcrypt.compare(tutorData.password, tutor.password).then((status) => {
                if (status) {
-                  response.tutor = tutor
-                  response.status = true
-                  resolve(response)
+                  if (tutor.status === 'Signup verified') {
+                     resolve(tutor)
+                  }
+                  else if (tutor.status === 'Signup pending') {
+                     loginErr = "Your status is now pending. Institution will verify your details then you can logged in."
+                     reject(loginErr)
+                  }
+                  else if (tutor.status == 'Signup denied') {
+                     loginErr = "Your signup request was denied by institution. Please contact your institution."
+                     reject(loginErr)
+                  }
+                  else {
+                     loginErr = "Your account was blocked. Please contact your institution"
+                     reject(loginErr)
+                  }
                }
                else {
-                  response.loginErr = "Invalid Email or Password"
-                  response.status = false
-                  resolve(response)
+                  loginErr = "Invalid Email or Password"
+                  reject(loginErr)
                }
             })
          }
          else {
-            response.loginErr = "Invalid Email or Password"
-            response.status = false
-            resolve(response)
+            loginErr = "Invalid Email or Password"
+            reject(loginErr)
          }
       })
    },
@@ -444,5 +452,4 @@ module.exports = {
       })
    }
 }
-
 
