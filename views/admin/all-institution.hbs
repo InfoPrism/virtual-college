@@ -2,7 +2,7 @@
 <section style="padding-left: 12px; padding-right: 8px;">
 	<div class="container-fluid">
 		<Center>
-			<h3><b>Student List</b></h3>
+			<h3><b>Institution List</b></h3>
 		</Center>
 		<div class="row">
 			<table class="table mt-1 ml-5" style="background-color:#D3D3D3;">
@@ -11,34 +11,28 @@
 						<th scope="col">No.</th>
 						<th scope="col">Name</th>
 						<th class="hide-small" scope="col">Email</th>
-						<th class="hide-small" scope="col">Mobile</th>
-						<th class="hide-small" scope="col">Gender</th>
-						<!-- <th scope="col">Quantity</th>-->
-						<th scope="col">Block</th>
-						<th scope="col">Details</th>
+						<th class="" scope="col">Mobile</th>
+						<th class="hide-small" scope="col">Type</th>
+						<th class="hide-small" scope="col">Head</th>
+                        <th class="hide-small" scope="col">Board</th>
+						<th scope="hide-small">Details</th>
 						<th scope="col"></th>
 
 					</tr>
 				</thead>
 				<tbody>
-					{{#each StudentsIn_institution}}
+					{{#each institutions}}
 					<tr>
 						<td style="width: 20%;">{{this.slno}}</td>
 
-						<td style="width: 20%;">{{this.fname}} {{this.lname}}</td>
+						<td style="width: 20%;">{{this.fname}} {{this.name}}</td>
 						<td class="hide-small" style="width: 20%;">{{this.email}}</td>
-						<td class="hide-small" style="width: 20%;">{{this.mobile}}</td>
-						<td class="hide-small" style="width: 20%;">{{this.gender}}</td>
+						<td class="" style="width: 20%;">{{this.mobile}}</td>
+						<td class="hide-small" style="width: 20%;">{{this.type}}</td>
+						<td class="hide-small" style="width: 20%;">{{this.head}}</td>
+                        <td class="hide-small" style="width: 20%;">{{this.board}}</td>
 						<td style="width: 5%;">
-							<a href="/institution/change-student-status/Blocked/{{this._id}}/all-students"
-								onclick="return confirm('Are you sure want to block {{this.fname}}?')"
-								class="btn btn mt-1" style="background-color: #696969; color: #fff;"><span
-									class="hide-small">Block</span> <span class="hide-medium"><i
-										class="fas fa-ban"></i></span></a>
-						</td>
-						<td style="width: 5%;">
-							<a onclick="studentInfo('{{this._id}}')" data-toggle="modal" data-target="#studentprofile"
-								class="btn btn mt-1" style="background-color: #696969; color: #fff;"><i
+							<a  href="/admin/institution-details/?id={{this._id}}" class="btn btn mt-1" style="background-color: #696969; color: #fff;"><i
 									class="fas fa-info-circle"></i></a>
 						</td>
 					</tr>

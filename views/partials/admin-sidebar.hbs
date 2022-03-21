@@ -1,0 +1,50 @@
+{{#if adminDetails}}
+<div class="wrapper sidebar-collapse">
+   <div class="sidebar scrollmenu">
+      <div class="sidebar-menu">
+         <center class="profile">
+            <img src="{{#if student.picture}}/images/student_profile/{{student._id}}.jpg{{else}}/images/admin.jpg{{/if}}" alt="{{student.fname}} {{student.lname}}">
+            <p>
+               <span class="name">{{adminDetails.name}}</span><br>
+               <span class="email" >{{adminDetails.email}}</span><br>
+            </p>
+         </center>
+         <ul>
+            <li class="item">
+               <a href="/admin" class="menu-btn">
+               <i class="far fa-home"></i><span>Home</span>
+               </a>
+            </li>
+            <li class="item" id="messages">
+               <a href="/admin/all-institution" class="menu-btn">
+               <i class="far fa-users"></i><span>Institutions<i class="fas fa-chevron-down drop-down"></i></span>
+               </a>
+            </li>
+            <li class="item" id="profile">
+               <a href="#profile" class="menu-btn">
+               <i class="far fa-share-alt"></i><span>Share <i class="fas fa-chevron-down drop-down"></i></span>
+               </a>
+               <div class="sub-menu">
+                  <a href="#"><i class="far fa-chalkboard-teacher"></i> <span>Tutor</span></a>
+                  <a href="#"><i class="far fa-user-graduate"></i> <span>Student</span></a>
+               </div>
+            </li>
+            <li class="item" id="settings">
+               <a href="#settings" class="menu-btn">
+               <i class="far fa-cog"></i><span>Settings  <i class="fas fa-chevron-down drop-down"></i></span>
+               </a>
+               <div class="sub-menu">
+                  <a href=""><i class="far fa-user-circle"></i> <span>Profile</span></a>
+                  <a href="/admin/logout"><i class="far fa-sign-out-alt"></i> <span>Logout</span></a>
+               </div>
+            </li>
+            <li class="item">
+               <a href="/about" class="menu-btn">
+               <i class="far fa-info-circle"></i><span>About</span>
+               </a>
+            </li>
+         </ul>
+      </div>
+   </div>
+</div>
+{{/if}}

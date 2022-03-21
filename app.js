@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index');
 var institutionRouter = require('./routes/institution');
 var tutorRouter = require('./routes/tutor');
 var studentRouter = require('./routes/student');
+var adminRouter = require('./routes/admin');
 
 
 var db=require('./config/connection')
@@ -38,6 +39,7 @@ app.use('/', indexRouter);
 app.use('/institution', institutionRouter);
 app.use('/tutor', tutorRouter);
 app.use('/student', studentRouter);
+app.use('/admin', adminRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

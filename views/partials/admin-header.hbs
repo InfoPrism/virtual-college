@@ -1,0 +1,20 @@
+<header>
+   <div class="header-menu">
+    {{#if adminDetails}}
+    <div class="sidebar-btn">
+      {{else}}
+      <div class="sidebar-btn" style="border: 0 solid #000;">
+        {{/if}}
+
+        {{#if adminDetails}}
+        <i class="far fa-bars"></i>
+        {{else}}
+        <i class="far fa-school" style="margin-top: 6px;"></i>
+        {{/if}}
+        </div>
+      <a href="/" class="title">onOrg</a>
+      <ul>
+         <li> <a href="/admin"><i class="far fa-home"></i></a></li>
+      </ul>
+   </div>
+</header>

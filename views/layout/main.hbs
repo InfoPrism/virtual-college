@@ -32,16 +32,19 @@
    <link href="/stylesheets/style.css" type="text/css" rel="stylesheet">
 
 
-
    {{#if student}}
    <title>onOrg Student | {{{title}}}</title>
    {{else if tutor}}
    <title>OnOrg Tutor | {{{title}}}</title>
    {{else if institution}}
    <title>onOrg Institution | {{{title}}}</title>
+   {{else if admin}}
+   <title>onOrg Admin | {{{title}}}</title>
    {{else}}
    <title>onOrg | {{{title}}}</title>
    {{/if}}
+   <link rel="icon" href="/images/onorg-icon.png" type="image/x-icon">
+   
 </head>
 
 <body>
@@ -54,6 +57,9 @@
    {{else if institution}}
    {{>institution-header}}
    {{>institution-sidebar}}
+   {{else if admin}}
+   {{>admin-header}}
+   {{>admin-sidebar}}
    {{else}}
    {{>main-header}}
    {{/if}}
@@ -66,6 +72,8 @@
    {{>tutor-footer}}
    {{else if institution}}
    {{>Institution-footer}}
+   {{else if admin}}
+   {{>admin-footer}}
    {{else}}
    {{#unless index}}
    {{>main-footer}}

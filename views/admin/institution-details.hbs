@@ -1,23 +1,15 @@
 <section>
     <div class="container">
-        {{#if status}}
-        <div class="alert alert-success" role="alert">
-            <span class="font-weight-bold">Success!</span> {{institutionDetails.name}} details updated.
-        </div>
-        {{/if}}
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card align-items-center text-center p-3">
                     <img src="{{#if institutionDetails.picture}}/images/institution_profile/{{institutionDetails._id}}.jpg{{else}}/images/school.jpg{{/if}}"
                         alt="{{institutionDetails.name}}" width="150px" height="150px" class="rounded-circle mb-3">
-                    <div class="camera-icon" data-toggle="modal" data-target="#choose-image"><i class="far fa-camera"
-                            style="margin-top: 10px;"></i></div>
+
                     <h5 class="card-text">{{institutionDetails.name}}</h5>
                     <div class="text-muted">{{institutionDetails.email}}</div>
                     <div class="text-muted">Joined on {{institutionDetails.date}}</div>
                     <div style="margin-top: 0.85em;">
-                        <button class="edit btn" onclick="editToSaveBtn()">Edit</button>
-                        <a href="/institution/logout" class="btn btn">Logout</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +63,8 @@
                             class="classes btn btn m-1">{{this.name}}</a>
                         {{/each}}
                         {{else}}
-                        <p style="color: rgb(105, 105, 105);">There is no classes created by {{institutionDetails.name}}.</p>
+                        <p style="color: rgb(105, 105, 105);">There is no classes created by
+                            {{institutionDetails.name}}.</p>
                         {{/if}}
                     </div>
                 </div>
@@ -124,12 +117,7 @@
                                 <div class="input-group">
                                     <input class="form-control" type="text" name="id" value="{{institutionDetails.id}}"
                                         style="background:white;" id="regenerateInstitutionId" readonly>
-                                    <span class="input-group-btn">
-                                        <a class="btn btn-" style="color:white; background-color: #222424;"
-                                            href="/institution/regenerate-institutionid-update"
-                                            onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')"><i
-                                                class="fas fa-sync-alt"></i></a>
-                                    </span>
+
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
@@ -137,11 +125,7 @@
                                 <textarea rows="3" name="address" class="form-control" id="address"
                                     style="background: #fff;" disabled>{{institutionDetails.address}}</textarea>
                             </div>
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn" id="edit-btn"
-                                    onclick="editToSaveBtn()">Edit</button>
-                                <button type="submit" class="btn btn" id="save-btn" style="display: none;">Save</button>
-                            </div>
+
                         </div>
                     </form>
                 </div>
@@ -149,34 +133,6 @@
         </div>
     </div>
 </section>
-
-<div class="modal fade" id="choose-image" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>Choose Image</h5>
-                <div class="delete-img-btn" id="delete-img-btn" onclick="deleteImage()" {{#unless
-                    institutionDetails.picture}}hidden{{/unless}}><i class="far fa-trash-alt"></i></div>
-                <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
-            </div>
-            <div class="modal-body">
-                <form action="/institution/profile-picture" method="post" enctype="multipart/form-data">
-                    <div class="text-center">
-                        <img src="/images/institution_profile/{{institutionDetails._id}}.jpg" alt=""
-                            style="width:200px; height:200px;" id="img-view" class="text-center pb-3" {{#unless
-                            institutionDetails.picture}}hidden{{/unless}}>
-                    </div>
-                    <div class="custom-file mb-3">
-                        <input type="file" name="image" class="custom-file-input" id="customFile"
-                            onchange="uploadImage(event)">
-                        <label class="custom-file-label" for="customFile" id="img-name">No file chosen</label>
-                    </div>
-                    <button type="submit" class="btn btn float-right" id="save-img-btn" disabled>Save</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
