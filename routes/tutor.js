@@ -211,6 +211,29 @@ router.post('/view-topic', verifyLogin, async function (req, res, next) {
    res.json(topic)
 })
 
+/*POST search result*/
+router.post('/search-topic',verifyLogin,function(req,res,next){
+   let search = req.body;
+   let searchSubject = req.body.id;
+   tutorHelpers.searchTopic(search).then((topics) => {
+
+      topics.forEach((topic) => {
+         topic.date = topic.date.toDateString()
+      })
+      // console.log(searchResult);
+      let searchCount = null;
+      if(topics.length>0){
+         searchCount = topics.length;
+         res.render('tutor/search-topics', { title: 'My Class', tutor: true, tutorDetails: req.session.tutor, topics, searchCount, searchSubject })
+      }
+      else{
+         searchCount = topics.length;
+         res.render('tutor/search-topics', { title: 'My Class', tutor: true, tutorDetails: req.session.tutor, topics,searchCount, searchSubject })
+      }
+      
+   })
+})
+
 /* POST remove-topic */
 router.post('/remove-topic', verifyLogin, function (req, res, next) {
    tutorHelpers.removeTopic(req.body.id).then(() => {

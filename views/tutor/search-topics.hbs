@@ -1,0 +1,233 @@
+<section>
+    <div class="container">
+        
+        {{#if searchCount}}
+            <h5>Showing {{searchCount}} Topics</h5><br>
+
+            <a href="/tutor/view-subject/{{searchSubject}}" class="btn btn mb-3"
+            style="background-color: #222424; color: #fff; top:5em; right:1em; position: absolute;">Show All</a>
+
+        {{#each topics}}
+        <div class="posts" data-toggle="modal" data-target="#view-post" onclick="getTopicDetails('{{this._id}}')">
+            <i class="far fa-folder folder-icon"></i>
+            <div class="posts-body">
+                <div class="posts-title" style="font-size: 16px; font-weight: 500;">{{this.name}}</div>
+                <div class="posts-date" style="font-size: 12px;">{{this.date}}</div>
+            </div>
+        </div>
+        {{/each}}
+
+        {{else}}
+
+         <a href="/tutor/view-subject/{{searchSubject}}" class="btn btn mb-3"
+            style="background-color: #222424; color: #fff; top:5em; right:1em; position: absolute;">Show All</a>
+        <center>
+
+            <div class="blank">No Topics Found.</div>
+        </center>
+        {{/if}}
+    </div>
+</section>
+
+<div class="modal fade" id="view-post" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-post-content">
+            <div class="modal-header">
+                <div class="limit-line-length-vertical"
+                    style="font-size: 17px; font-weight: 500; -webkit-line-clamp: 1;" id="posts-title"></div>
+                <div class="fal fa-trash-alt remove-topic-icon" id="remove-topic"></div>
+                <div class="close-btn" data-dismiss="modal"><i class="fal fa-times"></i></div>
+            </div>
+            <div class="modal-body">
+                <div style="font-size: 15px;" id="posts-content"></div>
+                <div class="row mt-2" id="posts-body" style="padding-left: 7.6px; padding-right: 7.6px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function getTopicDetails(topicId) {
+        $.ajax({
+            url: '/tutor/view-topic',
+            method: 'post',
+            data: { id: topicId },
+            success: ((topic) => {
+                $("#posts-body").empty()
+                $("#posts-title").html(topic.name)
+                $("#posts-content").html(topic.content)
+                $("#remove-topic").attr("onclick", "removeTopic('" + topic._id + "')")
+                if (topic.YTvideos) {
+                    topic.YTvideos.forEach((video) => {
+                        $.ajax({
+                            url: 'https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=' + video + '&format=json',
+                            method: 'get',
+                            success: ((videoDetails) => {
+                                let postsContent = "<div class='col-6 col-md-4 topic-media mb-3' style='padding: 8px; position: relative;'><img src='https://img.youtube.com/vi/" + video + "/mqdefault.jpg' alt=" + videoDetails.title + " width='100%'class='rounded topic-thumb'><a href='https://youtu.be/" + video + "' target='_blank' class='fal fa-play-circle play-btn'></a><div class='limit-line-length-horizontal topic-video-name'>" + videoDetails.title + "</div></div>"
+                                $("#posts-body").append(postsContent)
+                            })
+                        })
+                    })
+                }
+                if (topic.files) {
+                    topic.files.forEach((file) => {
+                        let postsContent = "<div class='col-6 col-md-4 mb-3 topic-media style='height:100%' style='padding: 8px; position: relative;'><div class='topic-file'><div class='fas fa-file-alt file-icon'></div></div><div class='topic-file-name limit-line-length-horizontal'>" + topic.name + "_" + file + "</div><a href='/tutor_files/uploaded_files/topics/" + topic._id + "/" + file + "' download='" + topic.name + "_" + file + "' class='fal fa-arrow-alt-down play-btn'></a></div>"
+                        $("#posts-body").append(postsContent)
+                    })
+                }
+            })
+        })
+    }
+
+    function removeTopic(topicId) {
+        if (confirm("Do You want to remove the Topic?")) {
+            $.ajax({
+                url: '/tutor/remove-topic',
+                method: 'post',
+                data: { id: topicId },
+                success: ((response) => {
+                    location.reload()
+                })
+            })
+        }
+    }
+
+</script>
+
+<style>
+
+    .posts {
+        position: relative;
+        background: #fff;
+        height: 90px;
+        border-radius: 10px;
+        margin-top: 12px;
+        padding: 15px;
+        cursor: pointer;
+        box-shadow: 5px 5px 10px #aaaaaa;
+    }
+
+    .posts .folder-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #2a265f;
+        color: #fff;
+        font-size: 20px;
+        padding: 10px 10px;
+        border-radius: 50%;
+    }
+
+    .posts .posts-body {
+        position: absolute;
+        top: 50%;
+        left: 63px;
+        transform: translateY(-50%);
+    }
+
+
+    .blank {
+        letter-spacing: .00625em;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5rem;
+        color: #3c4043;
+        margin-top: 10%;
+    }
+
+    @media screen and (max-width : 400px) {
+        .blank {
+            letter-spacing: .00625em;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5rem;
+            color: #3c4043;
+            margin-top: 20%;
+        }
+    }
+
+    @media all and (max-width:575px) {
+        .topic-file {
+            height: 78.3px;
+        }
+    }
+
+    @media all and (min-width:576px) {
+        .modal .modal-post-content {
+            width: 34em;
+        }
+
+        .topic-media .topic-thumb {
+            height: 86.4px;
+        }
+
+        .topic-file {
+            width: 100%;
+            height: 86.4px;
+        }
+    }
+
+    .remove-topic-icon {
+        position: absolute;
+        top: 29px;
+        right: 65px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .topic-file {
+        background: #2a265f;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .file-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 23px;
+    }
+
+    .play-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 23px;
+        color: #fff;
+        cursor: pointer;
+        display: none;
+    }
+
+    .play-btn:hover {
+        color: #fff;
+        font-weight: 900;
+        text-decoration: none;
+    }
+
+    .topic-media:hover .topic-thumb {
+        filter: brightness(60%);
+    }
+
+    .topic-media:hover .play-btn {
+        display: block;
+    }
+
+    .topic-media:hover .file-icon {
+        display: none;
+    }
+
+    .topic-video-name,
+    .topic-file-name {
+        position: absolute;
+        bottom: -1;
+        font-size: small;
+        overflow: hidden;
+        width: calc(100% - 15px);
+        margin-top: 4px;
+    }
+</style>
+

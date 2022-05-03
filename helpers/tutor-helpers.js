@@ -450,6 +450,28 @@ module.exports = {
             resolve()
          })
       })
+   },
+
+   /* Search Topics*/
+
+   searchTopic: function (search) {
+      return new Promise(async (resolve, reject) => {
+         let topics = await db.get().collection(collections.TOPIC_COLLECTION).aggregate([
+            {
+               $match: { subject: objectId(search.id) }
+            },
+            {
+               $match:
+               {
+                  $or:[
+                     {name:{'$regex' : search.name, '$options' : 'i'}},
+                  ]
+               }
+            }
+         ]).toArray()
+         topics.reverse()
+         resolve(topics);
+      })
    }
 }
 

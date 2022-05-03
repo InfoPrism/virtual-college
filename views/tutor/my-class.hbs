@@ -293,7 +293,7 @@
             if (status === true) {
                 if (file.length != 0) {
                     e.preventDefault();
-                    let new_element = "<div class='progress' id='progressBar'><div class='progress-bar progress-bar-striped progress-bar-animated bg-dark progress-bar-fill' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'><span class='progress-bar-text'></span></div></div>"
+                    let new_element = "<div class='progress' id='progressBar'><div class='progress-bar progress-bar-striped progress-bar-animated bg-success progress-bar-fill' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'><span class='progress-bar-text'></span></div></div>"
                     document.getElementById("progress-part").innerHTML = new_element;
                     const progressBarFill = document.querySelector("#progressBar > .progress-bar-fill");
                     const progressBarText = progressBarFill.querySelector(".progress-bar-text");
@@ -307,7 +307,7 @@
                         if (progressBarFill.textContent === "100.00%") {
                             setTimeout(function () {
                                 window.location.reload();    
-                            }, 5000);
+                            }, 3000);
                         }
                     });
                     xhr.send(new FormData(uploadForm));

@@ -109,7 +109,7 @@ header .header-menu ul li a{
     transition-property: background, color;
 }
 
-/*On cick Round Buttons @ right side*/ 
+/*On click Round Buttons @ right side*/ 
 header .header-menu ul li a:hover{
     background: #fff;
     color: #000;
@@ -317,6 +317,92 @@ header .header-menu ul li a:hover{
     -webkit-box-orient: vertical;
 }
 
+/* Search box styling */
+@media only screen and (min-width: 715px) {
+    .search-box {
+        margin: 200px auto;
+        background: #fff;
+        height: 30px;
+        border-radius: 30px;
+        padding: 20px 10px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.8s;
+        box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
+      }
+      .search-box:hover .input {
+        width: 400px;
+      }
+      .search-box .input {
+        background: transparent;
+        border: none;
+        outline: none;
+        width: 0px;
+        font-weight: 500;
+        font-size: 16px;
+        transition: 0.8s;
+      }
+      
+      .search-box .btn .fas {
+        color: #000;
+      }
+
+  }
+
+  @media only screen and (max-width: 714px) {
+    .search-box {
+        display: none;
+      }
+
+    /* .search-icon-mobile a{
+        border: 2px solid #fff;
+        color: #fff;
+        display: block;
+        margin: 0 11px;
+        margin-top: 2px;
+        font-size: 18px;
+        width:34px;
+        height: 34px;
+        line-height: 32px;
+        text-align: center;
+        border-radius: 50%;
+        transition: 0.3s;
+        transition-property: background, color; 
+        text-decoration: none;
+          
+      }
+
+      #showSearch {
+        margin: 200px auto;
+        background: #fff;
+        height: 30px;
+        border-radius: 30px;
+        padding: 20px 10px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.8s;
+        box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
+      }
+      #showSearch:hover .input {
+        width: 400px;
+      }
+      #showSearch .input {
+        background: transparent;
+        border: none;
+        outline: none;
+        width: 0px;
+        font-weight: 500;
+        font-size: 16px;
+        transition: 0.8s;
+      }
+      
+      #showSearch .btn .fas {
+        color: #000;
+      } */
+      
+  } 
 
 /* --Footer-- */
 footer{

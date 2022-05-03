@@ -3,7 +3,28 @@
       <div class="sidebar-btn">
          <i class="far fa-bars"></i>
       </div>
-      <a href="/student" class="title">onOrg</a>
+      
+      <div class="title">onOrg</div>
+
+      {{#if subject}}
+      <div class="search-box">
+         <form action="/tutor/search-topic" method="post">
+            <input type="text" name="name" placeholder="Search Topics..." class="input" id="topic" />
+            <input type="text" name="id" value="{{subject._id}}" hidden>
+            <button type="submit" class="btn"><i class="fas fa-search"></i></button>
+         </form>
+      </div>
+      {{/if}}
+
+      {{#if searchSubject}}
+      <div class="search-box">
+         <form action="/tutor/search-topic" method="post">
+            <input type="text" name="name" placeholder="Search Topics..." class="input" id="topic" />
+            <input type="text" name="id" value="{{searchSubject}}" hidden>
+            <button type="submit" class="btn"><i class="fas fa-search"></i></button>
+         </form>
+      </div>
+      {{/if}}
       <ul>
          {{#if student._id}}
          <li> <a href="#" data-toggle="modal" data-target="#join-class"><i class="far fa-plus"></i></a></li>

@@ -2,12 +2,42 @@
    <div class="header-menu">
       <div class="sidebar-btn">
          <i class="far fa-bars"></i>
-         <a href="/tutor">
       </div>
       <div class="title">onOrg</div>
-      </a>
+
+      {{#if subject}}
+      <div class="search-box">
+         <form action="/tutor/search-topic" method="post">
+            <input type="text" name="name" placeholder="Search Topics..." class="input" id="topic" />
+            <input type="text" name="id" value="{{subject._id}}" hidden>
+            <button type="submit" class="btn"><i class="fas fa-search"></i></button>
+         </form>
+      </div>
+      {{/if}}
+
+      {{#if searchSubject}}
+      <div class="search-box">
+         <form action="/tutor/search-topic" method="post">
+            <input type="text" name="name" placeholder="Search Topics..." class="input" id="topic" />
+            <input type="text" name="id" value="{{searchSubject}}" hidden>
+            <button type="submit" class="btn"><i class="fas fa-search"></i></button>
+         </form>
+      </div>
+      {{/if}}
+
+
       <ul>
          {{#if tutorDetails}}
+         {{!-- <li class="search-icon-mobile"> <a id="searchClick"><i class="fas fa-search"></i></a></li>
+
+         <div id="showSearch">
+            <form action="/tutor/search-topic" method="post">
+               <input type="text" name="name" placeholder="Search Topics..." class="input" id="topic" />
+               <input type="text" name="id" value="{{searchSubject}}" hidden>
+               <button type="submit" class="btn"><i class="fas fa-search"></i></button>
+            </form>
+         </div> --}}
+
          <li> <a href="" data-toggle="modal" data-target="#createsubject"><i class="far fa-plus"></i></a></li>
 
          <div class="modal fade" id="createsubject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -69,8 +99,6 @@
       z-index: 15 !important;
       background-color: #000;
    }
-
-   
 </style>
 
 <script>
@@ -80,12 +108,14 @@
 
       /* Select the text field */
       copyText.select();
-      //copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
       /* Copy the text inside the text field */
       navigator.clipboard.writeText(copyText.value);
 
-      /* Alert the copied text */
-      //alert("Copied the text: " + copyText.value);
+      //const searchClick = document.querySelector('#searchClick');
+      //const divList = document.querySelector('')
+
    }
+
+
 </script>
