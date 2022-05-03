@@ -81,11 +81,18 @@ router.post('/signup', function (req, res, next) {
 
 /* POST regenerate institutionid */
 router.get('/regenerate-institutionid-update', function (req, res, next) {
+   let page = null
+   page= req.query.page;
    let institutionDetails = req.session.institution;
    institutionHelpers.generateInstitutionId().then(async (institutionCode) => {
       institutionHelpers.changeInstitutionId(institutionDetails._id, institutionCode).then(async () => {
          req.session.institution = await institutionHelpers.getInstitutionDetails(req.session.institution._id)
+         if(page=="profile"){
+         res.redirect('/institution/profile')
+         }
+         else{
          res.redirect('/institution')
+         }
       })
    })
 })
@@ -211,10 +218,11 @@ router.post('/add-remarks', verifyLogin, function (req, res, next) {
 })
 /*Get student remarks*/
 router.get('/view-student-remarks', verifyLogin, async function (req, res, next) {
+   let StudentId=req.query.id;
    let institutionDetails = req.session.institution;
-   let studentRemarks = await institutionHelpers.getStudentRemarks(institutionDetails._id)
-   let studentDetail = await institutionHelpers.getStudentDetails(institutionDetails._id)
-   res.render('institution/student-remarks', { studentRemarks, studentDetail, institutionDetails, institution: true, status, title: studentDetail.fname + ' remarks' })
+   let studentRemarks = await institutionHelpers.getStudentRemarks(StudentId)
+   let studentDetail = await institutionHelpers.getStudentDetails(StudentId)
+   res.render('institution/student-remarks', { studentRemarks, studentDetail, institutionDetails, institution: true, title: studentDetail.fname + ' remarks' })
 })
 /*GET all Tutors under corresponding Institution*/
 router.get('/all-tutors', verifyLogin, async function (req, res, next) {

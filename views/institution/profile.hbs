@@ -71,7 +71,8 @@
                             class="classes btn btn m-1">{{this.name}}</a>
                         {{/each}}
                         {{else}}
-                        <p style="color: rgb(105, 105, 105);">There is no classes created by {{institutionDetails.name}}.</p>
+                        <p style="color: rgb(105, 105, 105);">There is no classes created by
+                            {{institutionDetails.name}}.</p>
                         {{/if}}
                     </div>
                 </div>
@@ -126,7 +127,7 @@
                                         style="background:white;" id="regenerateInstitutionId" readonly>
                                     <span class="input-group-btn">
                                         <a class="btn btn-" style="color:white; background-color: #222424;"
-                                            href="/institution/regenerate-institutionid-update"
+                                            href="/institution/regenerate-institutionid-update/?page=profile"
                                             onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')"><i
                                                 class="fas fa-sync-alt"></i></a>
                                     </span>

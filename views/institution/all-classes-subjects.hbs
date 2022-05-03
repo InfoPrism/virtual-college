@@ -2,24 +2,9 @@
    <div class="container">
 
       <div class="row">
-         <div class="col-md-6 my-auto">
-            <div class="p-3 pb-4 border border-secondary rounded">
-               <h5>All Classes in {{institutionDetails.name}}</h5>
-               <small class="w-50" style="color: grey;">Select a class so it will display subjects under that
-                  class</small>
-               <hr>
-               <!--Here we check there is any class created or not -->
-               <div id="list-example" class="list-group">
-                  {{#each classes}}
-                  <a href="/institution/all-classes-subjects/?classId={{this._id}}&className={{this.name}}"
-                     class="list-group-item list-group-item-action">{{this.slno}}. {{this.name}}</a>
-                  {{/each}}
-               </div>
-            </div>
-         </div>
          {{#if subjects}}
-         <div class="col-md-6 my-auto">
-            <div class="p-3 pb-4 border border-secondary rounded">
+         <div class="col-md-6 my-auto subject-in-phone">
+            <div class="p-3 pb-4 border border-secondary rounded" style="margin-bottom:3em;">
                <h5>Subjects in {{className}}</h5>
                <hr>
                <!--Here we check there is any class created or not -->
@@ -42,8 +27,8 @@
          </div>
          {{else}}
          {{#if className}}
-         <div class="col-md-6 my-auto">
-            <div class="p-3 pb-4 border border-secondary rounded">
+         <div class="col-md-6 my-auto subject-in-phone">
+            <div class="p-3 pb-4 border border-secondary rounded" style="margin-bottom:3em;">
                <h5>Subjects in {{className}}</h5>
                <hr>
                <!--Here we check there is any class created or not -->
@@ -56,6 +41,83 @@
          </div>
          {{/if}}
          {{/if}}
+         <div class="col-md-6 my-auto">
+            <div class="p-3 pb-4 border border-secondary rounded">
+               <h5>All Classes in {{institutionDetails.name}}</h5>
+               <small class="w-50" style="color: grey;">Select a class so it will display subjects under that
+                  class</small>
+               <hr>
+               <!--Here we check there is any class created or not -->
+               <div id="list-example" class="list-group">
+                  {{#each classes}}
+                  <a href="/institution/all-classes-subjects/?classId={{this._id}}&className={{this.name}}"
+                     class="list-group-item list-group-item-action">{{this.slno}}. {{this.name}}</a>
+                  {{/each}}
+               </div>
+            </div>
+         </div>
+
+
+         {{#if subjects}}
+         <div class="col-md-6 my-auto subject-in-largeDevice">
+            <div class="p-3 pb-4 border border-secondary rounded" style="margin-bottom:2em;">
+               <h5>Subjects in {{className}}</h5>
+               <hr>
+               <!--Here we check there is any class created or not -->
+               <div id="list-example" class="list-group">
+                  {{#each subjects}}
+                  <div class="list-group-item list-group-item-action">
+                     <h6>{{this.slno}}. {{this.name}}</h6>
+
+                     <div class="row">
+                        <small class="w-50" style="padding-left: 15px; padding-top: 0;">created By: {{this.tutor.fname}}
+                           {{this.tutor.lname}}</small><br>
+                        <small class="w-50" style="padding-left: 15px; padding-top: 0;">Date: {{this.date}}</small>
+                     </div>
+                  </div>
+                  {{/each}}
+
+
+               </div>
+            </div>
+         </div>
+         {{else}}
+         {{#if className}}
+         <div class="col-md-6 my-auto subject-in-largeDevice">
+            <div class="p-3 pb-4 border border-secondary rounded" style="margin-bottom:2em;">
+               <h5>Subjects in {{className}}</h5>
+               <hr>
+               <!--Here we check there is any class created or not -->
+               <div id="list-example" class="list-group">
+                  <div class="list-group-item list-group-item-action">
+                     <h6>There is no subjects under {{className}}</h6>
+                  </div>
+               </div>
+            </div>
+         </div>
+         {{/if}}
+         {{/if}}
+
+
+
       </div>
    </div>
 </section>
+
+<style>
+   @media screen and (min-width: 600px) {
+
+      /*Hide in medium Devices*/
+      .subject-in-phone {
+         display: none;
+      }
+   }
+
+   @media screen and (max-width: 600px) {
+
+      /*Hide in small Devices*/
+      .subject-in-largeDevice {
+         display: none;
+      }
+   }
+</style>

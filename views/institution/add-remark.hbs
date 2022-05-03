@@ -10,7 +10,7 @@
                   <span class="font-weight-bold">Success!</span> new remark is added about {{studentDetail.fname}}.
                </div>
                {{/if}}
-               <a href="/institution/view-student-remarks/{{studentDetail._id}}" class="btn btn ml-auto mr-0 mb-3"
+               <a href="/institution/view-student-remarks/?id={{studentDetail._id}}" class="btn btn ml-auto mr-0 mb-3"
                   style="background-color: #212529; color: #fff;">View Remarks</a>
                <div class="form-group">
                   <input type="text" name="StudentId" id="" value="{{studentDetail._id}}" hidden>
@@ -32,16 +32,7 @@
                      <p class="small-device-name">Student</p>
                      <div class="subjects">
                         <hr class="bg-primary">
-                        <h5>Subjects</h5>
-                        <div class="row">
-                           <div class="col-sm-6">
-                              <ul>
-                                 <li>*Java</li>
-                                 <li>*Phython</li>
-                                 <li>*DBMS</li>
-                              </ul>
-                           </div>
-                        </div>
+                        <h5  id="student-fullName2">{{studentDetail.fname}}</h5>
                      </div>
                   </div>
                </div>
@@ -90,15 +81,6 @@
                   </div>
                   <div class="smallDevice-subjects">
                      <h5 class="mt-3 font-weight-bold">Subjects Enrolled:</h5>
-
-                     <div class="row">
-                        <div class="col-sm-6">
-                           <h6 class="text-muted">*Java</h6>
-                           <h6 class="text-muted">*Phython</h6>
-                           <h6 class="text-muted">*Data Structures</h6>
-
-                        </div>
-                     </div>
                   </div>
                   <!--
 					   <li>  <a href="/student" class="btn btn " style="color:white; background-color: #222424;">Add Remark</a></li>

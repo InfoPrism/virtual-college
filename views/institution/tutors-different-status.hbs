@@ -1,6 +1,6 @@
 {{#if signupPendingTutors}}
 
-<section style="padding-left: 12px; padding-right: 8px;">
+<section>
 
   <div class="container-fluid">
 
@@ -10,14 +10,14 @@
     </Center>
     <div class="row">
       <a href="/institution/all-tutors-different-status/?status=Signup denied" class="btn btn ml-auto mr-0 mb-3"
-        style="background-color: #212529; color: #fff;">All signup denyed tutors</a>
-      <table class="table  ml-5" style="background-color:#D3D3D3;">
+        style="background-color: #212529; color: #fff;">Denyed tutors</a>
+      <table class="table" style="background-color:#D3D3D3;">
         <thead>
           <tr style="background-color: #2F4F4F; color: #fff;">
             <th scope="col">No.</th>
             <th scope="col">Name</th>
             <th class="large-screen" scope="col">Email</th>
-            <th scope="col">Mobile</th>
+            <th class="large-screen" scope="col">Mobile</th>
             <th class="large-screen" scope="col">Gender</th>
             <!-- <th scope="col">Quantity</th>-->
             <th scope="col">Status</th>
@@ -33,7 +33,7 @@
 
             <td style="width: 20%;">{{this.fname}} {{this.lname}}</td>
             <td class="large-screen" style="width: 20%;">{{this.email}}</td>
-            <td style="width: 20%;">{{this.mobile}}</td>
+            <td class="large-screen" style="width: 20%;">{{this.mobile}}</td>
             <td class="large-screen" style="width: 20%;">{{this.gender}}</td>
             <td style="width: 5%;">
               <div class="dropdown">
@@ -69,7 +69,7 @@
 </section>
 {{/if}}
 {{#if signupDenyedTutors}}
-<section style="padding-left: 12px; padding-right: 8px;">
+<section>
 
   <div class="container-fluid">
     <Center>
@@ -78,9 +78,9 @@
     </Center>
     <div class="row">
       <a href="/institution/all-tutors-different-status/?status=Signup pending" class="btn btn ml-auto mr-0 mb-3"
-        style="background-color: #212529; color: #fff;">All signup pending tutors</a>
+        style="background-color: #212529; color: #fff;">Pending tutors</a>
 
-      <table class="table  ml-5" style="background-color:#D3D3D3;">
+      <table class="table" style="background-color:#D3D3D3;">
 
         <thead>
 
@@ -89,7 +89,7 @@
             <th scope="col">No.</th>
             <th scope="col">Name</th>
             <th class="large-screen" scope="col">Email</th>
-            <th scope="col">Mobile</th>
+            <th class="large-screen" scope="col">Mobile</th>
             <th class="large-screen" scope="col">Gender</th>
             <!-- <th scope="col">Quantity</th>-->
             <th scope="col">Status</th>
@@ -105,7 +105,7 @@
 
             <td style="width: 20%;">{{this.fname}} {{this.lname}}</td>
             <td class="large-screen" style="width: 20%;">{{this.email}}</td>
-            <td style="width: 20%;">{{this.mobile}}</td>
+            <td class="large-screen" style="width: 20%;">{{this.mobile}}</td>
             <td class="large-screen" style="width: 20%;">{{this.gender}}</td>
             <td style="width: 5%;">
               <div class="dropdown">
@@ -139,7 +139,7 @@
 </section>
 {{/if}}
 {{#if blockedTutors}}
-<section style="padding-left: 12px; padding-right: 8px;">
+<section>
 
   <div class="container-fluid">
     <Center>
@@ -150,7 +150,7 @@
       <a href="/institution/all-tutors" class="btn btn ml-auto mr-0 mb-3"
         style="background-color: #212529; color: #fff;">All tutors</a>
 
-      <table class="table  ml-5" style="background-color:#D3D3D3;">
+      <table class="table" style="background-color:#D3D3D3;">
 
         <thead>
 
@@ -159,7 +159,7 @@
             <th scope="col">No.</th>
             <th scope="col">Name</th>
             <th class="large-screen" scope="col">Email</th>
-            <th scope="col">Mobile</th>
+            <th class="large-screen" scope="col">Mobile</th>
             <th class="large-screen" scope="col">Gender</th>
             <!-- <th scope="col">Quantity</th>-->
             <th scope="col">Status</th>
@@ -175,7 +175,7 @@
 
             <td style="width: 20%;">{{this.fname}} {{this.lname}}</td>
             <td class="large-screen" style="width: 20%;">{{this.email}}</td>
-            <td style="width: 20%;">{{this.mobile}}</td>
+            <td class="large-screen" style="width: 20%;">{{this.mobile}}</td>
             <td class="large-screen" style="width: 20%;">{{this.gender}}</td>
             <td style="width: 5%;">
               <div class="dropdown">
@@ -426,6 +426,10 @@
 
     .small-email {
       display: none;
+    }
+
+    .table {
+      margin-left: 60px;
     }
   }
 </style>
