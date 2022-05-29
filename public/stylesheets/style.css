@@ -166,7 +166,9 @@ header .header-menu ul li a:hover{
 .sidebar .sidebar-menu .profile .share-btn{
     padding:1px 5px 1px 5px;
 }
-
+.sidebar .sidebar-menu .profile .instiCode-copy{
+    padding:1px 5px 1px 5px;
+}
 .sidebar .sidebar-menu .profile .regenerate-btn{
     padding:1px 4px 1px 4px;
 }

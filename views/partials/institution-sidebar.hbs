@@ -10,7 +10,9 @@
             <p>
                <span class="name">{{institutionDetails.name}}</span><br>
                <span class="email">{{institutionDetails.email}}</span><br>
-               <a data-toggle="modal" data-target="#shareLink" class="share-btn"><i class="far fa-share-alt"></i></a>
+               <input type="text" value="{{institutionDetails.id}}" id="InstitutionCode" hidden>
+                  <a class="instiCode-copy" onclick="institutionCode()"><i class="far fa-copy"></i></a>
+               <!--<a data-toggle="modal" data-target="#shareLink" class="share-btn"><i class="far fa-share-alt"></i></a>-->
                <span class="secret-code">{{institutionDetails.id}}</span>
                <a href="/institution/regenerate-institutionid-update"
                   onclick="return confirm('Are you sure want to change InstitutionID of {{institutionDetails.name}}')"
@@ -285,9 +287,23 @@
       navigator.clipboard.writeText(copyText.value);
 
       /* Alert the copied text */
-      alert("Copied the text: " + copyText.value);
+      alert("Copied the link for students: " + copyText.value);
    }
-   function tutor() {
+   function institutionCode() {
+      /* Get the text field */
+      var copyText = document.getElementById("InstitutionCode");
+
+      /* Select the text field */
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      navigator.clipboard.writeText(copyText.value);
+
+      /* Alert the copied text */
+      alert("Copied the Institution code: " + copyText.value);
+   }
+      function tutor() {
       /* Get the text field */
       var copyText = document.getElementById("InputTutor");
 
@@ -299,7 +315,7 @@
       navigator.clipboard.writeText(copyText.value);
 
       /* Alert the copied text */
-      alert("Copied the text: " + copyText.value);
+      alert("Copied the link for students: " + copyText.value);
    }
 </script>
 
