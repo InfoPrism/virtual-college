@@ -4,7 +4,7 @@ var state ={
 }
 
 module.exports.connect=function(done){
-    const url = "mongodb://localhost:27017"
+    const url = "mongodb+srv://virtual-college:km9QEwfJNJuQS1Xw@virtual-college.agg7zab.mongodb.net/?retryWrites=true&w=majority"
     const dbname="virtual-college"
 
     MongoClient.connect(url,function(err,data){
